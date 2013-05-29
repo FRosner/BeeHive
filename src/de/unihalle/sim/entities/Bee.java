@@ -1,13 +1,15 @@
 package de.unihalle.sim.entities;
 
 import de.unihalle.sim.util.Event;
+import de.unihalle.sim.util.MovementUtil;
 import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
-	private static int INITIAL_TIME_TO_LIVE = TimeUtil.seconds(30); // s
-	private int _timeToLive = INITIAL_TIME_TO_LIVE;
+	private static double INITIAL_TIME_TO_LIVE = TimeUtil.seconds(30); // s
+	private double _timeToLive = INITIAL_TIME_TO_LIVE;
+	private static final double MOVEMENT_SPEED = MovementUtil.meterPerSecond(1); // m/sec
 
 	private BeeHive _home;
 
@@ -46,29 +48,29 @@ public class Bee extends PositionedEntity {
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");
-		int arrivalTime = TimeUtil.seconds(2);
-		if (willBeAliveIn(arrivalTime)) {
-			_timeToLive -= arrivalTime;
-			schedule("collectNectar", arrivalTime);
-		}
-
+		scheduleIfNotDead("collectNectar", TimeUtil.seconds(2));
 	}
 
-	public boolean isAtHome(BeeHive home) {
-		return _home.equals(home);
+	private void flyToPosition(Position pos) {
+		double distance = _position.distance(pos);
+		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
 	}
 
-	private boolean willBeAliveIn(int seconds) {
+	private boolean willBeAliveIn(double seconds) {
 		return (_timeToLive > seconds);
 	}
 
-	private void scheduleIfNotDead(String event, int time) {
+	private void scheduleIfNotDead(String event, double time) {
 		if (willBeAliveIn(time)) {
 			_timeToLive -= time;
 			schedule(event, time);
 		} else {
 			schedule("die", _timeToLive);
 		}
+	}
+
+	public boolean isAtHome(BeeHive home) {
+		return _home.equals(home);
 	}
 
 }
