@@ -13,6 +13,11 @@ public class BeeSimulation extends Simulation {
 	private static final int SIMULATION_PACE = 100; // ms
 	private static final double SIMULATION_TIME = 2.5; // s
 
+	public static final int MIN_X_COORDINATE = -10;
+	public static final int MAX_X_COORDINATE = 10;
+	public static final int MIN_Y_COORDINATE = -10;
+	public static final int MAX_Y_COORDINATE = 10;
+
 	@Override
 	public void initialize() {
 		register(new BeeHive(new Point(5, 5), 5), "Mailand");
