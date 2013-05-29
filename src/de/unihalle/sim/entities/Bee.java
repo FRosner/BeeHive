@@ -6,7 +6,8 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
-	private static int TIME_TO_LIVE = TimeUtil.weeks(2); // s
+	private static int INITIAL_TIME_TO_LIVE = TimeUtil.seconds(30); // s
+	private int _timeToLive = INITIAL_TIME_TO_LIVE;
 
 	private BeeHive _home;
 
@@ -25,11 +26,24 @@ public class Bee extends PositionedEntity {
 
 	public void collectNectar() {
 		info("Collecting nectar.");
-		schedule("flyBack", 3.0);
+		int arrivalTime = TimeUtil.seconds(2);
+		if (willBeAliveIn(arrivalTime)) {
+			_timeToLive -= arrivalTime;
+			schedule("flyBack", arrivalTime);
+		} else {
+			schedule("die", _timeToLive);
+		}
 	}
 
 	public void flyBack() {
 		info("Flying back.");
+		int arrivalTime = TimeUtil.seconds(2);
+		if (willBeAliveIn(arrivalTime)) {
+			_timeToLive -= arrivalTime;
+			schedule("collectNectar", arrivalTime);
+		} else {
+			schedule("die", _timeToLive);
+		}
 	}
 
 	public void die() {
@@ -39,12 +53,20 @@ public class Bee extends PositionedEntity {
 	@Override
 	public void initialize() {
 		info("I am alive!");
-		schedule("collectNectar", 2.0);
+		int arrivalTime = TimeUtil.seconds(2);
+		if (willBeAliveIn(arrivalTime)) {
+			_timeToLive -= arrivalTime;
+			schedule("collectNectar", arrivalTime);
+		}
 
 	}
 
 	public boolean isAtHome(BeeHive home) {
 		return _home.equals(home);
+	}
+
+	private boolean willBeAliveIn(int seconds) {
+		return (_timeToLive > seconds);
 	}
 
 }
