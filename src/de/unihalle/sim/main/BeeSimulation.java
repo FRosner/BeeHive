@@ -1,5 +1,7 @@
 package de.unihalle.sim.main;
 
+import java.awt.Point;
+
 import org.mitre.sim.Simulation;
 
 import de.unihalle.sim.entities.BeeHive;
@@ -13,11 +15,12 @@ public class BeeSimulation extends Simulation {
 
 	@Override
 	public void initialize() {
-		register(new BeeHive(10), "Hive1");
+		register(new BeeHive(new Point(0, 0), 10), "Hive1");
 		setTimeLast(SIMULATION_TIME);
 		setPace(SIMULATION_PACE);
 	}
 
+	@Override
 	public void simulationComplete() {
 		info("Simulation complete.");
 	}
