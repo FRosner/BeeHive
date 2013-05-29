@@ -1,33 +1,55 @@
 package de.unihalle.sim.entities;
 
-import java.awt.Point;
-
+import de.unihalle.sim.util.Event;
+import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
 
 public class BeeHive extends PositionedEntity {
 
-	private static final int EGG_SPAWN_RATE = TimeUtil.minutes(5); // sec
+	// http://en.wikipedia.org/wiki/List_of_cities_in_Italy
 
-	private int _capacity;
+	private static final int EGG_SPAWN_RATE = TimeUtil.seconds(10); // sec
+
+	private int _populationCapacity;
+	private int _currentPopulation;
 	private int _beeCounter;
 
-	public BeeHive(Point position, int capacity) {
+	public BeeHive(Position position, int capacity) {
 		super();
-		_capacity = capacity;
+		_populationCapacity = capacity;
 		_position = position;
+	}
+
+	@Event
+	public void spawnBee() {
+		if (_populationCapacity > _currentPopulation) {
+			_beeCounter++;
+			_currentPopulation++;
+			register(Bee.create(this), getName() + "." + "Bee" + _beeCounter);
+		}
+		schedule("spawnBee", EGG_SPAWN_RATE);
 	}
 
 	@Override
 	public void initialize() {
-		info("I am alive!");
+		infoWithPosition("I am alive!");
 		fillHive();
+		schedule("spawnBee", EGG_SPAWN_RATE);
 	}
 
 	private void fillHive() {
-		for (int i = 0; i < _capacity; i++) {
+		for (int i = 0; i < _populationCapacity; i++) {
 			register(Bee.create(this), getName() + "." + "Bee" + i);
 		}
-		_beeCounter = _capacity;
+		_beeCounter = _populationCapacity;
+		_currentPopulation = _populationCapacity;
+	}
+
+	public void reportDead() {
+		if (_currentPopulation <= 0) {
+			throw new RuntimeException("A bee of an empty hive wanted to die. This is impossible.");
+		}
+		_currentPopulation--;
 	}
 
 }

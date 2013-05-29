@@ -1,7 +1,7 @@
 package de.unihalle.sim.entities;
 
-import java.awt.Point;
-
+import de.unihalle.sim.util.Event;
+import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
@@ -11,7 +11,7 @@ public class Bee extends PositionedEntity {
 
 	private BeeHive _home;
 
-	private Bee(Point position, BeeHive home) {
+	private Bee(Position position, BeeHive home) {
 		_position = position;
 		_home = home;
 	}
@@ -20,39 +20,32 @@ public class Bee extends PositionedEntity {
 		return new Bee(home.getPosition(), home);
 	}
 
-	public static Bee createAtPosition(Point position, BeeHive home) {
+	public static Bee createAtPosition(Position position, BeeHive home) {
 		return new Bee(position, home);
 	}
 
+	@Event
 	public void collectNectar() {
-		info("Collecting nectar.");
-		int arrivalTime = TimeUtil.seconds(2);
-		if (willBeAliveIn(arrivalTime)) {
-			_timeToLive -= arrivalTime;
-			schedule("flyBack", arrivalTime);
-		} else {
-			schedule("die", _timeToLive);
-		}
+		infoWithPosition("Collecting nectar.");
+		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 	}
 
+	@Event
 	public void flyBack() {
-		info("Flying back.");
-		int arrivalTime = TimeUtil.seconds(2);
-		if (willBeAliveIn(arrivalTime)) {
-			_timeToLive -= arrivalTime;
-			schedule("collectNectar", arrivalTime);
-		} else {
-			schedule("die", _timeToLive);
-		}
+		infoWithPosition("Flying back.");
+		scheduleIfNotDead("collectNectar", TimeUtil.seconds(2));
 	}
 
+	@Event
 	public void die() {
-		info("I am dead.");
+		infoWithPosition("I am dead.");
+		_home.reportDead();
+		_home.reportDead();
 	}
 
 	@Override
 	public void initialize() {
-		info("I am alive!");
+		infoWithPosition("I am alive!");
 		int arrivalTime = TimeUtil.seconds(2);
 		if (willBeAliveIn(arrivalTime)) {
 			_timeToLive -= arrivalTime;
@@ -67,6 +60,15 @@ public class Bee extends PositionedEntity {
 
 	private boolean willBeAliveIn(int seconds) {
 		return (_timeToLive > seconds);
+	}
+
+	private void scheduleIfNotDead(String event, int time) {
+		if (willBeAliveIn(time)) {
+			_timeToLive -= time;
+			schedule(event, time);
+		} else {
+			schedule("die", _timeToLive);
+		}
 	}
 
 }
