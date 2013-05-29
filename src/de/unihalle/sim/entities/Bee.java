@@ -21,10 +21,28 @@ public class Bee extends PositionedEntity {
 		_home = home;
 	}
 
+	/**
+	 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home. The bee will spawn at the
+	 * location of its home.
+	 * 
+	 * @param home
+	 *            hive the <tt>Bee</tt> belongs to
+	 * @return a new <tt>Bee</tt> instance linked to and located at the specified <tt>BeeHive</tt> instance
+	 */
 	public static Bee create(BeeHive home) {
 		return new Bee(home.getPosition(), home);
 	}
 
+	/**
+	 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home at the specified
+	 * <tt>Position</tt> position.
+	 * 
+	 * @param home
+	 *            hive the <tt>Bee</tt> belongs to
+	 * @param position
+	 *            the <tt>Bee</tt> will spawn at
+	 * @return a new <tt>Bee</tt> instance linked to the specified home and located at the specified position
+	 */
 	public static Bee createAtPosition(Position position, BeeHive home) {
 		return new Bee(position, home);
 	}
