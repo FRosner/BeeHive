@@ -9,7 +9,7 @@ import de.unihalle.sim.util.TimeUtil;
 public class Bee extends PositionedEntity {
 
 	private static final double MOVEMENT_SPEED = MovementUtil.meterPerSecond(1); // m/sec
-	private static double INITIAL_TIME_TO_LIVE = TimeUtil.seconds(30); // s
+	private static double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2); // s
 	private static int MAX_CAPACITY = 3;
 	private double _timeToLive = INITIAL_TIME_TO_LIVE;
 	private int _capacity = MAX_CAPACITY;
@@ -31,8 +31,8 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void collectNectarAtFlower(Flower flower) {
-		infoWithPosition("Collecting nectar.");
 		_capacity -= flower.harvestMaxNectar(_capacity);
+		infoWithPosition("Collecting nectar (" + (MAX_CAPACITY - _capacity) + " / " + MAX_CAPACITY + ").");
 		if (_capacity == 0) {
 			scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 		} else {
@@ -51,7 +51,8 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void storeNectar() {
-		infoWithPosition("Home, sweet home.");
+		_home.storeNectar(MAX_CAPACITY - _capacity);
+		infoWithPosition("Storing nectar (" + _home.getStoredNectar() + ").");
 		_capacity = MAX_CAPACITY;
 		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getRandomFlower());
 	}
@@ -86,7 +87,7 @@ public class Bee extends PositionedEntity {
 			_timeToLive -= time;
 			schedule(event, time, arguments);
 		} else {
-			schedule("die", _timeToLive, arguments);
+			schedule("die", _timeToLive);
 		}
 	}
 

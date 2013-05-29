@@ -13,6 +13,7 @@ public class BeeHive extends PositionedEntity {
 	private int _populationCapacity;
 	private int _currentPopulation;
 	private int _beeCounter;
+	private int _storedNectar;
 
 	public BeeHive(Position position, int capacity) {
 		super();
@@ -53,6 +54,14 @@ public class BeeHive extends PositionedEntity {
 			System.exit(1);
 		}
 		_currentPopulation--;
+	}
+
+	public void storeNectar(int amount) {
+		_storedNectar += amount;
+	}
+
+	public int getStoredNectar() {
+		return _storedNectar;
 	}
 
 }
