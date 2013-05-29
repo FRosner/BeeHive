@@ -3,7 +3,6 @@ package de.unihalle.sim.entities;
 import java.util.Random;
 
 import de.unihalle.sim.main.BeeSimulation;
-import de.unihalle.sim.util.Event;
 import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
 

@@ -16,7 +16,7 @@ public class BeeSimulation extends Simulation {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int SIMULATION_PACE = 1000;
+	private static final int SIMULATION_PACE = 100;
 	private static final double SIMULATION_TIME = TimeUtil.minutes(60); // s
 
 	public static final int MIN_X_COORDINATE = -10;
