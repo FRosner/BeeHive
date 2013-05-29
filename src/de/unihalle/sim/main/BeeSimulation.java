@@ -16,7 +16,7 @@ public class BeeSimulation extends Simulation {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int SIMULATION_PACE = 100; // ms
+	private static final int SIMULATION_PACE = 1000;
 	private static final double SIMULATION_TIME = TimeUtil.minutes(60); // s
 
 	public static final int MIN_X_COORDINATE = -10;
@@ -25,6 +25,7 @@ public class BeeSimulation extends Simulation {
 	public static final int MAX_Y_COORDINATE = 10;
 
 	private static List<Flower> _flowers;
+	private static List<BeeHive> _hives;
 
 	@Override
 	public void initialize() {
@@ -35,8 +36,14 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createHives() {
-		register(new BeeHive(Position.createFromCoordinates(5, 5), 1), "Milan");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Rome");
+		_hives = Lists.newArrayList();
+		BeeHive newHive;
+		newHive = new BeeHive(Position.createFromCoordinates(5, 5), 1);
+		register(newHive, "Rome");
+		_hives.add(newHive);
+		// newHive = new BeeHive(Position.createFromCoordinates(5, 5), 1);
+		// register(newHive, "Milan");
+		// _hives.add(newHive);
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Naples");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Turin");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Palermo");

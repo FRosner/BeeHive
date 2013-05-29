@@ -8,8 +8,8 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
-	private static final double MOVEMENT_SPEED = MovementUtil.meterPerSecond(1); // m/sec
-	private static double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2); // s
+	private static final double MOVEMENT_SPEED = MovementUtil.metersPerSecond(1);
+	private static double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2);
 	private static int MAX_CAPACITY = 3;
 	private double _timeToLive = INITIAL_TIME_TO_LIVE;
 	private int _capacity = MAX_CAPACITY;
