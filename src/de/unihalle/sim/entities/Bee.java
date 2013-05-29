@@ -1,5 +1,6 @@
 package de.unihalle.sim.entities;
 
+import de.unihalle.sim.main.BeeSimulation;
 import de.unihalle.sim.util.Event;
 import de.unihalle.sim.util.MovementUtil;
 import de.unihalle.sim.util.Position;
@@ -27,7 +28,7 @@ public class Bee extends PositionedEntity {
 	}
 
 	@Event
-	public void collectNectar() {
+	public void collectNectarAtFlower() {
 		infoWithPosition("Collecting nectar.");
 		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 	}
@@ -43,17 +44,17 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void storeNectar() {
-		infoWithPosition("Home sweet home.");
+		infoWithPosition("Home, sweet home.");
 		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2));
 	}
 
 	@Event
-	public void flyToFlower() {
+	public void flyToFlower(Flower destination) {
 		infoWithPosition("Flying to flower.");
-		double distance = _position.distance(Position.create());
-		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
-		scheduleIfNotDead("collectNectar", movementTime);
-		moveTo(Position.create());
+		double movementTime = MovementUtil.calculateMovementTime(_position.distance(destination.getPosition()),
+				MOVEMENT_SPEED);
+		scheduleIfNotDead("collectNectarAtFlower", movementTime);
+		moveTo(destination.getPosition());
 	}
 
 	@Event
@@ -65,19 +66,19 @@ public class Bee extends PositionedEntity {
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");
-		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2));
+		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getRandomFlower());
 	}
 
 	private boolean willBeAliveIn(double seconds) {
 		return (_timeToLive > seconds);
 	}
 
-	private void scheduleIfNotDead(String event, double time) {
+	private void scheduleIfNotDead(String event, double time, Object... arguments) {
 		if (willBeAliveIn(time)) {
 			_timeToLive -= time;
-			schedule(event, time);
+			schedule(event, time, arguments);
 		} else {
-			schedule("die", _timeToLive);
+			schedule("die", _timeToLive, arguments);
 		}
 	}
 
