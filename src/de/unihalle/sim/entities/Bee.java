@@ -8,9 +8,11 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
-	private static double INITIAL_TIME_TO_LIVE = TimeUtil.seconds(30); // s
-	private double _timeToLive = INITIAL_TIME_TO_LIVE;
 	private static final double MOVEMENT_SPEED = MovementUtil.meterPerSecond(1); // m/sec
+	private static double INITIAL_TIME_TO_LIVE = TimeUtil.seconds(30); // s
+	private static int MAX_CAPACITY = 3;
+	private double _timeToLive = INITIAL_TIME_TO_LIVE;
+	private int _capacity = MAX_CAPACITY;
 
 	private BeeHive _home;
 
@@ -28,8 +30,9 @@ public class Bee extends PositionedEntity {
 	}
 
 	@Event
-	public void collectNectarAtFlower() {
+	public void collectNectarAtFlower(Flower flower) {
 		infoWithPosition("Collecting nectar.");
+		_capacity -= flower.harvestMaxNectar(_capacity);
 		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 	}
 
@@ -45,7 +48,8 @@ public class Bee extends PositionedEntity {
 	@Event
 	public void storeNectar() {
 		infoWithPosition("Home, sweet home.");
-		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2));
+		_capacity = MAX_CAPACITY;
+		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getRandomFlower());
 	}
 
 	@Event
@@ -53,7 +57,7 @@ public class Bee extends PositionedEntity {
 		infoWithPosition("Flying to flower.");
 		double movementTime = MovementUtil.calculateMovementTime(_position.distance(destination.getPosition()),
 				MOVEMENT_SPEED);
-		scheduleIfNotDead("collectNectarAtFlower", movementTime);
+		scheduleIfNotDead("collectNectarAtFlower", movementTime, destination);
 		moveTo(destination.getPosition());
 	}
 

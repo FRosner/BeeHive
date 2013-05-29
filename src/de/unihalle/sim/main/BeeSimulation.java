@@ -35,7 +35,7 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createHives() {
-		register(new BeeHive(Position.createFromCoordinates(5, 5), 1), "Milan");
+		register(new BeeHive(Position.createFromCoordinates(5, 5), 2), "Milan");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Rome");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Naples");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Turin");
