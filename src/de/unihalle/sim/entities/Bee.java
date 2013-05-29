@@ -33,7 +33,11 @@ public class Bee extends PositionedEntity {
 	public void collectNectarAtFlower(Flower flower) {
 		infoWithPosition("Collecting nectar.");
 		_capacity -= flower.harvestMaxNectar(_capacity);
-		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
+		if (_capacity == 0) {
+			scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
+		} else {
+			scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getRandomFlower());
+		}
 	}
 
 	@Event
