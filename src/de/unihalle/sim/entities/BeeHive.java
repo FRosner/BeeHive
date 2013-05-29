@@ -47,7 +47,10 @@ public class BeeHive extends PositionedEntity {
 
 	public void reportDead() {
 		if (_currentPopulation <= 0) {
-			throw new RuntimeException("A bee of an empty hive wanted to die. This is impossible.");
+			// Exception is caught by Tortuga framework
+			// throw new RuntimeException("A bee of an empty hive wanted to die. This is impossible.");
+			System.err.println("A bee of an empty hive wanted to die. This is impossible.");
+			System.exit(1);
 		}
 		_currentPopulation--;
 	}

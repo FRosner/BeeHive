@@ -34,26 +34,38 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void flyBack() {
-		infoWithPosition("Flying back.");
-		scheduleIfNotDead("collectNectar", TimeUtil.seconds(2));
+		infoWithPosition("Flying back to the hive.");
+		double distance = _position.distance(_home.getPosition());
+		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
+		scheduleIfNotDead("storeNectar", movementTime);
+		moveTo(_home.getPosition());
+	}
+
+	@Event
+	public void storeNectar() {
+		infoWithPosition("Home sweet home.");
+		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2));
+	}
+
+	@Event
+	public void flyToFlower() {
+		infoWithPosition("Flying to flower.");
+		double distance = _position.distance(Position.create());
+		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
+		scheduleIfNotDead("collectNectar", movementTime);
+		moveTo(Position.create());
 	}
 
 	@Event
 	public void die() {
 		infoWithPosition("I am dead.");
 		_home.reportDead();
-		_home.reportDead();
 	}
 
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");
-		scheduleIfNotDead("collectNectar", TimeUtil.seconds(2));
-	}
-
-	private void flyToPosition(Position pos) {
-		double distance = _position.distance(pos);
-		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
+		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2));
 	}
 
 	private boolean willBeAliveIn(double seconds) {
@@ -67,6 +79,11 @@ public class Bee extends PositionedEntity {
 		} else {
 			schedule("die", _timeToLive);
 		}
+	}
+
+	private void moveTo(Position pos) {
+		_position.x = pos.x;
+		_position.y = pos.y;
 	}
 
 	public boolean isAtHome(BeeHive home) {
