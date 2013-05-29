@@ -2,9 +2,11 @@ package de.unihalle.sim.entities;
 
 import java.awt.Point;
 
+import de.unihalle.sim.util.TimeUtil;
+
 public class BeeHive extends PositionedEntity {
 
-	private static final int EGG_SPAWN_RATE = 10; // sec
+	private static final int EGG_SPAWN_RATE = TimeUtil.minutes(5); // sec
 
 	private int _capacity;
 	private int _beeCounter;

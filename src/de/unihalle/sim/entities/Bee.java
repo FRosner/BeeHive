@@ -2,7 +2,11 @@ package de.unihalle.sim.entities;
 
 import java.awt.Point;
 
+import de.unihalle.sim.util.TimeUtil;
+
 public class Bee extends PositionedEntity {
+
+	private static int TIME_TO_LIVE = TimeUtil.weeks(2); // s
 
 	private BeeHive _home;
 
