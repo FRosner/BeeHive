@@ -32,10 +32,15 @@ public class Bee extends PositionedEntity {
 		info("Flying back.");
 	}
 
+	public void die() {
+		info("I am dead.");
+	}
+
 	@Override
 	public void initialize() {
 		info("I am alive!");
 		schedule("collectNectar", 2.0);
+
 	}
 
 	public boolean isAtHome(BeeHive home) {
