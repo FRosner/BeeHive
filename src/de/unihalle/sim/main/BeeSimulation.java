@@ -15,7 +15,10 @@ public class BeeSimulation extends Simulation {
 
 	@Override
 	public void initialize() {
-		register(new BeeHive(new Point(0, 0), 10), "Hive1");
+		register(new BeeHive(new Point(5, 5), 5), "Mailand");
+		register(new BeeHive(new Point(-5, -5), 5), "Rom");
+		register(new BeeHive(new Point(5, -5), 5), "Neapel");
+		register(new BeeHive(new Point(-5, 5), 5), "Turin");
 		setTimeLast(SIMULATION_TIME);
 		setPace(SIMULATION_PACE);
 	}

@@ -2,11 +2,8 @@ package de.unihalle.sim.entities;
 
 import java.awt.Point;
 
-import org.mitre.sim.DefaultEntity;
+public class Bee extends PositionedEntity {
 
-public class Bee extends DefaultEntity {
-
-	private Point _position;
 	private BeeHive _home;
 
 	private Bee(Point position, BeeHive home) {
@@ -37,23 +34,8 @@ public class Bee extends DefaultEntity {
 		schedule("collectNectar", 2.0);
 	}
 
-	public Point getPosition() {
-		return new Point(_position);
+	public boolean isAtHome(BeeHive home) {
+		return _home.equals(home);
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Bee) {
-			Bee bee = (Bee) o;
-			return bee.getName().equals(getName()) && bee.getPosition().equals(getPosition());
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return (getName() + getPosition()).hashCode();
-
-	}
 }
