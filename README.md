@@ -1,4 +1,4 @@
 BeeHive
 =======
 
-Bee population simulation.
+Bee population simulation using Tortuga.
