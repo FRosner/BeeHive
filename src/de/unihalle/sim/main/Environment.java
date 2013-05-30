@@ -2,6 +2,7 @@ package de.unihalle.sim.main;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import com.google.common.collect.Lists;
 
@@ -51,6 +52,11 @@ public class Environment {
 		return Position.createRandomPositionWithin(_minX, _maxX, _minY, _maxY);
 	}
 
+	/**
+	 * Return a randomly selected flower. Each flower has the same probability.
+	 * 
+	 * @return randomly selected flower
+	 */
 	public Flower getRandomFlower() {
 		if (_flowers.size() <= 0) {
 			System.err.println("No flowers created but tried to select one.");
@@ -58,6 +64,31 @@ public class Environment {
 		}
 		Collections.shuffle(_flowers);
 		return _flowers.get(0);
+	}
+
+	/**
+	 * Returns a randomly selected flower. Flowers closer to the specified position have higher probability.
+	 * 
+	 * @param pos
+	 * @return randomly selected flower, probably close to pos
+	 */
+	public Flower getRandomFlowerCloseTo(Position pos) {
+		if (_flowers.size() <= 0) {
+			System.err.println("No flowers created but tried to select one.");
+			System.exit(1);
+		}
+		Flower randomFlower = null;
+		double minRandomValue = Double.POSITIVE_INFINITY;
+		double currentRandomValue;
+		Random random = new Random();
+		for (Flower f : _flowers) {
+			currentRandomValue = f.getPosition().distance(pos) * random.nextDouble();
+			if (Double.compare(currentRandomValue, minRandomValue) < 0) {
+				randomFlower = f;
+				minRandomValue = currentRandomValue;
+			}
+		}
+		return randomFlower;
 	}
 
 }

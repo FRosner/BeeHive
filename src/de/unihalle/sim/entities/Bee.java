@@ -53,7 +53,8 @@ public class Bee extends PositionedEntity {
 		if (_capacity == 0) {
 			scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 		} else {
-			scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment().getRandomFlower());
+			scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment()
+					.getRandomFlowerCloseTo(_position));
 		}
 	}
 
@@ -71,7 +72,8 @@ public class Bee extends PositionedEntity {
 		_home.storeNectar(MAX_CAPACITY - _capacity);
 		infoWithPosition("Storing nectar (" + _home.getStoredNectar() + ").");
 		_capacity = MAX_CAPACITY;
-		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment().getRandomFlower());
+		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment().getRandomFlowerCloseTo(
+				_position));
 	}
 
 	@Event
@@ -94,7 +96,8 @@ public class Bee extends PositionedEntity {
 	public void initialize() {
 		infoWithPosition("I am alive!");
 		BeeSimulation.getEnvironment().addBee(this);
-		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment().getRandomFlower());
+		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment().getRandomFlowerCloseTo(
+				_position));
 	}
 
 	private boolean willBeAliveIn(double seconds) {
