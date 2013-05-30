@@ -48,9 +48,6 @@ public class BeeSimulation extends Simulation {
 			register(currentFlower, "Flower" + i);
 			_environment.addFlower(currentFlower);
 		}
-		for (int i = 1; i < 100; i++)
-			System.err.println(_environment.getRandomFlowerCloseTo(Position.create()).getPosition());
-		System.exit(1);
 	}
 
 	@Override
