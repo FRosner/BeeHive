@@ -1,7 +1,5 @@
 package de.unihalle.sim.entities;
 
-import java.util.Random;
-
 import de.unihalle.sim.main.BeeSimulation;
 import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
@@ -25,12 +23,7 @@ public class Flower extends PositionedEntity {
 	 * @return a new <tt>Flower</tt> instance at random position
 	 */
 	public static Flower create() {
-		Random random = new Random();
-		int x = random.nextInt(BeeSimulation.MAX_X_COORDINATE - BeeSimulation.MIN_X_COORDINATE)
-				+ BeeSimulation.MIN_X_COORDINATE;
-		int y = random.nextInt(BeeSimulation.MAX_Y_COORDINATE - BeeSimulation.MIN_Y_COORDINATE)
-				+ BeeSimulation.MIN_Y_COORDINATE;
-		return createAtPosition(Position.createFromCoordinates(x, y));
+		return createAtPosition(BeeSimulation.getEnvironment().getRandomValidPosition());
 	}
 
 	/**
