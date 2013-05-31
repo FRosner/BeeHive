@@ -39,9 +39,7 @@ public class BeeSimulation extends Simulation {
 
 	private void createFlowers() {
 		for (int i = 1; i < 4; i++) {
-			Flower currentFlower = Flower.create();
-			register(currentFlower, "Flower" + i);
-			_environment.addFlower(currentFlower);
+			registerFlower("Flower" + i);
 		}
 	}
 
@@ -58,6 +56,12 @@ public class BeeSimulation extends Simulation {
 		BeeHive newHive = new BeeHive(pos, capacity);
 		register(newHive, name);
 		_environment.addHive(newHive);
+	}
+
+	private void registerFlower(String name) {
+		Flower currentFlower = Flower.create();
+		register(currentFlower, name);
+		_environment.addFlower(currentFlower);
 	}
 
 	public static void main(String[] args) {
