@@ -25,15 +25,10 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createHives() {
-		BeeHive newHive;
-		newHive = new BeeHive(Position.createFromCoordinates(5, 5), 1);
-		register(newHive, "Rome");
-		_environment.addHive(newHive);
-		// newHive = new BeeHive(Position.createFromCoordinates(5, 5), 1);
-		// register(newHive, "Milan");
-		// _hives.add(newHive);
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Naples");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Turin");
+		registerHive(Position.createFromCoordinates(5, 5), 0, "Rome");
+		registerHive(Position.createFromCoordinates(-5, -5), 0, "Milan");
+		registerHive(Position.createFromCoordinates(5, -5), 0, "Naples");
+		registerHive(Position.createFromCoordinates(-5, 5), 0, "Turin");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Palermo");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Genoa");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Bologna");
@@ -57,6 +52,12 @@ public class BeeSimulation extends Simulation {
 
 	public static Environment getEnvironment() {
 		return _environment;
+	}
+
+	private void registerHive(Position pos, int capacity, String name) {
+		BeeHive newHive = new BeeHive(pos, capacity);
+		register(newHive, name);
+		_environment.addHive(newHive);
 	}
 
 	public static void main(String[] args) {
