@@ -91,4 +91,38 @@ public class Environment {
 		return randomFlower;
 	}
 
+	// TODO test
+	public BeeHive getRandomBeeHiveButNot(BeeHive hive) {
+		List<BeeHive> tempHives = Lists.newArrayList(_hives);
+		tempHives.remove(hive);
+		if (tempHives.size() <= 0) {
+			System.err.println("No hives created but tried to select one.");
+			System.exit(1);
+		}
+		Collections.shuffle(tempHives);
+		return tempHives.get(0);
+	}
+
+	// TODO test
+	public BeeHive getRandomBeeHiveCloseToPositionButNot(BeeHive hive, Position pos) {
+		List<BeeHive> tempHives = Lists.newArrayList(_hives);
+		tempHives.remove(hive);
+		if (tempHives.size() <= 0) {
+			System.err.println("No hives created but tried to select one.");
+			System.exit(1);
+		}
+		BeeHive randomHive = null;
+		double minRandomValue = Double.POSITIVE_INFINITY;
+		double currentRandomValue;
+		Random random = new Random();
+		for (BeeHive h : tempHives) {
+			currentRandomValue = h.getPosition().distance(pos) * random.nextDouble();
+			if (Double.compare(currentRandomValue, minRandomValue) < 0) {
+				randomHive = h;
+				minRandomValue = currentRandomValue;
+			}
+		}
+		return randomHive;
+	}
+
 }
