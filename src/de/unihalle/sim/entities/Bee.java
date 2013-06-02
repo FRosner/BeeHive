@@ -1,5 +1,7 @@
 package de.unihalle.sim.entities;
 
+import java.util.Random;
+
 import de.unihalle.sim.main.BeeSimulation;
 import de.unihalle.sim.util.MovementUtil;
 import de.unihalle.sim.util.Position;
@@ -7,17 +9,20 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
+	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.5;
 	private static final double MOVEMENT_SPEED = MovementUtil.metersPerSecond(1);
-	private static double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2);
-	private static int MAX_CAPACITY = 3;
+	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2);
+	private static final int MAX_CAPACITY = 3;
 	private double _timeToLive = INITIAL_TIME_TO_LIVE;
 	private int _capacity = MAX_CAPACITY;
+	private Random _random;
 
 	private BeeHive _home;
 
 	private Bee(Position position, BeeHive home) {
 		_position = position;
 		_home = home;
+		_random = new Random();
 	}
 
 	/**
@@ -61,10 +66,22 @@ public class Bee extends PositionedEntity {
 	@Event
 	public void flyBack() {
 		infoWithPosition("Flying back to the hive.");
-		double distance = _position.distance(_home.getPosition());
+		BeeHive destination = _home;
+		String event = "storeNectar";
+		if (_random.nextDouble() < FLY_BACK_TO_WRONG_HIVE_CHANCE) {
+			destination = BeeSimulation.getEnvironment().getRandomBeeHiveCloseToPositionButNot(_home,
+					_home.getPosition());
+			event = "arriveAtWrongHive";
+		}
+		double distance = _position.distance(destination.getPosition());
 		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
-		scheduleIfNotDead("storeNectar", movementTime);
-		moveTo(_home.getPosition());
+		scheduleIfNotDead(event, movementTime);
+		moveTo(destination.getPosition());
+	}
+
+	public void arriveAtWrongHive() {
+		infoWithPosition("Oops that's not home.");
+		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 	}
 
 	@Event
