@@ -9,7 +9,7 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
-	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.5;
+	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.05;
 	private static final double MOVEMENT_SPEED = MovementUtil.metersPerSecond(1);
 	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2);
 	private static final int MAX_CAPACITY = 3;
@@ -90,8 +90,8 @@ public class Bee extends PositionedEntity {
 		_home.storeNectar(MAX_CAPACITY - _capacity);
 		infoWithPosition("Storing nectar (" + _home.getStoredNectar() + ").");
 		_capacity = MAX_CAPACITY;
-		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment().getRandomFlowerWithNectarCloseTo(
-				_position));
+		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment()
+				.getRandomFlowerWithNectarCloseTo(_position));
 	}
 
 	@Event
@@ -114,8 +114,8 @@ public class Bee extends PositionedEntity {
 	public void initialize() {
 		infoWithPosition("I am alive!");
 		BeeSimulation.getEnvironment().addBee(this);
-		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment().getRandomFlowerWithNectarCloseTo(
-				_position));
+		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment()
+				.getRandomFlowerWithNectarCloseTo(_position));
 	}
 
 	private boolean willBeAliveIn(double seconds) {
