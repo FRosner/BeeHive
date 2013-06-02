@@ -72,7 +72,7 @@ public class Environment {
 	 * @param pos
 	 * @return randomly selected flower, probably close to pos
 	 */
-	public Flower getRandomFlowerCloseTo(Position pos) {
+	public Flower getRandomFlowerWithNectarCloseTo(Position pos) {
 		if (_flowers.size() <= 0) {
 			System.err.println("No flowers created but tried to select one.");
 			System.exit(1);
