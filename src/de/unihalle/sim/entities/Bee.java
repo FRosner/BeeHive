@@ -67,21 +67,23 @@ public class Bee extends PositionedEntity {
 	public void flyBack() {
 		infoWithPosition("Flying back to the hive.");
 		BeeHive destination = _home;
-		String event = "storeNectar";
 		if (_random.nextDouble() < FLY_BACK_TO_WRONG_HIVE_CHANCE) {
 			destination = BeeSimulation.getEnvironment().getRandomBeeHiveCloseToPositionButNot(_home,
 					_home.getPosition());
-			event = "arriveAtWrongHive";
 		}
 		double distance = _position.distance(destination.getPosition());
 		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
-		scheduleIfNotDead(event, movementTime);
+		if (isAtHomeAt(destination)) {
+			scheduleIfNotDead("storeNectar", movementTime);
+		} else {
+			scheduleIfNotDead("arriveAtWrongHive", movementTime, destination);
+		}
 		moveTo(destination.getPosition());
 	}
 
 	@Event
-	public void arriveAtWrongHive() {
-		infoWithPosition("Oops that's not home.");
+	public void arriveAtWrongHive(BeeHive destination) {
+		infoWithPosition("Oops that's not home: " + destination.getName() + ".");
 		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 	}
 
@@ -136,7 +138,7 @@ public class Bee extends PositionedEntity {
 		_position.y = pos.y;
 	}
 
-	public boolean isAtHome(BeeHive home) {
+	public boolean isAtHomeAt(BeeHive home) {
 		return _home.equals(home);
 	}
 
