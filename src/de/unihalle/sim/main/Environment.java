@@ -82,6 +82,9 @@ public class Environment {
 		double currentRandomValue;
 		Random random = new Random();
 		for (Flower f : _flowers) {
+			if (f.getNectarAmount() == 0) {
+				continue;
+			}
 			currentRandomValue = f.getPosition().distance(pos) * random.nextDouble();
 			if (Double.compare(currentRandomValue, minRandomValue) < 0) {
 				randomFlower = f;
