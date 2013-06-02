@@ -91,6 +91,10 @@ public class Environment {
 				minRandomValue = currentRandomValue;
 			}
 		}
+		// no flowers with nectar available
+		if (randomFlower == null) {
+			return getRandomFlower();
+		}
 		return randomFlower;
 	}
 
