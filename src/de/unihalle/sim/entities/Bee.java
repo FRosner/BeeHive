@@ -79,6 +79,7 @@ public class Bee extends PositionedEntity {
 		moveTo(destination.getPosition());
 	}
 
+	@Event
 	public void arriveAtWrongHive() {
 		infoWithPosition("Oops that's not home.");
 		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
