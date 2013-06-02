@@ -17,6 +17,11 @@ public abstract class PositionedEntity extends DefaultEntity {
 		return Position.createFromPosition(_position);
 	}
 
+	/**
+	 * The entity notifies the simulation with the specified message and its position.
+	 * 
+	 * @param message
+	 */
 	public void infoWithPosition(String message) {
 		info(getPosition() + " " + message);
 	}

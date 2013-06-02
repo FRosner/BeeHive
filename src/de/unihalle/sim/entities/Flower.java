@@ -53,6 +53,14 @@ public class Flower extends PositionedEntity {
 		schedule("refreshNectar", NECTAR_REFRESH_RATE);
 	}
 
+	/**
+	 * Harvests and returns the maximum available amount of nectar from a flower. This is also limited by the capacity
+	 * of the harvester.
+	 * 
+	 * @param remainingBeeCapacity
+	 *            remaining capacity of the harvester
+	 * @return amount of harvested nectar
+	 */
 	public int harvestMaxNectar(int remainingBeeCapacity) {
 		int nectarTaken = 0;
 		if (remainingBeeCapacity <= _nectar) {
@@ -64,6 +72,11 @@ public class Flower extends PositionedEntity {
 		return nectarTaken;
 	}
 
+	/**
+	 * Returns the available nectar of the flower.
+	 * 
+	 * @return available nectar
+	 */
 	public int getNectarAmount() {
 		return _nectar;
 	}
