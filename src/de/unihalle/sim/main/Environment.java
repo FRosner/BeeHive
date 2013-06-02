@@ -93,11 +93,14 @@ public class Environment {
 
 	// TODO test
 	public BeeHive getRandomBeeHiveButNot(BeeHive hive) {
-		List<BeeHive> tempHives = Lists.newArrayList(_hives);
-		tempHives.remove(hive);
-		if (tempHives.size() <= 0) {
+		if (_hives.size() <= 0) {
 			System.err.println("No hives created but tried to select one.");
 			System.exit(1);
+		}
+		List<BeeHive> tempHives = Lists.newArrayList(_hives);
+		tempHives.remove(hive);
+		if (tempHives.size() == 0) {
+			return null;
 		}
 		Collections.shuffle(tempHives);
 		return tempHives.get(0);
@@ -105,11 +108,14 @@ public class Environment {
 
 	// TODO test
 	public BeeHive getRandomBeeHiveCloseToPositionButNot(BeeHive hive, Position pos) {
-		List<BeeHive> tempHives = Lists.newArrayList(_hives);
-		tempHives.remove(hive);
-		if (tempHives.size() <= 0) {
+		if (_hives.size() <= 0) {
 			System.err.println("No hives created but tried to select one.");
 			System.exit(1);
+		}
+		List<BeeHive> tempHives = Lists.newArrayList(_hives);
+		tempHives.remove(hive);
+		if (tempHives.size() == 0) {
+			return null;
 		}
 		BeeHive randomHive = null;
 		double minRandomValue = Double.POSITIVE_INFINITY;
