@@ -79,6 +79,9 @@ public class Bee extends PositionedEntity {
 			destination = BeeSimulation.getEnvironment().getRandomBeeHiveCloseToPositionButNot(_home,
 					_home.getPosition());
 		}
+		if (destination == null) {
+			destination = _home;
+		}
 		double distance = _position.distance(destination.getPosition());
 		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
 		if (isAtHomeAt(destination)) {
