@@ -126,7 +126,14 @@ public class Environment {
 		return getBeesAt(entity.getPosition());
 	}
 
-	// TODO test
+	/**
+	 * Returns a random hive from all hives in the environment but the one specified. If no other hives are available,
+	 * <tt>null</tt> is returned.
+	 * 
+	 * @param hive
+	 *            to be excluded from selection
+	 * @return random hive
+	 */
 	public BeeHive getRandomBeeHiveButNot(BeeHive hive) {
 		if (_hives.size() <= 0) {
 			System.err.println("No hives created but tried to select one.");
@@ -141,7 +148,14 @@ public class Environment {
 		return tempHives.get(0);
 	}
 
-	// TODO test
+	/**
+	 * Returns a random hive from all hives in the environment but the one specified. Hives closer to the specified one
+	 * have a higher probability to be selected. If no other hives are available, <tt>null</tt> is returned.
+	 * 
+	 * @param hive
+	 *            to be excluded from selection
+	 * @return random hive
+	 */
 	public BeeHive getRandomBeeHiveCloseToPositionButNot(BeeHive hive, Position pos) {
 		if (_hives.size() <= 0) {
 			System.err.println("No hives created but tried to select one.");
