@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import de.unihalle.sim.entities.Bee;
 import de.unihalle.sim.entities.BeeHive;
 import de.unihalle.sim.entities.Flower;
+import de.unihalle.sim.entities.PositionedEntity;
 import de.unihalle.sim.util.Position;
 
 public class Environment {
@@ -96,6 +97,33 @@ public class Environment {
 			return getRandomFlower();
 		}
 		return randomFlower;
+	}
+
+	/**
+	 * Returns a list of all bees that are currently at the specified position.
+	 * 
+	 * @param position
+	 * @return list of all bees at the specified position
+	 */
+	public List<Bee> getBeesAt(Position position) {
+		List<Bee> beesAt = Lists.newArrayList();
+		for (Bee bee : _bees) {
+			if (bee.getPosition().equals(position)) {
+				beesAt.add(bee);
+			}
+		}
+		return beesAt;
+
+	}
+
+	/**
+	 * Returns a list of all bees that are currently at the same position as the specified entity.
+	 * 
+	 * @param position
+	 * @return list of all bees at the position of the specified entity
+	 */
+	public List<Bee> getBeesAt(PositionedEntity entity) {
+		return getBeesAt(entity.getPosition());
 	}
 
 	// TODO test
