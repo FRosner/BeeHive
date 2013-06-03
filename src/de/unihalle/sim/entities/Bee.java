@@ -12,11 +12,14 @@ public class Bee extends PositionedEntity {
 	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.05;
 	private static final double MOVEMENT_SPEED = MovementUtil.metersPerSecond(1);
 	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2);
+	private static final double INCUBATION_TIME = TimeUtil.minutes(0.5);
 	private static final int MAX_CAPACITY = 3;
 	private double _timeToLive = INITIAL_TIME_TO_LIVE;
+	private double _timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE;
+	private boolean _infected = false;
+	private boolean _incubated = false;
 	private int _capacity = MAX_CAPACITY;
 	private Random _random;
-
 	private BeeHive _home;
 
 	private Bee(Position position, BeeHive home) {
@@ -121,15 +124,16 @@ public class Bee extends PositionedEntity {
 	}
 
 	private boolean willBeAliveIn(double seconds) {
-		return (_timeToLive > seconds);
+		return (_timeToLiveDueToInfection > seconds && _timeToLive > seconds);
 	}
 
 	private void scheduleIfNotDead(String event, double time, Object... arguments) {
 		if (willBeAliveIn(time)) {
 			_timeToLive -= time;
+			_timeToLiveDueToInfection -= time;
 			schedule(event, time, arguments);
 		} else {
-			schedule("die", _timeToLive);
+			schedule("die", Math.min(_timeToLive, _timeToLiveDueToInfection));
 		}
 	}
 
