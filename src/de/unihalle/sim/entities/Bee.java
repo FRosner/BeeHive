@@ -11,8 +11,8 @@ public class Bee extends PositionedEntity {
 
 	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.05;
 	private static final double MOVEMENT_SPEED = MovementUtil.metersPerSecond(1);
-	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2);
-	private static final double INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION = TimeUtil.seconds(30);
+	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(10);
+	private static final double INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION = TimeUtil.seconds(60);
 	private static final double INCUBATION_TIME = TimeUtil.seconds(15);
 	private static final int MAX_CAPACITY = 3;
 	private double _timeToLive = INITIAL_TIME_TO_LIVE;
@@ -57,10 +57,7 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void collectNectarAtFlower(Flower flower) {
-		if (isInfected()) {
-			// TODO add infection of other hive members
-			infoWithPosition("I am now infecting other bees at this flower.");
-		}
+		applyInfectionActions();
 		_capacity -= flower.harvestMaxNectar(_capacity);
 		infoWithPosition("Collecting nectar (" + (MAX_CAPACITY - _capacity) + " / " + MAX_CAPACITY + ").");
 		if (_capacity == 0) {
@@ -95,24 +92,18 @@ public class Bee extends PositionedEntity {
 	@Event
 	public void arriveAtWrongHive(BeeHive destination) {
 		infoWithPosition("Oops that's not home: " + destination.getName() + ".");
-		if (isInfected()) {
-			// TODO add infection of other hive members
-			infoWithPosition("I am now infecting other bees in this hive.");
-		}
+		applyInfectionActions();
 		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 	}
 
 	@Event
 	public void storeNectar() {
-		if (isInfected()) {
-			// TODO add infection of other hive members
-			infoWithPosition("I am now infecting other bees in my hive.");
-			if (isIncubated()) {
-				// TODO check whether banned bees unload their nectar before getting banned
-				infoWithPosition("I am now banned from my hive due to infection.");
-				scheduleIfNotDead("die", _timeToLiveDueToInfection);
-				return;
-			}
+		applyInfectionActions();
+		if (isIncubated()) {
+			// TODO check whether banned bees unload their nectar before getting banned
+			infoWithPosition("I am now banned from my hive due to infection.");
+			scheduleIfNotDead("die", _timeToLiveDueToInfection);
+			return;
 		}
 		_home.storeNectar(MAX_CAPACITY - _capacity);
 		infoWithPosition("Storing nectar (" + _home.getStoredNectar() + ").");
