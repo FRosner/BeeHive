@@ -57,6 +57,10 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void collectNectarAtFlower(Flower flower) {
+		if (isInfected()) {
+			// TODO add infection of other hive members
+			infoWithPosition("I am now infecting other bees at this flower.");
+		}
 		_capacity -= flower.harvestMaxNectar(_capacity);
 		infoWithPosition("Collecting nectar (" + (MAX_CAPACITY - _capacity) + " / " + MAX_CAPACITY + ").");
 		if (_capacity == 0) {
@@ -88,11 +92,25 @@ public class Bee extends PositionedEntity {
 	@Event
 	public void arriveAtWrongHive(BeeHive destination) {
 		infoWithPosition("Oops that's not home: " + destination.getName() + ".");
+		if (isInfected()) {
+			// TODO add infection of other hive members
+			infoWithPosition("I am now infecting other bees in this hive.");
+		}
 		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 	}
 
 	@Event
 	public void storeNectar() {
+		if (isInfected()) {
+			// TODO add infection of other hive members
+			infoWithPosition("I am now infecting other bees in my hive.");
+			if (isIncubated()) {
+				// TODO check whether banned bees unload their nectar before getting banned
+				infoWithPosition("I am now banned from my hive due to infection.");
+				scheduleIfNotDead("die", _timeToLiveDueToInfection);
+				return;
+			}
+		}
 		_home.storeNectar(MAX_CAPACITY - _capacity);
 		infoWithPosition("Storing nectar (" + _home.getStoredNectar() + ").");
 		_capacity = MAX_CAPACITY;
