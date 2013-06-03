@@ -2,6 +2,7 @@ package de.unihalle.sim.entities;
 
 import org.mitre.sim.DefaultEntity;
 
+import de.unihalle.sim.main.BeeSimulation;
 import de.unihalle.sim.util.Position;
 
 public abstract class PositionedEntity extends DefaultEntity {
@@ -23,6 +24,7 @@ public abstract class PositionedEntity extends DefaultEntity {
 	 * @param message
 	 */
 	public void infoWithPosition(String message) {
+		BeeSimulation.getListener().notify(this);
 		info(getPosition() + " " + message);
 	}
 

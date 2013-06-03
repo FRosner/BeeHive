@@ -53,6 +53,10 @@ public class BeeSimulation extends Simulation {
 		return _environment;
 	}
 
+	public static EventListener getListener() {
+		return _guiListener;
+	}
+
 	private void registerHive(Position pos, int capacity, String name) {
 		BeeHive newHive = new BeeHive(pos, capacity);
 		register(newHive, name);
