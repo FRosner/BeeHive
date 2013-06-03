@@ -149,6 +149,13 @@ public class Bee extends PositionedEntity {
 				.getRandomFlowerWithNectarCloseTo(_position));
 	}
 
+	private void applyInfectionActions() {
+		if (isInfected()) {
+			// TODO add infection of other hive members
+			infoWithPosition("I am now infecting other bees at my position.");
+		}
+	}
+
 	private boolean willBeAliveIn(double seconds) {
 		return (_timeToLiveDueToInfection > seconds && _timeToLive > seconds);
 	}
