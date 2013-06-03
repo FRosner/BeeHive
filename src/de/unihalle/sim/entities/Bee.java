@@ -12,7 +12,8 @@ public class Bee extends PositionedEntity {
 	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.05;
 	private static final double MOVEMENT_SPEED = MovementUtil.metersPerSecond(1);
 	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(2);
-	private static final double INCUBATION_TIME = TimeUtil.minutes(0.5);
+	private static final double INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION = TimeUtil.seconds(30);
+	private static final double INCUBATION_TIME = TimeUtil.seconds(15);
 	private static final int MAX_CAPACITY = 3;
 	private double _timeToLive = INITIAL_TIME_TO_LIVE;
 	private double _timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE;
@@ -115,6 +116,19 @@ public class Bee extends PositionedEntity {
 		BeeSimulation.getEnvironment().removeBee(this);
 	}
 
+	@Event
+	public void incubation() {
+		infoWithPosition("Oh no! Now the other bees can see that I am sick.");
+		_incubated = true;
+	}
+
+	public void becomeInfected() {
+		infoWithPosition("I am infected. Incubation in " + INCUBATION_TIME + " seconds.");
+		_infected = true;
+		_timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION;
+		scheduleParallelEventIfNotDead("incubation", INCUBATION_TIME);
+	}
+
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");
@@ -135,6 +149,22 @@ public class Bee extends PositionedEntity {
 		} else {
 			schedule("die", Math.min(_timeToLive, _timeToLiveDueToInfection));
 		}
+	}
+
+	private void scheduleParallelEventIfNotDead(String event, double time, Object... arguments) {
+		if (willBeAliveIn(time)) {
+			schedule(event, time, arguments);
+		} else {
+			schedule("die", Math.min(_timeToLive, _timeToLiveDueToInfection));
+		}
+	}
+
+	public boolean isIncubated() {
+		return _incubated;
+	}
+
+	public boolean isInfected() {
+		return _infected;
 	}
 
 	private void moveTo(Position pos) {
