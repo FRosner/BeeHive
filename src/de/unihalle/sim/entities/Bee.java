@@ -71,14 +71,7 @@ public class Bee extends PositionedEntity {
 	@Event
 	public void flyBack() {
 		infoWithPosition("Flying back to the hive.");
-		BeeHive destination = _home;
-		if (_random.nextDouble() < FLY_BACK_TO_WRONG_HIVE_CHANCE) {
-			destination = BeeSimulation.getEnvironment().getRandomBeeHiveCloseToPositionButNot(_home,
-					_home.getPosition());
-		}
-		if (destination == null) {
-			destination = _home;
-		}
+		BeeHive destination = tryToFindHome();
 		double distance = _position.distance(destination.getPosition());
 		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
 		if (isAtHomeAt(destination)) {
@@ -178,17 +171,29 @@ public class Bee extends PositionedEntity {
 		}
 	}
 
+	private BeeHive tryToFindHome() {
+		BeeHive destination = _home;
+		if (_random.nextDouble() < FLY_BACK_TO_WRONG_HIVE_CHANCE) {
+			destination = BeeSimulation.getEnvironment().getRandomBeeHiveCloseToPositionButNot(_home,
+					_home.getPosition());
+		}
+		if (destination == null) {
+			destination = _home;
+		}
+		return destination;
+	}
+
+	private void moveTo(Position pos) {
+		_position.x = pos.x;
+		_position.y = pos.y;
+	}
+
 	public boolean isIncubated() {
 		return _incubated;
 	}
 
 	public boolean isInfected() {
 		return _infected;
-	}
-
-	private void moveTo(Position pos) {
-		_position.x = pos.x;
-		_position.y = pos.y;
 	}
 
 	public boolean isAtHomeAt(BeeHive home) {
