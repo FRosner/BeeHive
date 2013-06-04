@@ -1,5 +1,6 @@
 package de.unihalle.sim.entities;
 
+import de.unihalle.sim.main.BeeSimulation;
 import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
 
@@ -45,13 +46,14 @@ public class BeeHive extends PositionedEntity {
 		_currentPopulation = _populationCapacity;
 	}
 
-	public void reportDead() {
+	public void reportDead(Bee deadBee) {
 		if (_currentPopulation <= 0) {
 			// Exception is caught by Tortuga framework
 			// throw new RuntimeException("A bee of an empty hive wanted to die. This is impossible.");
 			System.err.println("A bee of an empty hive wanted to die. This is impossible.");
 			System.exit(1);
 		}
+		BeeSimulation.getEnvironment().removeBee(deadBee);
 		_currentPopulation--;
 	}
 

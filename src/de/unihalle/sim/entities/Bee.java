@@ -117,8 +117,7 @@ public class Bee extends PositionedEntity {
 	@Event
 	public void die() {
 		infoWithPosition("I am dead.");
-		_home.reportDead();
-		BeeSimulation.getEnvironment().removeBee(this);
+		_home.reportDead(this);
 	}
 
 	@Event
