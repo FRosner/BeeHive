@@ -127,10 +127,12 @@ public class Bee extends PositionedEntity {
 	}
 
 	public void becomeInfected() {
-		infoWithPosition("I am infected. Incubation in " + INCUBATION_TIME + " seconds.");
-		_infected = true;
-		_timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION;
-		scheduleParallelEventIfNotDead("incubation", INCUBATION_TIME);
+		if (!_infected) {
+			infoWithPosition("I am infected. Incubation in " + INCUBATION_TIME + " seconds.");
+			_infected = true;
+			_timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION;
+			scheduleParallelEventIfNotDead("incubation", INCUBATION_TIME);
+		}
 	}
 
 	@Override
