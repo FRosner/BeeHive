@@ -190,9 +190,7 @@ public class Environment {
 		int numberOfInfectedBeesPerHive;
 		List<Bee> bees = getBeesAt(hive);
 		Collections.shuffle(bees);
-		System.err.println(bees.size());
 		numberOfInfectedBeesPerHive = (int) (bees.size() * infectionPercentage);
-		System.err.println(numberOfInfectedBeesPerHive);
 		for (int i = 0; i < numberOfInfectedBeesPerHive; i++) {
 			bees.get(i).becomeInfected();
 		}
