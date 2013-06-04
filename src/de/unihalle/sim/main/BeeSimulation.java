@@ -15,7 +15,7 @@ public class BeeSimulation extends Simulation {
 	private static final double SIMULATION_TIME = TimeUtil.minutes(60); // s
 
 	private static Environment _environment = new Environment(-10, 10, -10, 10);
-	private static EventListener _guiListener = new PrintStreamEventListener(System.err);
+	private static EventListener _guiListener = new DummyEventListener();
 
 	@Override
 	public void initialize() {
