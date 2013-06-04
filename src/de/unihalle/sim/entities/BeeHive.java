@@ -9,6 +9,7 @@ public class BeeHive extends PositionedEntity {
 	// http://en.wikipedia.org/wiki/List_of_cities_in_Italy
 
 	private static final double EGG_SPAWN_RATE = TimeUtil.seconds(10); // sec
+	private static final double INITIAL_INFECTION_PERCENTAGE = 0.1;
 
 	private int _populationCapacity;
 	private int _currentPopulation;
@@ -26,7 +27,9 @@ public class BeeHive extends PositionedEntity {
 		if (_populationCapacity > _currentPopulation) {
 			_beeCounter++;
 			_currentPopulation++;
-			register(Bee.create(this), getName() + "." + "Bee" + _beeCounter);
+			Bee newBee = Bee.create(this);
+			register(newBee, getName() + "." + "Bee" + _beeCounter);
+			BeeSimulation.getEnvironment().addBee(newBee);
 		}
 		schedule("spawnBee", EGG_SPAWN_RATE);
 	}
@@ -40,8 +43,11 @@ public class BeeHive extends PositionedEntity {
 
 	private void fillHive() {
 		for (int i = 0; i < _populationCapacity; i++) {
-			register(Bee.create(this), getName() + "." + "Bee" + i);
+			Bee newBee = Bee.create(this);
+			register(newBee, getName() + "." + "Bee" + i);
+			BeeSimulation.getEnvironment().addBee(newBee);
 		}
+		BeeSimulation.getEnvironment().applyInitialInfectionToHive(this, INITIAL_INFECTION_PERCENTAGE);
 		_beeCounter = _populationCapacity;
 		_currentPopulation = _populationCapacity;
 	}

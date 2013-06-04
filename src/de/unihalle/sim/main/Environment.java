@@ -180,4 +180,22 @@ public class Environment {
 		return randomHive;
 	}
 
+	/**
+	 * Infects a randomly selected subset of bees for each hive.
+	 * 
+	 * @param infectionPercentage
+	 *            for each hive
+	 */
+	public void applyInitialInfectionToHive(BeeHive hive, double infectionPercentage) {
+		int numberOfInfectedBeesPerHive;
+		List<Bee> bees = getBeesAt(hive);
+		Collections.shuffle(bees);
+		System.err.println(bees.size());
+		numberOfInfectedBeesPerHive = (int) (bees.size() * infectionPercentage);
+		System.err.println(numberOfInfectedBeesPerHive);
+		for (int i = 0; i < numberOfInfectedBeesPerHive; i++) {
+			bees.get(i).becomeInfected();
+		}
+	}
+
 }

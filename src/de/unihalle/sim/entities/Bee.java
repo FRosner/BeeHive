@@ -138,7 +138,6 @@ public class Bee extends PositionedEntity {
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");
-		BeeSimulation.getEnvironment().addBee(this);
 		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment()
 				.getRandomFlowerWithNectarCloseTo(_position));
 	}
