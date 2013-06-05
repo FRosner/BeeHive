@@ -98,10 +98,10 @@ public class Environment {
 	/**
 	 * Returns a randomly selected flower. Flowers closer to the specified position have higher probability.
 	 * 
-	 * @param pos
-	 * @return randomly selected flower, probably close to pos
+	 * @param position
+	 * @return randomly selected flower, probably close to position
 	 */
-	public Flower getRandomFlowerWithNectarCloseTo(Position pos) {
+	public Flower getRandomFlowerWithNectarCloseTo(Position position) {
 		if (_flowers.size() <= 0) {
 			System.err.println("No flowers created but tried to select one.");
 			System.exit(1);
@@ -114,7 +114,7 @@ public class Environment {
 			if (f.getNectarAmount() == 0) {
 				continue;
 			}
-			currentRandomValue = f.getPosition().distance(pos) * random.nextDouble();
+			currentRandomValue = f.getPosition().distance(position) * random.nextDouble();
 			if (Double.compare(currentRandomValue, minRandomValue) < 0) {
 				randomFlower = f;
 				minRandomValue = currentRandomValue;
