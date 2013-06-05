@@ -33,6 +33,22 @@ public class Environment {
 		_maxY = maxY;
 	}
 
+	public int getMaxX() {
+		return _maxX;
+	}
+
+	public int getMinX() {
+		return _minX;
+	}
+
+	public int getMaxY() {
+		return _maxY;
+	}
+
+	public int getMinY() {
+		return _minY;
+	}
+
 	public boolean addFlower(Flower f) {
 		return _flowers.add(f);
 	}
@@ -47,6 +63,18 @@ public class Environment {
 
 	public boolean removeBee(Bee b) {
 		return _bees.remove(b);
+	}
+
+	public List<Bee> getBees() {
+		return _bees;
+	}
+
+	public List<BeeHive> getBeeHives() {
+		return _hives;
+	}
+
+	public List<Flower> getFlowers() {
+		return _flowers;
 	}
 
 	public Position getRandomValidPosition() {
