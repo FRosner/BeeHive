@@ -70,7 +70,7 @@ public abstract class PositionedEntity extends DefaultEntity {
 	 * @param message
 	 */
 	public void infoWithPosition(String message) {
-		BeeSimulation.getListener().notify(this);
+		BeeSimulation.notifyListeners(this);
 		info(getPosition() + " " + getDestination() + " " + message);
 	}
 

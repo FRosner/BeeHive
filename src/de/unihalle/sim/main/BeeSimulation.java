@@ -1,9 +1,14 @@
 package de.unihalle.sim.main;
 
+import java.util.List;
+
 import org.mitre.sim.Simulation;
+
+import com.google.common.collect.Lists;
 
 import de.unihalle.sim.entities.BeeHive;
 import de.unihalle.sim.entities.Flower;
+import de.unihalle.sim.entities.PositionedEntity;
 import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
 
@@ -15,7 +20,7 @@ public class BeeSimulation extends Simulation {
 	private static final double SIMULATION_TIME = TimeUtil.minutes(60); // s
 
 	private static Environment _environment = new Environment(-10, 10, -10, 10);
-	private static EventListener _guiListener = new DummyEventListener();
+	private static List<EventListener> _listeners = Lists.newArrayList();
 
 	@Override
 	public void initialize() {
@@ -53,8 +58,14 @@ public class BeeSimulation extends Simulation {
 		return _environment;
 	}
 
-	public static EventListener getListener() {
-		return _guiListener;
+	public static void notifyListeners(PositionedEntity entity) {
+		for (EventListener e : _listeners) {
+			e.notify(entity);
+		}
+	}
+
+	public static void addEventListener(EventListener e) {
+		_listeners.add(e);
 	}
 
 	private void registerHive(Position pos, int capacity, String name) {
@@ -70,6 +81,7 @@ public class BeeSimulation extends Simulation {
 	}
 
 	public static void main(String[] args) {
+		BeeSimulation.addEventListener(new DummyEventListener());
 		Simulation mySimulation = new BeeSimulation();
 		mySimulation.run();
 	}
