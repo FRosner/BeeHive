@@ -56,6 +56,15 @@ public abstract class PositionedEntity extends DefaultEntity {
 	}
 
 	/**
+	 * Returns whether the entity is currently moving somewhere. This is done by checking if a destination is set.
+	 * 
+	 * @return whether the entity is currently moving somewhere
+	 */
+	public boolean isMoving() {
+		return _destination != null;
+	}
+
+	/**
 	 * The entity notifies the simulation with the specified message and its position.
 	 * 
 	 * @param message

@@ -136,7 +136,7 @@ public class Environment {
 	public List<Bee> getBeesAt(Position position) {
 		List<Bee> beesAt = Lists.newArrayList();
 		for (Bee bee : _bees) {
-			if (bee.getPosition().equals(position)) {
+			if (bee.getPosition().equals(position) && !bee.isMoving()) {
 				beesAt.add(bee);
 			}
 		}
