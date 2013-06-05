@@ -58,6 +58,24 @@ class Sheet extends JPanel {
 	 * pAktuell.x = x; pAktuell.y = y; }
 	 */
 
+	private void drawArrow(Graphics g, int x1, int y1, int x2, int y2) {
+		g.drawLine(x1, y1, x2, y2);
+		double directionCorrection = 1;
+		if (x2 > x1) {
+			directionCorrection = -1;
+		}
+		double alpha = Math.atan((double) (y2 - y1) / (double) (x2 - x1));
+		double theta1 = alpha + Math.PI / 8d;
+		double theta2 = alpha - Math.PI / 8d;
+		int r = (int) Math.ceil(1 * VisualisationCanvas.iFieldScaleFactor);
+		double linie1x = x2 + (r * Math.cos(theta1)) * directionCorrection;
+		double linie1y = y2 + (r * Math.sin(theta1)) * directionCorrection;
+		double linie2x = x2 + (r * Math.cos(theta2)) * directionCorrection;
+		double linie2y = y2 + (r * Math.sin(theta2)) * directionCorrection;
+		g.drawLine(x2, y2, (int) linie1x, (int) linie1y);
+		g.drawLine(x2, y2, (int) linie2x, (int) linie2y);
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 
@@ -85,7 +103,8 @@ class Sheet extends JPanel {
 
 			g.setColor(new Color(0, 255, 0));
 			if (f.isMoving() == true) {
-				g.drawLine(
+				drawArrow(
+						g,
 						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
 								+ ((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
 						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
