@@ -14,4 +14,8 @@ public class DummyEventListener implements EventListener {
 		// 0)).
 	}
 
+	public void close() {
+
+	}
+
 }

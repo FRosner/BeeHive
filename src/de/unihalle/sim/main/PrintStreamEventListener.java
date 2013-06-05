@@ -17,4 +17,8 @@ public class PrintStreamEventListener implements EventListener {
 		_out.println(e.getTimeNow() + " " + e.getName() + " " + e.getPosition());
 	}
 
+	public void close() {
+		_out.close();
+	}
+
 }

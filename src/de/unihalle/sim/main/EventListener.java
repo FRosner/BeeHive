@@ -6,4 +6,6 @@ public interface EventListener {
 
 	public void notify(PositionedEntity e);
 
+	public void close();
+
 }
