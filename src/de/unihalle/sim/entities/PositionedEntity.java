@@ -39,9 +39,20 @@ public abstract class PositionedEntity extends DefaultEntity {
 		_destination = null;
 	}
 
-	protected void moveTo(Position pos, double movementTime) {
-		_destination = pos;
-		schedule("arriveAt", movementTime, pos);
+	/**
+	 * Schedule movement to the specified position in the specified time. This method has to be called <b>before</b> the
+	 * entity notifies (infoWithPosition) the simulation of its movement. It will also schedule the arrival to change
+	 * the coordinates and reset the destination to <tt>null</tt>. Scheduling this movement will have no impact on the
+	 * time to live or any other property of the entity.
+	 * 
+	 * @param position
+	 *            to move to
+	 * @param movementTime
+	 *            that is consumed for moving
+	 */
+	protected void moveTo(Position position, double movementTime) {
+		_destination = position;
+		schedule("arriveAt", movementTime, position);
 	}
 
 	/**
