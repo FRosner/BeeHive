@@ -23,6 +23,8 @@ public class Environment {
 	private int _minY = -10;
 	private int _maxY = 10;
 
+	private Random _random = new Random();
+
 	public Environment() {
 	}
 
@@ -109,12 +111,11 @@ public class Environment {
 		Flower randomFlower = null;
 		double minRandomValue = Double.POSITIVE_INFINITY;
 		double currentRandomValue;
-		Random random = new Random();
 		for (Flower f : _flowers) {
 			if (f.getNectarAmount() == 0) {
 				continue;
 			}
-			currentRandomValue = f.getPosition().distance(position) * random.nextDouble();
+			currentRandomValue = f.getPosition().distance(position) * _random.nextDouble();
 			if (Double.compare(currentRandomValue, minRandomValue) < 0) {
 				randomFlower = f;
 				minRandomValue = currentRandomValue;
@@ -197,9 +198,8 @@ public class Environment {
 		BeeHive randomHive = null;
 		double minRandomValue = Double.POSITIVE_INFINITY;
 		double currentRandomValue;
-		Random random = new Random();
 		for (BeeHive h : tempHives) {
-			currentRandomValue = h.getPosition().distance(pos) * random.nextDouble();
+			currentRandomValue = h.getPosition().distance(pos) * _random.nextDouble();
 			if (Double.compare(currentRandomValue, minRandomValue) < 0) {
 				randomHive = h;
 				minRandomValue = currentRandomValue;
