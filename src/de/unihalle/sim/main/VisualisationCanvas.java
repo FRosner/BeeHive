@@ -62,54 +62,46 @@ class Sheet extends JPanel {
 	public void paintComponent(Graphics g) {
 
 		List<BeeHive> beeHiveList = BeeSimulation.getEnvironment().getBeeHives();
-		for (int i = 0; i < beeHiveList.size(); i++) {
+		for (BeeHive f : beeHiveList) {
 			g.setColor(new Color(255, 0, 0));
-
-			g.drawRect(
-					(VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
-							+ (((beeHiveList.get(i).getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
+			g.drawRect((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
+					+ (((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
 					(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
-							+ (((beeHiveList.get(i).getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
-					10, 10);
+							+ (((f.getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 5) + 25), 10, 10);
 
 		}
 
 		List<Flower> flowerList = BeeSimulation.getEnvironment().getFlowers();
-		for (int i = 0; i < flowerList.size(); i++) {
+		for (Flower f : flowerList) {
 			g.setColor(new Color(0, 0, 255));
-			g.drawRect(
-					(VisualisationCanvas.iFieldSizeX)
-							* VisualisationCanvas.iFieldScaleFactor
-							+ ((((flowerList.get(i).getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25),
-					(VisualisationCanvas.iFieldSizeY)
-							* VisualisationCanvas.iFieldScaleFactor
-							+ ((((flowerList.get(i).getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25),
-					5, 5);
+			g.drawRect((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
+					+ ((((f.getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25),
+					(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
+							+ ((((f.getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25), 5, 5);
 		}
 
 		List<Bee> beeList = BeeSimulation.getEnvironment().getBees();
-		for (int i = 0; i < beeList.size(); i++) {
+		for (Bee f : beeList) {
+
 			g.setColor(new Color(0, 255, 0));
-			if (beeList.get(i).isMoving() == true) {
-				g.drawLine((VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
-						+ ((beeList.get(i).getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+			if (f.isMoving() == true) {
+				g.drawLine(
 						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
-								+ ((beeList.get(i).getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+								+ ((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
 						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
-								+ ((beeList.get(i).getDestination().x * VisualisationCanvas.iFieldScaleFactor) - 1)
-								+ 25, (VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
-								+ ((beeList.get(i).getDestination().y * VisualisationCanvas.iFieldScaleFactor) - 1)
-								+ 25);
+								+ ((f.getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
+								+ ((f.getDestination().x * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
+								+ ((f.getDestination().y * VisualisationCanvas.iFieldScaleFactor) - 1) + 25);
 			} else {
 
 				g.fillRect(
-						(VisualisationCanvas.iFieldSizeX)
-								* VisualisationCanvas.iFieldScaleFactor
-								+ ((((beeList.get(i).getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
-						(VisualisationCanvas.iFieldSizeY)
-								* VisualisationCanvas.iFieldScaleFactor
-								+ ((((beeList.get(i).getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
-						4, 4);
+						(VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
+								+ ((((f.getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
+						(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
+								+ ((((f.getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25), 4, 4);
+
 			}
 		}
 
