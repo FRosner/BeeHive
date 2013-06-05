@@ -70,16 +70,16 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void flyBack() {
-		infoWithPosition("Flying back to the hive.");
 		BeeHive destination = tryToFindHome();
 		double distance = _position.distance(destination.getPosition());
 		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
+		moveTo(destination.getPosition(), movementTime);
 		if (isAtHomeAt(destination)) {
 			scheduleIfNotDead("storeNectar", movementTime);
 		} else {
 			scheduleIfNotDead("arriveAtWrongHive", movementTime, destination);
 		}
-		moveTo(destination.getPosition());
+		infoWithPosition("Flying back to the hive.");
 	}
 
 	@Event
@@ -107,11 +107,11 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void flyToFlower(Flower destination) {
-		infoWithPosition("Flying to flower.");
 		double movementTime = MovementUtil.calculateMovementTime(_position.distance(destination.getPosition()),
 				MOVEMENT_SPEED);
+		moveTo(destination.getPosition(), movementTime);
 		scheduleIfNotDead("collectNectarAtFlower", movementTime, destination);
-		moveTo(destination.getPosition());
+		infoWithPosition("Flying to flower.");
 	}
 
 	@Event
@@ -181,11 +181,6 @@ public class Bee extends PositionedEntity {
 			destination = _home;
 		}
 		return destination;
-	}
-
-	private void moveTo(Position pos) {
-		_position.x = pos.x;
-		_position.y = pos.y;
 	}
 
 	public boolean isIncubated() {
