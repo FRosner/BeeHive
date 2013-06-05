@@ -1,5 +1,6 @@
 package de.unihalle.sim.entities;
 
+import java.util.List;
 import java.util.Random;
 
 import de.unihalle.sim.main.BeeSimulation;
@@ -10,6 +11,7 @@ import de.unihalle.sim.util.TimeUtil;
 public class Bee extends PositionedEntity {
 
 	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.05;
+	private static final double INFECTION_PROBABILITY = 0.5;
 	private static final double MOVEMENT_SPEED = MovementUtil.metersPerSecond(1);
 	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(10);
 	private static final double INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION = TimeUtil.seconds(60);
@@ -95,7 +97,7 @@ public class Bee extends PositionedEntity {
 		if (isIncubated()) {
 			// TODO check whether banned bees unload their nectar before getting banned
 			infoWithPosition("I am now banned from my hive due to infection.");
-			scheduleIfNotDead("die", _timeToLiveDueToInfection);
+			scheduleIfNotDead("die", TimeUtil.seconds(0));
 			return;
 		}
 		_home.storeNectar(MAX_CAPACITY - _capacity);
@@ -143,9 +145,19 @@ public class Bee extends PositionedEntity {
 	}
 
 	private void applyInfectionActions() {
-		if (isInfected()) {
-			// TODO add infection of other hive members
-			infoWithPosition("I am now infecting other bees at my position.");
+		List<Bee> beesAtPosition = BeeSimulation.getEnvironment().getBeesAt(this);
+		for (Bee bee : beesAtPosition) {
+			if (isInfected()) {
+				if (_random.nextDouble() <= INFECTION_PROBABILITY) {
+					// infect the other bee
+					bee.becomeInfected();
+				}
+			} else if (bee.isInfected()) {
+				if (_random.nextDouble() <= INFECTION_PROBABILITY) {
+					// become infected by the other bee
+					becomeInfected();
+				}
+			}
 		}
 	}
 
@@ -173,7 +185,7 @@ public class Bee extends PositionedEntity {
 
 	private BeeHive tryToFindHome() {
 		BeeHive destination = _home;
-		if (_random.nextDouble() < FLY_BACK_TO_WRONG_HIVE_CHANCE) {
+		if (_random.nextDouble() <= FLY_BACK_TO_WRONG_HIVE_CHANCE) {
 			destination = BeeSimulation.getEnvironment().getRandomBeeHiveCloseToPositionButNot(_home,
 					_home.getPosition());
 		}
