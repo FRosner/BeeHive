@@ -52,6 +52,9 @@ public class BeeSimulation extends Simulation {
 	@Override
 	public void simulationComplete() {
 		info("Simulation complete.");
+		for (EventListener e : _listeners) {
+			e.close();
+		}
 	}
 
 	public static Environment getEnvironment() {
@@ -82,6 +85,7 @@ public class BeeSimulation extends Simulation {
 
 	public static void main(String[] args) {
 		BeeSimulation.addEventListener(new DummyEventListener());
+		BeeSimulation.addEventListener(new ReportEventListener());
 		Simulation mySimulation = new BeeSimulation();
 		mySimulation.run();
 	}

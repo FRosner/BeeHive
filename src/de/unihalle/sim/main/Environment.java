@@ -79,6 +79,18 @@ public class Environment {
 		return _flowers;
 	}
 
+	public int getNumberOfBees() {
+		return _bees.size();
+	}
+
+	public int getNumberOfFlowers() {
+		return _flowers.size();
+	}
+
+	public int getNumberOfHives() {
+		return _hives.size();
+	}
+
 	public Position getRandomValidPosition() {
 		return Position.createRandomPositionWithin(_minX, _maxX, _minY, _maxY);
 	}
