@@ -64,12 +64,14 @@ class Sheet extends JPanel {
 		List<BeeHive> beeHiveList = BeeSimulation.getEnvironment().getBeeHives();
 		for (int i = 0; i < beeHiveList.size(); i++) {
 			g.setColor(new Color(255, 0, 0));
+
 			g.drawRect(
 					(VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
 							+ (((beeHiveList.get(i).getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
 					(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
 							+ (((beeHiveList.get(i).getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
 					10, 10);
+
 		}
 
 		List<Flower> flowerList = BeeSimulation.getEnvironment().getFlowers();
@@ -88,11 +90,27 @@ class Sheet extends JPanel {
 		List<Bee> beeList = BeeSimulation.getEnvironment().getBees();
 		for (int i = 0; i < beeList.size(); i++) {
 			g.setColor(new Color(0, 255, 0));
-			g.fillRect((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
-					+ ((((beeList.get(i).getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
-					(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
-							+ ((((beeList.get(i).getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
-					4, 4);
+			if (beeList.get(i).isMoving() == true) {
+				g.drawLine((VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
+						+ ((beeList.get(i).getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
+								+ ((beeList.get(i).getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
+								+ ((beeList.get(i).getDestination().x * VisualisationCanvas.iFieldScaleFactor) - 1)
+								+ 25, (VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
+								+ ((beeList.get(i).getDestination().y * VisualisationCanvas.iFieldScaleFactor) - 1)
+								+ 25);
+			} else {
+
+				g.fillRect(
+						(VisualisationCanvas.iFieldSizeX)
+								* VisualisationCanvas.iFieldScaleFactor
+								+ ((((beeList.get(i).getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
+						(VisualisationCanvas.iFieldSizeY)
+								* VisualisationCanvas.iFieldScaleFactor
+								+ ((((beeList.get(i).getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
+						4, 4);
+			}
 		}
 
 		// repaint();
