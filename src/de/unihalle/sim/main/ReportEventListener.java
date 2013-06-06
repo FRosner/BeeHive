@@ -17,6 +17,7 @@ public class ReportEventListener implements EventListener {
 		private int _numberOfFlowers;
 		private int _numberOfBees;
 		private int _numberOfInfectedBees;
+		private double _beeInfectionRatio;
 
 		private SimulationState(double time) {
 			_time = time;
@@ -54,12 +55,16 @@ public class ReportEventListener implements EventListener {
 				return this;
 			}
 
+			public Builder beeInfectionRatio(double infectionRatio) {
+				_state.setBeeInfectionRatio(infectionRatio);
+				return this;
+			}
+
 			public SimulationState build() {
 				return _state;
 			}
 
 		}
-
 
 		private void setNumberOfHives(int numberOfHives) {
 			_numberOfHives = numberOfHives;
@@ -77,14 +82,18 @@ public class ReportEventListener implements EventListener {
 			_numberOfInfectedBees = numberOfInfectedBees;
 		}
 
+		private void setBeeInfectionRatio(double infectionRatio) {
+			_beeInfectionRatio = infectionRatio;
+		}
+
 		@Override
 		public String toString() {
 			return _time + ";" + _numberOfHives + ";" + _numberOfFlowers + ";" + _numberOfBees + ";"
-					+ _numberOfInfectedBees;
+					+ _numberOfInfectedBees + ";" + _beeInfectionRatio;
 		}
 
 		public static String getSchema() {
-			return "time;numberOfHives;numberOfFlowers;numberOfBees;numberOfInfectedBees";
+			return "time;numberOfHives;numberOfFlowers;numberOfBees;numberOfInfectedBees;beeInfectionRatio";
 		}
 
 	}
@@ -98,11 +107,12 @@ public class ReportEventListener implements EventListener {
 		int numHives = BeeSimulation.getEnvironment().getNumberOfHives();
 		int numFlowers = BeeSimulation.getEnvironment().getNumberOfFlowers();
 		int numInfected = BeeSimulation.getEnvironment().getNumberOfInfectedBees();
+		double infectionRatio = (double) numInfected / (double) numBees;
 		if (_lastNotificationTime == currentTime) {
 			_states.remove(_states.size() - 1);
 		}
 		_states.add(SimulationState.Builder.time(currentTime).numberOfBees(numBees).numberOfFlowers(numFlowers)
-				.numberOfHives(numHives).numberOfInfectedBees(numInfected).build());
+				.numberOfHives(numHives).numberOfInfectedBees(numInfected).beeInfectionRatio(infectionRatio).build());
 		_lastNotificationTime = currentTime;
 	}
 
