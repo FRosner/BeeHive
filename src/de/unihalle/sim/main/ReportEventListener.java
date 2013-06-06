@@ -93,7 +93,7 @@ public class ReportEventListener implements EventListener {
 
 	@Override
 	public void notify(PositionedEntity e) {
-		double currentTime = e.getTimeNow();
+		double currentTime = (Math.round(e.getTimeNow() * 1000)) / 1000d;
 		int numBees = BeeSimulation.getEnvironment().getNumberOfBees();
 		int numHives = BeeSimulation.getEnvironment().getNumberOfHives();
 		int numFlowers = BeeSimulation.getEnvironment().getNumberOfFlowers();
