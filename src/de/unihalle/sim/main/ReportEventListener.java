@@ -1,5 +1,7 @@
 package de.unihalle.sim.main;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import de.unihalle.sim.entities.PositionedEntity;
 public class ReportEventListener implements EventListener {
 
 	double _lastNotificationTime = -1;
+	PrintWriter _out;
 
 	private static class SimulationState {
 
@@ -101,9 +104,14 @@ public class ReportEventListener implements EventListener {
 
 	private List<SimulationState> _states;
 
-	public ReportEventListener() {
+	public ReportEventListener(PrintWriter out) {
+		_out = out;
 		_states = Lists.newArrayList();
 		_states = Collections.synchronizedList(_states);
+	}
+
+	public ReportEventListener(String fileName) throws FileNotFoundException {
+		this(new PrintWriter(fileName));
 	}
 
 	@Override
@@ -123,9 +131,10 @@ public class ReportEventListener implements EventListener {
 	}
 
 	public void close() {
-		System.err.println(SimulationState.getSchema());
+		_out.write(SimulationState.getSchema() + "\n");
 		for (SimulationState s : _states) {
-			System.err.println(s);
+			_out.write(s.toString() + "\n");
 		}
+		_out.close();
 	}
 }

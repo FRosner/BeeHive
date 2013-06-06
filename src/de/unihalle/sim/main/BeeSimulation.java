@@ -83,9 +83,9 @@ public class BeeSimulation extends Simulation {
 		_environment.addFlower(currentFlower);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		BeeSimulation.addEventListener(new DummyEventListener());
-		BeeSimulation.addEventListener(new ReportEventListener());
+		BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
 		Simulation mySimulation = new BeeSimulation();
 		mySimulation.run();
 	}
