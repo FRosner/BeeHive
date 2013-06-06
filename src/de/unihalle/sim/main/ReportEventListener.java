@@ -8,6 +8,8 @@ import de.unihalle.sim.entities.PositionedEntity;
 
 public class ReportEventListener implements EventListener {
 
+	double _lastNotificationTime = -1;
+
 	private static class SimulationState {
 
 		private double _time;
@@ -96,11 +98,15 @@ public class ReportEventListener implements EventListener {
 	@Override
 	public void notify(PositionedEntity e) {
 		double currentTime = e.getTimeNow();
-		int numberOfBees = BeeSimulation.getEnvironment().getNumberOfBees();
-		int numberOfHives = BeeSimulation.getEnvironment().getNumberOfHives();
-		int numberOfFlowers = BeeSimulation.getEnvironment().getNumberOfFlowers();
-		_states.add(SimulationState.Builder.time(e.getTimeNow()).numberOfBees(numberOfBees).numberOfFlowers(
-				numberOfFlowers).numberOfHives(numberOfHives).build());
+		int numBees = BeeSimulation.getEnvironment().getNumberOfBees();
+		int numHives = BeeSimulation.getEnvironment().getNumberOfHives();
+		int numFlowers = BeeSimulation.getEnvironment().getNumberOfFlowers();
+		if (_lastNotificationTime == currentTime) {
+			_states.remove(_states.size() - 1);
+		}
+		_states.add(SimulationState.Builder.time(e.getTimeNow()).numberOfBees(numBees).numberOfFlowers(numFlowers)
+				.numberOfHives(numHives).build());
+		_lastNotificationTime = currentTime;
 	}
 
 	public void close() {
