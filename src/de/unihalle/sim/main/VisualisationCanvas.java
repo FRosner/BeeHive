@@ -22,6 +22,7 @@ public class VisualisationCanvas extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public VisualisationCanvas() {
+		this.setBackground(new Color(0, 0, 0));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setSize((iFieldSizeX * iFieldScaleFactor * 2) + 50, (iFieldSizeX * iFieldScaleFactor * 2) + 50);
 		setLocationRelativeTo(null);
@@ -72,7 +73,7 @@ class Sheet extends JPanel {
 		List<BeeHive> beeHiveList = temporaryEnv.getBeeHives();
 		for (BeeHive f : beeHiveList) {
 			g.setColor(new Color(255, 0, 0));
-			g.drawRect((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
+			g.fillOval((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
 					+ (((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
 					(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
 							+ (((f.getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 5) + 25), 10, 10);
@@ -81,7 +82,7 @@ class Sheet extends JPanel {
 
 		List<Flower> flowerList = temporaryEnv.getFlowers();
 		for (Flower f : flowerList) {
-			g.setColor(new Color(0, 0, 255));
+			g.setColor(new Color(0, 255, 0));
 			g.drawRect((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
 					+ ((((f.getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25),
 					(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
@@ -91,7 +92,7 @@ class Sheet extends JPanel {
 		List<Bee> beeList = temporaryEnv.getBees();
 		for (Bee f : beeList) {
 
-			g.setColor(new Color(0, 255, 0));
+			g.setColor(new Color(255, 159, 0));
 			if (f.isMoving() == true) {
 				drawArrow(
 						g,
