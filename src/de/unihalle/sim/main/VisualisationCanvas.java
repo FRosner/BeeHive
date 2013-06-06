@@ -3,10 +3,13 @@ package de.unihalle.sim.main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
+import com.google.common.collect.Maps;
 
 import de.unihalle.sim.entities.Bee;
 import de.unihalle.sim.entities.BeeHive;
@@ -44,9 +47,19 @@ class Sheet extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	static Environment temporaryEnv;
+	static Map<String, Color> hiveMap = Maps.newHashMap();
+	static Color[] colorArray = new Color[4];
+	static int currentColor = 0;
 
 	public Sheet(Environment drawingEnvironment) {
 		temporaryEnv = drawingEnvironment;
+
+		colorArray[0] = new Color(255, 159, 0);
+		colorArray[1] = new Color(255, 255, 0);
+		colorArray[2] = new Color(255, 255, 255);
+		colorArray[3] = new Color(255, 118, 71);
+
+		currentColor = 0;
 	}
 
 	private void drawArrow(Graphics g, int x1, int y1, int x2, int y2) {
@@ -58,7 +71,7 @@ class Sheet extends JPanel {
 		double alpha = Math.atan((double) (y2 - y1) / (double) (x2 - x1));
 		double theta1 = alpha + Math.PI / 8d;
 		double theta2 = alpha - Math.PI / 8d;
-		int r = (int) Math.ceil(1 * VisualisationCanvas.iFieldScaleFactor);
+		int r = (int) Math.ceil(0.5 * VisualisationCanvas.iFieldScaleFactor);
 		double linie1x = x2 + (r * Math.cos(theta1)) * directionCorrection;
 		double linie1y = y2 + (r * Math.sin(theta1)) * directionCorrection;
 		double linie2x = x2 + (r * Math.cos(theta2)) * directionCorrection;
@@ -72,6 +85,12 @@ class Sheet extends JPanel {
 
 		List<BeeHive> beeHiveList = temporaryEnv.getBeeHives();
 		for (BeeHive f : beeHiveList) {
+			if (currentColor == 4)
+				currentColor = 0;
+
+			hiveMap.put(f.getName(), colorArray[currentColor]);
+			currentColor++;
+
 			g.setColor(new Color(255, 0, 0));
 			g.fillOval((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
 					+ (((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
@@ -92,7 +111,8 @@ class Sheet extends JPanel {
 		List<Bee> beeList = temporaryEnv.getBees();
 		for (Bee f : beeList) {
 
-			g.setColor(new Color(255, 159, 0));
+			g.setColor(hiveMap.get(f.getHomeName()));
+
 			if (f.isMoving() == true) {
 				drawArrow(
 						g,
