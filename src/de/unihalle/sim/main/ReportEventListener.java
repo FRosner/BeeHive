@@ -1,5 +1,6 @@
 package de.unihalle.sim.main;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -98,7 +99,12 @@ public class ReportEventListener implements EventListener {
 
 	}
 
-	private List<SimulationState> _states = Lists.newArrayList();
+	private List<SimulationState> _states;
+
+	public ReportEventListener() {
+		_states = Lists.newArrayList();
+		_states = Collections.synchronizedList(_states);
+	}
 
 	@Override
 	public void notify(PositionedEntity e) {
