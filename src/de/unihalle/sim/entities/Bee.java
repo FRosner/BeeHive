@@ -36,26 +36,28 @@ public class Bee extends PositionedEntity {
 	}
 
 	/**
-	 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home. The bee will spawn at the
-	 * location of its home.
+	 * Create a new <tt>Bee</tt> instance belonging to specified
+	 * <tt>BeeHive</tt> home. The bee will spawn at the location of its home.
 	 * 
 	 * @param home
 	 *            hive the <tt>Bee</tt> belongs to
-	 * @return a new <tt>Bee</tt> instance linked to and located at the specified <tt>BeeHive</tt> instance
+	 * @return a new <tt>Bee</tt> instance linked to and located at the
+	 *         specified <tt>BeeHive</tt> instance
 	 */
 	public static Bee create(BeeHive home, boolean isWorker) {
 		return new Bee(home.getPosition(), home, isWorker);
 	}
 
 	/**
-	 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home at the specified
-	 * <tt>Position</tt> position.
+	 * Create a new <tt>Bee</tt> instance belonging to specified
+	 * <tt>BeeHive</tt> home at the specified <tt>Position</tt> position.
 	 * 
 	 * @param home
 	 *            hive the <tt>Bee</tt> belongs to
 	 * @param position
 	 *            the <tt>Bee</tt> will spawn at
-	 * @return a new <tt>Bee</tt> instance linked to the specified home and located at the specified position
+	 * @return a new <tt>Bee</tt> instance linked to the specified home and
+	 *         located at the specified position
 	 */
 	public static Bee createAtPosition(Position position, BeeHive home, boolean isWorker) {
 		return new Bee(position, home, isWorker);
@@ -88,6 +90,10 @@ public class Bee extends PositionedEntity {
 		infoWithPosition("Flying back to the hive.");
 	}
 
+	public String getHomeName() {
+		return _home.getName();
+	}
+
 	@Event
 	public void arriveAtWrongHive(BeeHive destination) {
 		infoWithPosition("Oops that's not home: " + destination.getName() + ".");
@@ -99,7 +105,8 @@ public class Bee extends PositionedEntity {
 	public void storeNectar() {
 		applyInfectionActions();
 		if (isIncubated()) {
-			// TODO check whether banned bees unload their nectar before getting banned
+			// TODO check whether banned bees unload their nectar before getting
+			// banned
 			infoWithPosition("I am now banned from my hive due to infection.");
 			scheduleIfNotDead("die", TimeUtil.seconds(0));
 			return;
