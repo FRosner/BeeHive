@@ -10,11 +10,13 @@ public class BeeHive extends PositionedEntity {
 
 	private static final double EGG_SPAWN_RATE = TimeUtil.seconds(10); // sec
 	private static final double INITIAL_INFECTION_PERCENTAGE = 0.1;
+	private static final double WORKER_BEE_PERCENTAGE = 0.5;
 
 	private int _populationCapacity;
-	private int _currentPopulation;
-	private int _beeCounter;
-	private int _storedNectar;
+	private int _currentPopulation = 0;
+	private int _currentWorkerBeePopulation = 0;
+	private int _beeCounter = 0;
+	private int _storedNectar = 0;
 
 	public BeeHive(Position position, int capacity) {
 		super();
@@ -25,11 +27,15 @@ public class BeeHive extends PositionedEntity {
 	@Event
 	public void spawnBee() {
 		if (_populationCapacity > _currentPopulation) {
+			boolean newBeeIsWorker = _currentWorkerBeePopulation < _currentPopulation * WORKER_BEE_PERCENTAGE;
+			Bee newBee = Bee.create(this, newBeeIsWorker);
+			register(newBee, getName() + "." + (newBeeIsWorker ? "WorkerBee" : "HiveBee") + _beeCounter);
+			BeeSimulation.getEnvironment().addBee(newBee);
+			if (newBeeIsWorker) {
+				_currentWorkerBeePopulation++;
+			}
 			_beeCounter++;
 			_currentPopulation++;
-			Bee newBee = Bee.create(this);
-			register(newBee, getName() + "." + "Bee" + _beeCounter);
-			BeeSimulation.getEnvironment().addBee(newBee);
 		}
 		schedule("spawnBee", EGG_SPAWN_RATE);
 	}
@@ -43,13 +49,17 @@ public class BeeHive extends PositionedEntity {
 
 	private void fillHive() {
 		for (int i = 0; i < _populationCapacity; i++) {
-			Bee newBee = Bee.create(this);
-			register(newBee, getName() + "." + "Bee" + i);
+			boolean newBeeIsWorker = _currentWorkerBeePopulation < _currentPopulation * WORKER_BEE_PERCENTAGE;
+			Bee newBee = Bee.create(this, newBeeIsWorker);
+			register(newBee, getName() + "." + (newBeeIsWorker ? "WorkerBee" : "HiveBee") + _beeCounter);
 			BeeSimulation.getEnvironment().addBee(newBee);
+			if (newBeeIsWorker) {
+				_currentWorkerBeePopulation++;
+			}
+			_beeCounter++;
+			_currentPopulation++;
 		}
 		BeeSimulation.getEnvironment().applyInitialInfectionToHive(this, INITIAL_INFECTION_PERCENTAGE);
-		_beeCounter = _populationCapacity;
-		_currentPopulation = _populationCapacity;
 	}
 
 	public void reportDead(Bee deadBee) {

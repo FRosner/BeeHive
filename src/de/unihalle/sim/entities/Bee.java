@@ -16,6 +16,7 @@ public class Bee extends PositionedEntity {
 	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(10);
 	private static final double INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION = TimeUtil.seconds(60);
 	private static final double INCUBATION_TIME = TimeUtil.seconds(15);
+	private static final double KEEP_ALIVE_TIMER = TimeUtil.seconds(15);
 	private static final int MAX_CAPACITY = 3;
 	private double _timeToLive = INITIAL_TIME_TO_LIVE;
 	private double _timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE;
@@ -24,10 +25,12 @@ public class Bee extends PositionedEntity {
 	private int _capacity = MAX_CAPACITY;
 	private Random _random;
 	private BeeHive _home;
+	private boolean _isWorker;
 
-	private Bee(Position position, BeeHive home) {
+	private Bee(Position position, BeeHive home, boolean isWorker) {
 		_position = position;
 		_home = home;
+		_isWorker = isWorker;
 		_random = new Random();
 	}
 
@@ -39,8 +42,8 @@ public class Bee extends PositionedEntity {
 	 *            hive the <tt>Bee</tt> belongs to
 	 * @return a new <tt>Bee</tt> instance linked to and located at the specified <tt>BeeHive</tt> instance
 	 */
-	public static Bee create(BeeHive home) {
-		return new Bee(home.getPosition(), home);
+	public static Bee create(BeeHive home, boolean isWorker) {
+		return new Bee(home.getPosition(), home, isWorker);
 	}
 
 	/**
@@ -53,8 +56,8 @@ public class Bee extends PositionedEntity {
 	 *            the <tt>Bee</tt> will spawn at
 	 * @return a new <tt>Bee</tt> instance linked to the specified home and located at the specified position
 	 */
-	public static Bee createAtPosition(Position position, BeeHive home) {
-		return new Bee(position, home);
+	public static Bee createAtPosition(Position position, BeeHive home, boolean isWorker) {
+		return new Bee(position, home, isWorker);
 	}
 
 	@Event
@@ -128,6 +131,11 @@ public class Bee extends PositionedEntity {
 		_incubated = true;
 	}
 
+	@Event
+	public void keepAlive() {
+		scheduleIfNotDead("keepAlive", KEEP_ALIVE_TIMER);
+	}
+
 	public void becomeInfected() {
 		if (!_infected) {
 			infoWithPosition("I am infected. Incubation in " + INCUBATION_TIME + " seconds.");
@@ -140,8 +148,12 @@ public class Bee extends PositionedEntity {
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");
-		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment()
-				.getRandomFlowerWithNectarCloseTo(_position));
+		if (_isWorker) {
+			scheduleIfNotDead("flyToFlower", TimeUtil.seconds(1), BeeSimulation.getEnvironment()
+					.getRandomFlowerWithNectarCloseTo(_position));
+		} else {
+			scheduleIfNotDead("keepAlive", TimeUtil.seconds(1));
+		}
 	}
 
 	private void applyInfectionActions() {
@@ -201,6 +213,10 @@ public class Bee extends PositionedEntity {
 
 	public boolean isInfected() {
 		return _infected;
+	}
+
+	public boolean isWorker() {
+		return _isWorker;
 	}
 
 	public boolean isAtHomeAt(BeeHive home) {
