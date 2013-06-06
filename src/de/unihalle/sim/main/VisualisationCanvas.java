@@ -17,6 +17,7 @@ public class VisualisationCanvas extends JFrame {
 	static int iFieldSizeX = BeeSimulation.getEnvironment().getMaxX();
 	static int iFieldSizeY = BeeSimulation.getEnvironment().getMaxY();
 	static final int iFieldScaleFactor = 10;
+	static Environment temporaryEnv;
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,37 +27,26 @@ public class VisualisationCanvas extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	public void drawit() {
+	public void drawit(Environment env) {
 
-		Sheet sh = new Sheet();
+		temporaryEnv = env;
+		Sheet sh = new Sheet(temporaryEnv);
 		sh.removeAll();
 		sh.updateUI();
 		add(sh);
 		repaint();
 		setVisible(true);
 	}
-
-	public void showit() {
-		setVisible(true);
-	}
-
 }
 
 class Sheet extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	static Environment temporaryEnv;
 
-	/*
-	 * static Position pAktuell = Position.createFromCoordinates(0, 0); static
-	 * Position pAltzumUeberschreiben = Position.createFromCoordinates(0, 0);
-	 * String className = ""; static int beeValue = 0; static int beeValueOld =
-	 * 0;
-	 */
-
-	/*
-	 * public Sheet(int x, int y, String clName) { className = clName;
-	 * pAktuell.x = x; pAktuell.y = y; }
-	 */
+	public Sheet(Environment drawingEnvironment) {
+		temporaryEnv = drawingEnvironment;
+	}
 
 	private void drawArrow(Graphics g, int x1, int y1, int x2, int y2) {
 		g.drawLine(x1, y1, x2, y2);
@@ -79,7 +69,7 @@ class Sheet extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 
-		List<BeeHive> beeHiveList = BeeSimulation.getEnvironment().getBeeHives();
+		List<BeeHive> beeHiveList = temporaryEnv.getBeeHives();
 		for (BeeHive f : beeHiveList) {
 			g.setColor(new Color(255, 0, 0));
 			g.drawRect((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
@@ -89,7 +79,7 @@ class Sheet extends JPanel {
 
 		}
 
-		List<Flower> flowerList = BeeSimulation.getEnvironment().getFlowers();
+		List<Flower> flowerList = temporaryEnv.getFlowers();
 		for (Flower f : flowerList) {
 			g.setColor(new Color(0, 0, 255));
 			g.drawRect((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
@@ -98,7 +88,7 @@ class Sheet extends JPanel {
 							+ ((((f.getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25), 5, 5);
 		}
 
-		List<Bee> beeList = BeeSimulation.getEnvironment().getBees();
+		List<Bee> beeList = temporaryEnv.getBees();
 		for (Bee f : beeList) {
 
 			g.setColor(new Color(0, 255, 0));
@@ -123,33 +113,5 @@ class Sheet extends JPanel {
 
 			}
 		}
-
-		// repaint();
-
-		/*
-		 * if (className.contains("Bee") == true) { g.setColor(new Color(255, 0,
-		 * 0)); g.drawRect(250 + (pAktuell.x * 20), 250 + (pAktuell.y * 20), 3,
-		 * 3);
-		 * 
-		 * // Hilfsmethode um Zahl zu extrahieren... Pattern p =
-		 * Pattern.compile("[0-9]+"); Matcher m = p.matcher(className); while
-		 * (m.find()) { beeValue =
-		 * Integer.parseInt(className.substring(m.start(), m.end())); } } if
-		 * (className.contains("Flower") == true) { g.setColor(new Color(0, 0,
-		 * 255)); g.drawRect(250 + (pAktuell.x * 20), 250 + (pAktuell.y * 20),
-		 * 5, 5); }
-		 * 
-		 * if ((pAktuell.x != pAltzumUeberschreiben.x || pAktuell.y !=
-		 * pAltzumUeberschreiben.y) && beeValueOld == beeValue) { g.setColor(new
-		 * Color(255, 255, 255)); g.drawRect(250 + (pAltzumUeberschreiben.x *
-		 * 20), 250 + (pAltzumUeberschreiben.y * 20), 3, 3); g.setColor(new
-		 * Color(0, 0, 255)); g.drawRect(250 + (pAltzumUeberschreiben.x * 20),
-		 * 250 + (pAltzumUeberschreiben.y * 20), 5, 5);
-		 * 
-		 * }
-		 * 
-		 * pAltzumUeberschreiben.x = pAktuell.x; pAltzumUeberschreiben.y =
-		 * pAktuell.y; beeValueOld = beeValue;
-		 */
 	}
 }
