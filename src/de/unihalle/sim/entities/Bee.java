@@ -10,19 +10,20 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
-	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.05;
-	private static final double INFECTION_PROBABILITY = 0.5;
-	private static final double MOVEMENT_SPEED = MovementUtil.metersPerSecond(1);
-	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.minutes(10);
-	private static final double INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION = TimeUtil.seconds(60);
-	private static final double INCUBATION_TIME = TimeUtil.seconds(15);
-	private static final double KEEP_ALIVE_TIMER = TimeUtil.seconds(15);
-	private static final int MAX_CAPACITY = 3;
+	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.30;
+	private static final double INFECTION_PROBABILITY = 0.1;
+	private static final double MOVEMENT_SPEED = MovementUtil.kilometersPerHour(5);
+	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.days(45);
+	private static final double INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION = TimeUtil.days(4);
+	private static final double INCUBATION_TIME = TimeUtil.days(2);
+	private static final double KEEP_ALIVE_TIMER = TimeUtil.minutes(1);
+	private static final double STORE_TIME = TimeUtil.hours(5);
+	private static final int MAX_NECTAR_CAPACITY = 40;
 	private double _timeToLive = INITIAL_TIME_TO_LIVE;
 	private double _timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE;
 	private boolean _infected = false;
 	private boolean _incubated = false;
-	private int _capacity = MAX_CAPACITY;
+	private int _capacity = MAX_NECTAR_CAPACITY;
 	private Random _random;
 	private BeeHive _home;
 	private boolean _isWorker;
@@ -64,7 +65,7 @@ public class Bee extends PositionedEntity {
 	public void collectNectarAtFlower(Flower flower) {
 		applyInfectionActions();
 		_capacity -= flower.harvestMaxNectar(_capacity);
-		infoWithPosition("Collecting nectar (" + (MAX_CAPACITY - _capacity) + " / " + MAX_CAPACITY + ").");
+		infoWithPosition("Collecting nectar (" + (MAX_NECTAR_CAPACITY - _capacity) + " / " + MAX_NECTAR_CAPACITY + ").");
 		if (_capacity == 0) {
 			scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
 		} else {
@@ -91,7 +92,7 @@ public class Bee extends PositionedEntity {
 	public void arriveAtWrongHive(BeeHive destination) {
 		infoWithPosition("Oops that's not home: " + destination.getName() + ".");
 		applyInfectionActions();
-		scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
+		scheduleIfNotDead("flyBack", TimeUtil.minutes(1));
 	}
 
 	@Event
@@ -103,11 +104,11 @@ public class Bee extends PositionedEntity {
 			scheduleIfNotDead("die", TimeUtil.seconds(0));
 			return;
 		}
-		_home.storeNectar(MAX_CAPACITY - _capacity);
+		_home.storeNectar(MAX_NECTAR_CAPACITY - _capacity);
 		infoWithPosition("Storing nectar (" + _home.getStoredNectar() + ").");
-		_capacity = MAX_CAPACITY;
-		scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment()
-				.getRandomFlowerWithNectarCloseTo(_position));
+		_capacity = MAX_NECTAR_CAPACITY;
+		scheduleIfNotDead("flyToFlower", STORE_TIME, BeeSimulation.getEnvironment().getRandomFlowerWithNectarCloseTo(
+				_position));
 	}
 
 	@Event

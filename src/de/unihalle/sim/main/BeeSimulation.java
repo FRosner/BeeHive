@@ -17,9 +17,9 @@ public class BeeSimulation extends Simulation {
 	private static final long serialVersionUID = 1L;
 
 	private static final int SIMULATION_PACE = 100;
-	private static final double SIMULATION_TIME = TimeUtil.minutes(60); // s
+	private static final double SIMULATION_TIME = TimeUtil.months(12);
 
-	private static Environment _environment = new Environment(-10, 10, -10, 10);
+	private static Environment _environment = new Environment(-500, 500, -500, 500);
 	private static List<EventListener> _listeners = Lists.newArrayList();
 
 	@Override

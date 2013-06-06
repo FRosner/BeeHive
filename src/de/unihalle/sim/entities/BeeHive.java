@@ -8,9 +8,9 @@ public class BeeHive extends PositionedEntity {
 
 	// http://en.wikipedia.org/wiki/List_of_cities_in_Italy
 
-	private static final double EGG_SPAWN_RATE = TimeUtil.seconds(10); // sec
-	private static final double INITIAL_INFECTION_PERCENTAGE = 0.1;
-	private static final double WORKER_BEE_PERCENTAGE = 0.5;
+	private static final double EGG_SPAWN_RATE = TimeUtil.seconds(43.2);
+	private static final double INITIAL_INFECTION_PERCENTAGE = 0.01;
+	private static final double WORKER_BEE_PERCENTAGE = 0.55;
 
 	private int _populationCapacity;
 	private int _currentPopulation = 0;
