@@ -60,25 +60,6 @@ public class ReportEventListener implements EventListener {
 
 		}
 
-		public double getTime() {
-			return _time;
-		}
-
-		public double getNumberOfHives() {
-			return _numberOfHives;
-		}
-
-		public double getNumberOfFlowers() {
-			return _numberOfFlowers;
-		}
-
-		public double getNumberOfBees() {
-			return _numberOfBees;
-		}
-
-		public double getNumberOfInfectedBees() {
-			return _numberOfInfectedBees;
-		}
 
 		private void setNumberOfHives(int numberOfHives) {
 			_numberOfHives = numberOfHives;
