@@ -83,6 +83,16 @@ public class Environment {
 		return _bees.size();
 	}
 
+	public int getNumberOfInfectedBees() {
+		int numberOfInfectedBees = 0;
+		for (Bee bee : _bees) {
+			if (bee.isInfected()) {
+				numberOfInfectedBees++;
+			}
+		}
+		return numberOfInfectedBees;
+	}
+
 	public int getNumberOfFlowers() {
 		return _flowers.size();
 	}

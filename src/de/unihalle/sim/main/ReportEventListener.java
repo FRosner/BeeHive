@@ -16,6 +16,7 @@ public class ReportEventListener implements EventListener {
 		private int _numberOfHives;
 		private int _numberOfFlowers;
 		private int _numberOfBees;
+		private int _numberOfInfectedBees;
 
 		private SimulationState(double time) {
 			_time = time;
@@ -48,6 +49,11 @@ public class ReportEventListener implements EventListener {
 				return this;
 			}
 
+			public Builder numberOfInfectedBees(int numberOfInfectedBees) {
+				_state.setNumberOfInfectedBees(numberOfInfectedBees);
+				return this;
+			}
+
 			public SimulationState build() {
 				return _state;
 			}
@@ -70,25 +76,34 @@ public class ReportEventListener implements EventListener {
 			return _numberOfBees;
 		}
 
-		public void setNumberOfHives(int numberOfHives) {
+		public double getNumberOfInfectedBees() {
+			return _numberOfInfectedBees;
+		}
+
+		private void setNumberOfHives(int numberOfHives) {
 			_numberOfHives = numberOfHives;
 		}
 
-		public void setNumberOfFlowers(int numberOfFlowers) {
+		private void setNumberOfFlowers(int numberOfFlowers) {
 			_numberOfFlowers = numberOfFlowers;
 		}
 
-		public void setNumberOfBees(int numberOfBees) {
+		private void setNumberOfBees(int numberOfBees) {
 			_numberOfBees = numberOfBees;
+		}
+
+		private void setNumberOfInfectedBees(int numberOfInfectedBees) {
+			_numberOfInfectedBees = numberOfInfectedBees;
 		}
 
 		@Override
 		public String toString() {
-			return _time + ";" + _numberOfHives + ";" + _numberOfFlowers + ";" + _numberOfBees;
+			return _time + ";" + _numberOfHives + ";" + _numberOfFlowers + ";" + _numberOfBees + ";"
+					+ _numberOfInfectedBees;
 		}
 
 		public static String getSchema() {
-			return "time;numberOfHives;numberOfFlowers;numberOfBees";
+			return "time;numberOfHives;numberOfFlowers;numberOfBees;numberOfInfectedBees";
 		}
 
 	}
@@ -101,11 +116,12 @@ public class ReportEventListener implements EventListener {
 		int numBees = BeeSimulation.getEnvironment().getNumberOfBees();
 		int numHives = BeeSimulation.getEnvironment().getNumberOfHives();
 		int numFlowers = BeeSimulation.getEnvironment().getNumberOfFlowers();
+		int numInfected = BeeSimulation.getEnvironment().getNumberOfInfectedBees();
 		if (_lastNotificationTime == currentTime) {
 			_states.remove(_states.size() - 1);
 		}
-		_states.add(SimulationState.Builder.time(e.getTimeNow()).numberOfBees(numBees).numberOfFlowers(numFlowers)
-				.numberOfHives(numHives).build());
+		_states.add(SimulationState.Builder.time(currentTime).numberOfBees(numBees).numberOfFlowers(numFlowers)
+				.numberOfHives(numHives).numberOfInfectedBees(numInfected).build());
 		_lastNotificationTime = currentTime;
 	}
 
