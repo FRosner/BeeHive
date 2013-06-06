@@ -12,7 +12,7 @@ import de.unihalle.sim.entities.Flower;
 import de.unihalle.sim.entities.PositionedEntity;
 import de.unihalle.sim.util.Position;
 
-public class Environment {
+public class Environment implements Cloneable {
 
 	private List<Flower> _flowers = Lists.newArrayList();
 	private List<BeeHive> _hives = Lists.newArrayList();
@@ -164,7 +164,6 @@ public class Environment {
 			}
 		}
 		return beesAt;
-
 	}
 
 	/**
@@ -244,6 +243,21 @@ public class Environment {
 		for (int i = 0; i < numberOfInfectedBeesPerHive; i++) {
 			bees.get(i).becomeInfected();
 		}
+	}
+
+	/**
+	 * Clones the environment and all of its fields. However the random number generator is <i>not</i> cloned so the
+	 * environments will not produce the same results when used in a simulation.
+	 * 
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Environment clone() {
+		Environment clonedEnvironment = new Environment(_minX, _maxX, _minY, _maxY);
+		clonedEnvironment._bees = Lists.newArrayList(_bees);
+		clonedEnvironment._flowers = Lists.newArrayList(_flowers);
+		clonedEnvironment._hives = Lists.newArrayList(_hives);
+		return clonedEnvironment;
 	}
 
 }
