@@ -81,4 +81,8 @@ public class Flower extends PositionedEntity {
 		return _nectar;
 	}
 
+	public int getMaxNectarAmount() {
+		return MAX_NECTAR_CAPACITY;
+	}
+
 }

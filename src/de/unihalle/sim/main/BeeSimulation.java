@@ -31,10 +31,10 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createHives() {
-		registerHive(Position.createFromCoordinates(5, 5), 0, "Rome");
-		registerHive(Position.createFromCoordinates(-5, -5), 0, "Milan");
-		registerHive(Position.createFromCoordinates(5, -5), 0, "Naples");
-		registerHive(Position.createFromCoordinates(-5, 5), 0, "Turin");
+		registerHive(Position.createFromCoordinates(5, 5), 4, "Rome");
+		registerHive(Position.createFromCoordinates(-5, -5), 4, "Milan");
+		registerHive(Position.createFromCoordinates(5, -5), 4, "Naples");
+		registerHive(Position.createFromCoordinates(-5, 5), 4, "Turin");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Palermo");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Genoa");
 		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Bologna");
@@ -44,7 +44,7 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createFlowers() {
-		for (int i = 1; i < 4; i++) {
+		for (int i = 1; i < 128; i++) {
 			registerFlower("Flower" + i);
 		}
 	}
@@ -84,7 +84,6 @@ public class BeeSimulation extends Simulation {
 	}
 
 	public static void main(String[] args) throws Exception {
-		BeeSimulation.addEventListener(new DummyEventListener());
 		BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
 		Simulation mySimulation = new BeeSimulation();
 		mySimulation.run();

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import de.unihalle.sim.entities.Flower;
 import de.unihalle.sim.entities.PositionedEntity;
 
 public class ReportEventListener implements EventListener {
@@ -22,6 +23,7 @@ public class ReportEventListener implements EventListener {
 		private int _numberOfBees;
 		private int _numberOfInfectedBees;
 		private double _beeInfectionRatio;
+		private double _averageFlowerNectarRatio;
 
 		private SimulationState(double time) {
 			_time = time;
@@ -64,6 +66,11 @@ public class ReportEventListener implements EventListener {
 				return this;
 			}
 
+			public Builder averageFlowerNectarRatio(double nectarRatio) {
+				_state.setAverageFlowerNectarRatio(nectarRatio);
+				return this;
+			}
+
 			public SimulationState build() {
 				return _state;
 			}
@@ -90,14 +97,18 @@ public class ReportEventListener implements EventListener {
 			_beeInfectionRatio = infectionRatio;
 		}
 
+		private void setAverageFlowerNectarRatio(double averageFlowerNectarRatio) {
+			_averageFlowerNectarRatio = averageFlowerNectarRatio;
+		}
+
 		@Override
 		public String toString() {
 			return _time + ";" + _numberOfHives + ";" + _numberOfFlowers + ";" + _numberOfBees + ";"
-					+ _numberOfInfectedBees + ";" + _beeInfectionRatio;
+					+ _numberOfInfectedBees + ";" + _beeInfectionRatio + ";" + _averageFlowerNectarRatio;
 		}
 
 		public static String getSchema() {
-			return "time;numberOfHives;numberOfFlowers;numberOfBees;numberOfInfectedBees;beeInfectionRatio";
+			return "time;numberOfHives;numberOfFlowers;numberOfBees;numberOfInfectedBees;beeInfectionRatio;averageFlowerNectarRatio";
 		}
 
 	}
@@ -122,11 +133,18 @@ public class ReportEventListener implements EventListener {
 		int numFlowers = BeeSimulation.getEnvironment().getNumberOfFlowers();
 		int numInfected = BeeSimulation.getEnvironment().getNumberOfInfectedBees();
 		double infectionRatio = (double) numInfected / (double) numBees;
+		List<Flower> flowers = BeeSimulation.getEnvironment().getFlowers();
+		double averageFlowerNectarRatio = 0;
+		for (Flower f : flowers) {
+			averageFlowerNectarRatio += (double) f.getNectarAmount() / (double) f.getMaxNectarAmount();
+		}
+		averageFlowerNectarRatio /= flowers.size();
 		if (_lastNotificationTime == currentTime) {
 			_states.remove(_states.size() - 1);
 		}
 		_states.add(SimulationState.Builder.time(currentTime).numberOfBees(numBees).numberOfFlowers(numFlowers)
-				.numberOfHives(numHives).numberOfInfectedBees(numInfected).beeInfectionRatio(infectionRatio).build());
+				.numberOfHives(numHives).numberOfInfectedBees(numInfected).beeInfectionRatio(infectionRatio)
+				.averageFlowerNectarRatio(averageFlowerNectarRatio).build());
 		_lastNotificationTime = currentTime;
 	}
 
