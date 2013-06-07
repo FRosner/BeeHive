@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 
 import de.unihalle.sim.entities.BeeHive;
 import de.unihalle.sim.entities.Flower;
+import de.unihalle.sim.entities.Meadow;
 import de.unihalle.sim.entities.PositionedEntity;
 import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
@@ -47,9 +48,9 @@ public class BeeSimulation extends Simulation {
 
 	private void createFlowers() {
 		for (int i = 0; i < _inputData.getNumberOfFlowers(); i++) {
-		for (int i = 1; i < 128; i++) {
 			registerFlower("Flower" + i);
 		}
+		register(new Meadow(), "Meadow");
 	}
 
 	@Override

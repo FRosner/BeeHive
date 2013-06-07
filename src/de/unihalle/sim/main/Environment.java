@@ -245,6 +245,12 @@ public class Environment implements Cloneable {
 		}
 	}
 
+	public void refreshFlowers() {
+		for (Flower f : _flowers) {
+			f.refreshNectar();
+		}
+	}
+
 	/**
 	 * Clones the environment and all of its fields. However the random number generator is <i>not</i> cloned so the
 	 * environments will not produce the same results when used in a simulation.

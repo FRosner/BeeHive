@@ -28,6 +28,7 @@ public class InputData {
 
 	// flower data
 	private int _flowerMaxNectarCapacity = 16;
+	private double _nectarRefreshRate = TimeUtil.days(1) / _flowerMaxNectarCapacity;
 
 	public int getNumberOfFlowers() {
 		return _numberOfFlowers;
@@ -91,6 +92,10 @@ public class InputData {
 
 	public int getFlowerMaxNectarCapacity() {
 		return _flowerMaxNectarCapacity;
+	}
+
+	public double getNectarRefreshRate() {
+		return _nectarRefreshRate;
 	}
 
 }

@@ -2,12 +2,11 @@ package de.unihalle.sim.entities;
 
 import de.unihalle.sim.main.BeeSimulation;
 import de.unihalle.sim.util.Position;
-import de.unihalle.sim.util.TimeUtil;
 
 public class Flower extends PositionedEntity {
 
 	private static final int MAX_NECTAR_CAPACITY = BeeSimulation.getInputData().getFlowerMaxNectarCapacity();
-	private static final double NECTAR_REFRESH_RATE = TimeUtil.days(1) / MAX_NECTAR_CAPACITY;
+	private static final double KEEP_ALIVE_TIMER = BeeSimulation.getInputData().getKeepAliveTimer();
 
 	private int _nectar;
 
@@ -38,19 +37,21 @@ public class Flower extends PositionedEntity {
 		return new Flower(position, MAX_NECTAR_CAPACITY);
 	}
 
-	@Event
 	public void refreshNectar() {
 		if (_nectar < MAX_NECTAR_CAPACITY) {
 			_nectar++;
-			info("Refreshing nectar (" + getNectarAmount() + " / " + MAX_NECTAR_CAPACITY + ").");
 		}
-		schedule("refreshNectar", NECTAR_REFRESH_RATE);
 	}
 
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");
-		schedule("refreshNectar", NECTAR_REFRESH_RATE);
+		schedule("keepAlive", KEEP_ALIVE_TIMER);
+	}
+
+	@Event
+	public void keepAlive() {
+		schedule("keepAlive", KEEP_ALIVE_TIMER);
 	}
 
 	/**
