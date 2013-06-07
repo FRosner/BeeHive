@@ -10,17 +10,20 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
-	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = 0.30;
-	private static final double INFECTION_PROBABILITY = 0.1;
-	private static final double MOVEMENT_SPEED = MovementUtil.kilometersPerHour(5);
-	private static final double INITIAL_TIME_TO_LIVE = TimeUtil.days(45);
-	private static final double INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION = TimeUtil.days(4);
-	private static final double INCUBATION_TIME = TimeUtil.days(2);
-	private static final double KEEP_ALIVE_TIMER = TimeUtil.minutes(1);
-	private static final double STORE_TIME = TimeUtil.hours(5);
-	private static final int MAX_NECTAR_CAPACITY = 40;
-	private double _timeToLive = INITIAL_TIME_TO_LIVE;
-	private double _timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE;
+	private static final int MAX_NECTAR_CAPACITY = BeeSimulation.getInputData().getBeeMaxNectarCapacity();
+	private static final double NECTAR_COLLECTION_TIME = BeeSimulation.getInputData().getNectarCollectionTime();
+	private static final double MOVEMENT_SPEED = BeeSimulation.getInputData().getMovementSpeed();
+	private static final double STORE_TIME = BeeSimulation.getInputData().getNectarStoreTime();
+	private static final double KEEP_ALIVE_TIMER = BeeSimulation.getInputData().getKeepAliveTimer();
+	private static final double INCUBATION_TIME = BeeSimulation.getInputData().getIncubationTime();
+	private static final double INFECTION_PROBABILITY = BeeSimulation.getInputData().getInfectionProbability();
+	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = BeeSimulation.getInputData()
+			.getFlyBackToWrongHiveChance();
+
+	private double _initialTimeToLive = BeeSimulation.getInputData().getInitialTimeToLive();
+	private double _initialTimeToLiveDueToInfection = BeeSimulation.getInputData().getInitialTimeToLiveDueToInfection();
+	private double _timeToLive = _initialTimeToLive;
+	private double _timeToLiveDueToInfection = _initialTimeToLive;
 	private boolean _infected = false;
 	private boolean _incubated = false;
 	private int _capacity = MAX_NECTAR_CAPACITY;
@@ -36,28 +39,26 @@ public class Bee extends PositionedEntity {
 	}
 
 	/**
-	 * Create a new <tt>Bee</tt> instance belonging to specified
-	 * <tt>BeeHive</tt> home. The bee will spawn at the location of its home.
+	 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home. The bee will spawn at the
+	 * location of its home.
 	 * 
 	 * @param home
 	 *            hive the <tt>Bee</tt> belongs to
-	 * @return a new <tt>Bee</tt> instance linked to and located at the
-	 *         specified <tt>BeeHive</tt> instance
+	 * @return a new <tt>Bee</tt> instance linked to and located at the specified <tt>BeeHive</tt> instance
 	 */
 	public static Bee create(BeeHive home, boolean isWorker) {
 		return new Bee(home.getPosition(), home, isWorker);
 	}
 
 	/**
-	 * Create a new <tt>Bee</tt> instance belonging to specified
-	 * <tt>BeeHive</tt> home at the specified <tt>Position</tt> position.
+	 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home at the specified
+	 * <tt>Position</tt> position.
 	 * 
 	 * @param home
 	 *            hive the <tt>Bee</tt> belongs to
 	 * @param position
 	 *            the <tt>Bee</tt> will spawn at
-	 * @return a new <tt>Bee</tt> instance linked to the specified home and
-	 *         located at the specified position
+	 * @return a new <tt>Bee</tt> instance linked to the specified home and located at the specified position
 	 */
 	public static Bee createAtPosition(Position position, BeeHive home, boolean isWorker) {
 		return new Bee(position, home, isWorker);
@@ -69,9 +70,9 @@ public class Bee extends PositionedEntity {
 		_capacity -= flower.harvestMaxNectar(_capacity);
 		infoWithPosition("Collecting nectar (" + (MAX_NECTAR_CAPACITY - _capacity) + " / " + MAX_NECTAR_CAPACITY + ").");
 		if (_capacity == 0) {
-			scheduleIfNotDead("flyBack", TimeUtil.seconds(2));
+			scheduleIfNotDead("flyBack", NECTAR_COLLECTION_TIME);
 		} else {
-			scheduleIfNotDead("flyToFlower", TimeUtil.seconds(2), BeeSimulation.getEnvironment()
+			scheduleIfNotDead("flyToFlower", NECTAR_COLLECTION_TIME, BeeSimulation.getEnvironment()
 					.getRandomFlowerWithNectarCloseTo(_position));
 		}
 	}
@@ -148,7 +149,7 @@ public class Bee extends PositionedEntity {
 		if (!_infected) {
 			infoWithPosition("I am infected. Incubation in " + INCUBATION_TIME + " seconds.");
 			_infected = true;
-			_timeToLiveDueToInfection = INITIAL_TIME_TO_LIVE_DUE_TO_INFECTION;
+			_timeToLiveDueToInfection = _initialTimeToLiveDueToInfection;
 			scheduleParallelEventIfNotDead("incubation", INCUBATION_TIME);
 		}
 	}

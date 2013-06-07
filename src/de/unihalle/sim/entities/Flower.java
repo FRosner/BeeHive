@@ -6,7 +6,7 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Flower extends PositionedEntity {
 
-	private static final int MAX_NECTAR_CAPACITY = 16;
+	private static final int MAX_NECTAR_CAPACITY = BeeSimulation.getInputData().getFlowerMaxNectarCapacity();
 	private static final double NECTAR_REFRESH_RATE = TimeUtil.days(1) / MAX_NECTAR_CAPACITY;
 
 	private int _nectar;

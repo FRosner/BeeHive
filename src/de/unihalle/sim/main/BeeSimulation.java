@@ -21,6 +21,7 @@ public class BeeSimulation extends Simulation {
 
 	private static Environment _environment = new Environment(-500, 500, -500, 500);
 	private static List<EventListener> _listeners = Lists.newArrayList();
+	private static InputData _inputData = new InputData();
 
 	@Override
 	public void initialize() {
@@ -31,6 +32,7 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createHives() {
+		registerHive(Position.createFromCoordinates(5, 5), _inputData.getNumberOfBeesPerHive(), "Rome");
 		registerHive(Position.createFromCoordinates(5, 5), 4, "Rome");
 		registerHive(Position.createFromCoordinates(-5, -5), 4, "Milan");
 		registerHive(Position.createFromCoordinates(5, -5), 4, "Naples");
@@ -44,6 +46,7 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createFlowers() {
+		for (int i = 0; i < _inputData.getNumberOfFlowers(); i++) {
 		for (int i = 1; i < 128; i++) {
 			registerFlower("Flower" + i);
 		}
@@ -59,6 +62,10 @@ public class BeeSimulation extends Simulation {
 
 	public static Environment getEnvironment() {
 		return _environment;
+	}
+
+	public static InputData getInputData() {
+		return _inputData;
 	}
 
 	public static void notifyListeners(PositionedEntity entity) {
