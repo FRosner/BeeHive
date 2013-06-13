@@ -1,10 +1,14 @@
 package de.unihalle.sim.main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -21,14 +25,20 @@ public class VisualisationCanvas extends JFrame {
 	static int iFieldSizeY = BeeSimulation.getEnvironment().getMaxY();
 	static final int iFieldScaleFactor = 10;
 	static Environment temporaryEnv;
+	private JButton startButton;
+	private JButton pauseButton;
+	private JButton stopButton;
+	private ButtonActionListener buttonActionListener = new ButtonActionListener();
 
 	private static final long serialVersionUID = 1L;
 
 	public VisualisationCanvas() {
 		this.setBackground(new Color(0, 0, 0));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setSize((iFieldSizeX * iFieldScaleFactor * 2) + 50, (iFieldSizeX * iFieldScaleFactor * 2) + 50);
+		setSize((iFieldSizeX * iFieldScaleFactor * 2) + 50, (iFieldSizeX
+				* iFieldScaleFactor * 2) + 50);
 		setLocationRelativeTo(null);
+		setTitle("BeeHive Simulation");
 	}
 
 	public void drawit(Environment env) {
@@ -37,9 +47,49 @@ public class VisualisationCanvas extends JFrame {
 		Sheet sh = new Sheet(temporaryEnv);
 		sh.removeAll();
 		sh.updateUI();
+		drawButtons(sh);
 		add(sh);
 		repaint();
 		setVisible(true);
+	}
+
+	public void drawButtons(Sheet sheet) {
+		startButton = new JButton();
+		pauseButton = new JButton();
+		stopButton = new JButton();
+		startButton.setText("Start");
+		pauseButton.setText("Pause");
+		stopButton.setText("Stop");
+
+		startButton.setPreferredSize(new Dimension(100, 20));
+		pauseButton.setPreferredSize(new Dimension(100, 20));
+		stopButton.setPreferredSize(new Dimension(100, 20));
+
+		startButton.addActionListener(buttonActionListener);
+		pauseButton.addActionListener(buttonActionListener);
+		stopButton.addActionListener(buttonActionListener);
+
+		sheet.add(startButton);
+		sheet.add(pauseButton);
+		sheet.add(stopButton);
+	}
+
+	class ButtonActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == startButton) {
+				System.out.println("Start");
+			}
+
+			if (e.getSource() == pauseButton) {
+				System.out.println("Pause");
+			}
+
+			if (e.getSource() == stopButton) {
+				System.out.println("Stop");
+			}
+		}
 	}
 }
 
@@ -92,20 +142,28 @@ class Sheet extends JPanel {
 			currentColor++;
 
 			g.setColor(new Color(255, 0, 0));
-			g.fillOval((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
-					+ (((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
-					(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
-							+ (((f.getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 5) + 25), 10, 10);
+			g.fillOval(
+					(VisualisationCanvas.iFieldSizeX)
+							* VisualisationCanvas.iFieldScaleFactor
+							+ (((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
+					(VisualisationCanvas.iFieldSizeY)
+							* VisualisationCanvas.iFieldScaleFactor
+							+ (((f.getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 5) + 25),
+					10, 10);
 
 		}
 
 		List<Flower> flowerList = temporaryEnv.getFlowers();
 		for (Flower f : flowerList) {
 			g.setColor(new Color(0, 255, 0));
-			g.drawRect((VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
-					+ ((((f.getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25),
-					(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
-							+ ((((f.getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25), 5, 5);
+			g.drawRect(
+					(VisualisationCanvas.iFieldSizeX)
+							* VisualisationCanvas.iFieldScaleFactor
+							+ ((((f.getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25),
+					(VisualisationCanvas.iFieldSizeY)
+							* VisualisationCanvas.iFieldScaleFactor
+							+ ((((f.getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 2) + 25),
+					5, 5);
 		}
 
 		List<Bee> beeList = temporaryEnv.getBees();
@@ -117,20 +175,27 @@ class Sheet extends JPanel {
 				drawArrow(
 						g,
 						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
-								+ ((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+								+ ((f.getPosition().x * VisualisationCanvas.iFieldScaleFactor) - 1)
+								+ 25,
 						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
-								+ ((f.getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+								+ ((f.getPosition().y * VisualisationCanvas.iFieldScaleFactor) - 1)
+								+ 25,
 						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
-								+ ((f.getDestination().x * VisualisationCanvas.iFieldScaleFactor) - 1) + 25,
+								+ ((f.getDestination().x * VisualisationCanvas.iFieldScaleFactor) - 1)
+								+ 25,
 						(VisualisationCanvas.iFieldSizeX * VisualisationCanvas.iFieldScaleFactor)
-								+ ((f.getDestination().y * VisualisationCanvas.iFieldScaleFactor) - 1) + 25);
+								+ ((f.getDestination().y * VisualisationCanvas.iFieldScaleFactor) - 1)
+								+ 25);
 			} else {
 
 				g.fillRect(
-						(VisualisationCanvas.iFieldSizeX) * VisualisationCanvas.iFieldScaleFactor
+						(VisualisationCanvas.iFieldSizeX)
+								* VisualisationCanvas.iFieldScaleFactor
 								+ ((((f.getPosition().x) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
-						(VisualisationCanvas.iFieldSizeY) * VisualisationCanvas.iFieldScaleFactor
-								+ ((((f.getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25), 4, 4);
+						(VisualisationCanvas.iFieldSizeY)
+								* VisualisationCanvas.iFieldScaleFactor
+								+ ((((f.getPosition().y) * VisualisationCanvas.iFieldScaleFactor) - 1) + 25),
+						4, 4);
 
 			}
 		}

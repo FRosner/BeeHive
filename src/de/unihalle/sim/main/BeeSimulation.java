@@ -93,6 +93,7 @@ public class BeeSimulation extends Simulation {
 
 	public static void main(String[] args) throws Exception {
 		BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
+		BeeSimulation.addEventListener(new VisualisationEventListener());
 		Simulation mySimulation = new BeeSimulation();
 		mySimulation.run();
 	}
