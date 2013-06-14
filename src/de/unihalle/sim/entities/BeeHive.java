@@ -70,6 +70,9 @@ public class BeeHive extends PositionedEntity {
 			System.exit(1);
 		}
 		BeeSimulation.getEnvironment().removeBee(deadBee);
+		if (deadBee.isWorker()) {
+			_currentWorkerBeePopulation--;
+		}
 		_currentPopulation--;
 	}
 
