@@ -1,10 +1,13 @@
 package de.unihalle.sim.main;
 
+import java.util.Random;
+
 import de.unihalle.sim.util.MovementUtil;
 import de.unihalle.sim.util.TimeUtil;
 
 public class InputData {
 
+	private Random _random = new Random();
 	// environmental data
 	private int _numberOfFlowers = 8;
 	private int _numberOfBeesPerHive = 2;
@@ -19,7 +22,8 @@ public class InputData {
 	private double _flyBackToWrongHiveChance = 0.30;
 	private double _infectionProbability = 0.1;
 	private double _movementSpeed = MovementUtil.kilometersPerHour(5);
-	private double _initialTimeToLive = TimeUtil.days(45);
+	private double _initialTimeToLiveStandardDeviation = TimeUtil.days(5);
+	private double _initialTimeToLiveMean = TimeUtil.days(45);
 	private double _initialTimeToLiveDueToInfection = TimeUtil.days(4);
 	private double _incubationTime = TimeUtil.days(2);
 	private double _keepAliveTimer = TimeUtil.minutes(1);
@@ -30,6 +34,10 @@ public class InputData {
 	// flower data
 	private int _flowerMaxNectarCapacity = 16;
 	private double _nectarRefreshRate = TimeUtil.days(1) / _flowerMaxNectarCapacity;
+
+	private double sampleGaussian(double mean, double standardDeviation) {
+		return _random.nextGaussian() * standardDeviation + mean;
+	}
 
 	public int getNumberOfFlowers() {
 		return _numberOfFlowers;
@@ -64,7 +72,7 @@ public class InputData {
 	}
 
 	public double getInitialTimeToLive() {
-		return _initialTimeToLive;
+		return sampleGaussian(_initialTimeToLiveMean, _initialTimeToLiveStandardDeviation);
 	}
 
 	public double getInitialTimeToLiveDueToInfection() {
