@@ -30,6 +30,7 @@ public class Bee extends PositionedEntity {
 	private Random _random;
 	private BeeHive _home;
 	private boolean _isWorker;
+	private boolean _isAlive = false;
 
 	private Bee(Position position, BeeHive home, boolean isWorker) {
 		_position = position;
@@ -130,8 +131,14 @@ public class Bee extends PositionedEntity {
 
 	@Event
 	public void die() {
-		infoWithPosition("I am dead.");
-		_home.reportDead(this);
+		if (_isAlive) {
+			_isAlive = false;
+			infoWithPosition("I am dead.");
+			_home.reportDead(this);
+		} else {
+			// already dead
+			return;
+		}
 	}
 
 	@Event
@@ -157,6 +164,7 @@ public class Bee extends PositionedEntity {
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");
+		_isAlive = true;
 		if (_isWorker) {
 			scheduleIfNotDead("flyToFlower", TimeUtil.seconds(1), BeeSimulation.getEnvironment()
 					.getRandomFlowerWithNectarCloseTo(_position));
