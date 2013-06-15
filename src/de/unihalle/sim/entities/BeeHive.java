@@ -30,6 +30,7 @@ public class BeeHive extends PositionedEntity {
 	@Event
 	public void spawnBee() {
 		if (hasTooMuchInfectedBees()) {
+			infoWithPosition("I am collapsed!");
 			_infected = true;
 			return;
 		}
