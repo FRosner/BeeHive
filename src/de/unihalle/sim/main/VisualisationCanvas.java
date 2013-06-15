@@ -21,13 +21,13 @@ import de.unihalle.sim.entities.Flower;
 
 public class VisualisationCanvas extends JFrame {
 
-	private static class Sheet extends JPanel {
+	private class Sheet extends JPanel {
 
 		private static final long serialVersionUID = 1L;
-		static Environment _temporaryEnvironment;
-		static Map<String, Color> _hiveMap = Maps.newHashMap();
-		static Color[] _colorArray = new Color[4];
-		static int _currentColor = 0;
+		private Environment _temporaryEnvironment;
+		private Map<String, Color> _hiveMap = Maps.newHashMap();
+		private Color[] _colorArray = new Color[4];
+		private int _currentColor = 0;
 
 		public Sheet(Environment drawingEnvironment) {
 			_temporaryEnvironment = drawingEnvironment;
@@ -49,7 +49,7 @@ public class VisualisationCanvas extends JFrame {
 			double alpha = Math.atan((double) (y2 - y1) / (double) (x2 - x1));
 			double theta1 = alpha + Math.PI / 8d;
 			double theta2 = alpha - Math.PI / 8d;
-			int r = (int) Math.ceil(0.5 * _FieldScaleFactor);
+			int r = (int) Math.ceil(0.5 * _fieldScaleFactor);
 			double linie1x = x2 + (r * Math.cos(theta1)) * directionCorrection;
 			double linie1y = y2 + (r * Math.sin(theta1)) * directionCorrection;
 			double linie2x = x2 + (r * Math.cos(theta2)) * directionCorrection;
@@ -70,8 +70,8 @@ public class VisualisationCanvas extends JFrame {
 				_currentColor++;
 
 				g.setColor(new Color(255, 0, 0));
-				g.fillOval((_FieldSizeX) * _FieldScaleFactor + (((f.getPosition().x * _FieldScaleFactor) - 5) + 15),
-						(_FieldSizeY) * _FieldScaleFactor + (((f.getPosition().y * _FieldScaleFactor) - 5) + 40), 10,
+				g.fillOval((_fieldSizeX) * _fieldScaleFactor + (((f.getPosition().x * _fieldScaleFactor) - 5) + 15),
+						(_fieldSizeY) * _fieldScaleFactor + (((f.getPosition().y * _fieldScaleFactor) - 5) + 40), 10,
 						10);
 
 			}
@@ -79,8 +79,8 @@ public class VisualisationCanvas extends JFrame {
 			List<Flower> flowerList = _temporaryEnvironment.getFlowers();
 			for (Flower f : flowerList) {
 				g.setColor(new Color(0, 255, 0));
-				g.drawRect((_FieldSizeX) * _FieldScaleFactor + ((((f.getPosition().x) * _FieldScaleFactor) - 2) + 15),
-						(_FieldSizeY) * _FieldScaleFactor + ((((f.getPosition().y) * _FieldScaleFactor) - 2) + 40), 5,
+				g.drawRect((_fieldSizeX) * _fieldScaleFactor + ((((f.getPosition().x) * _fieldScaleFactor) - 2) + 15),
+						(_fieldSizeY) * _fieldScaleFactor + ((((f.getPosition().y) * _fieldScaleFactor) - 2) + 40), 5,
 						5);
 			}
 
@@ -91,24 +91,24 @@ public class VisualisationCanvas extends JFrame {
 
 				if (f.isMoving() == true) {
 					drawArrow(g,
-							(_FieldSizeX * _FieldScaleFactor) + ((f.getPosition().x * _FieldScaleFactor) - 1) + 15,
-							(_FieldSizeX * _FieldScaleFactor) + ((f.getPosition().y * _FieldScaleFactor) - 1) + 40,
-							(_FieldSizeX * _FieldScaleFactor) + ((f.getDestination().x * _FieldScaleFactor) - 1) + 15,
-							(_FieldSizeX * _FieldScaleFactor) + ((f.getDestination().y * _FieldScaleFactor) - 1) + 40);
+							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().x * _fieldScaleFactor) - 1) + 15,
+							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().y * _fieldScaleFactor) - 1) + 40,
+							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().x * _fieldScaleFactor) - 1) + 15,
+							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().y * _fieldScaleFactor) - 1) + 40);
 				} else {
 
-					g.fillRect((_FieldSizeX) * _FieldScaleFactor
-							+ ((((f.getPosition().x) * _FieldScaleFactor) - 1) + 15), (_FieldSizeY) * _FieldScaleFactor
-							+ ((((f.getPosition().y) * _FieldScaleFactor) - 1) + 40), 4, 4);
+					g.fillRect((_fieldSizeX) * _fieldScaleFactor
+							+ ((((f.getPosition().x) * _fieldScaleFactor) - 1) + 15), (_fieldSizeY) * _fieldScaleFactor
+							+ ((((f.getPosition().y) * _fieldScaleFactor) - 1) + 40), 4, 4);
 
 				}
 			}
 		}
 	}
 
-	static int _FieldSizeX = BeeSimulation.getEnvironment().getMaxX();
-	static int _FieldSizeY = BeeSimulation.getEnvironment().getMaxY();
-	static final int _FieldScaleFactor = 10;
+	private int _fieldSizeX = BeeSimulation.getEnvironment().getMaxX();
+	private int _fieldSizeY = BeeSimulation.getEnvironment().getMaxY();
+	private final int _fieldScaleFactor = 10;
 	private JButton _startButton;
 	private JButton _pauseButton;
 	private JButton _stopButton;
@@ -121,7 +121,7 @@ public class VisualisationCanvas extends JFrame {
 	public VisualisationCanvas(Environment env) {
 		this.setBackground(new Color(0, 0, 0));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setSize((_FieldSizeX * _FieldScaleFactor * 2) + 40, (_FieldSizeX * _FieldScaleFactor * 2) + 85);
+		setSize((_fieldSizeX * _fieldScaleFactor * 2) + 40, (_fieldSizeY * _fieldScaleFactor * 2) + 85);
 		setLocationRelativeTo(null);
 		setTitle("BeeHive Simulation");
 		_drawButtonSheet = new Sheet(env);
