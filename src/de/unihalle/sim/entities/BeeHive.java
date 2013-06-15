@@ -82,13 +82,12 @@ public class BeeHive extends PositionedEntity {
 	}
 
 	public void reportDead(Bee deadBee) {
-		if (_currentPopulation <= 0) {
+		if (_currentPopulation <= 0 || !BeeSimulation.getEnvironment().removeBee(deadBee)) {
 			// Exception is caught by Tortuga framework
 			// throw new RuntimeException("A bee of an empty hive wanted to die. This is impossible.");
 			System.err.println("A bee of an empty hive wanted to die. This is impossible.");
 			System.exit(1);
 		}
-		BeeSimulation.getEnvironment().removeBee(deadBee);
 		if (deadBee.isWorker()) {
 			_currentWorkerBeePopulation--;
 		}
