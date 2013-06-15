@@ -19,15 +19,19 @@ states = read.csv2("report.csv", dec=".")
 states$time = states$time/3600
 
 granularity=100
-pdf("report_beeInfectionRatio.pdf")
-sparsePlot(x=states$time, y=states$beeInfectionRatio, granularity=granularity, title="Bee Infection Ratio")
+title="Bee Infection Ratio"
+pdf("report_beeInfectionRatio.pdf", title=title)
+sparsePlot(x=states$time, y=states$beeInfectionRatio, granularity=granularity, title=title)
 dev.off()
-pdf("report_numberOfBees.pdf")
-sparsePlot(x=states$time, y=states$numberOfBees, granularity=granularity, title="Number of Bees")
+title="Number of Bees"
+pdf("report_numberOfBees.pdf", title=title)
+sparsePlot(x=states$time, y=states$numberOfBees, granularity=granularity, title=title)
 dev.off()
-pdf("report_averageFlowerNectarRatio.pdf")
-sparsePlot(x=states$time, y=states$averageFlowerNectarRatio, granularity=granularity, title="Nectar available (%)")
+title="Nectar available (%)"
+pdf("report_averageFlowerNectarRatio.pdf", title=title)
+sparsePlot(x=states$time, y=states$averageFlowerNectarRatio, granularity=granularity, title=title)
 dev.off()
-pdf("report_collapsedHiveRatio.pdf")
-sparsePlot(x=states$time, y=states$averageFlowerNectarRatio, granularity=granularity, title="Collapsed Hives (%)")
+title="Collapsed Hives (%)"
+pdf("report_collapsedHiveRatio.pdf", title=title)
+sparsePlot(x=states$time, y=states$collapsedHiveRatio, granularity=granularity, title=title)
 dev.off()
