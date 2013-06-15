@@ -20,11 +20,14 @@ states$time = states$time/3600
 
 granularity=100
 pdf("report_beeInfectionRatio.pdf")
-sparsePlot(x=states$time,y=states$beeInfectionRatio,granularity=granularity, title="Bee Infection Ratio")
+sparsePlot(x=states$time, y=states$beeInfectionRatio, granularity=granularity, title="Bee Infection Ratio")
 dev.off()
 pdf("report_numberOfBees.pdf")
-sparsePlot(x=states$time,y=states$numberOfBees,granularity=granularity, title="Number of Bees")
+sparsePlot(x=states$time, y=states$numberOfBees, granularity=granularity, title="Number of Bees")
 dev.off()
 pdf("report_averageFlowerNectarRatio.pdf")
-sparsePlot(x=states$time,y=states$averageFlowerNectarRatio,granularity=granularity, title="Nectar available (%)")
+sparsePlot(x=states$time, y=states$averageFlowerNectarRatio, granularity=granularity, title="Nectar available (%)")
+dev.off()
+pdf("report_collapsedHiveRatio.pdf")
+sparsePlot(x=states$time, y=states$averageFlowerNectarRatio, granularity=granularity, title="Nectar available (%)")
 dev.off()
