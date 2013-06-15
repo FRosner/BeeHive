@@ -1,14 +1,10 @@
 package de.unihalle.sim.main;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -109,12 +105,7 @@ public class VisualisationCanvas extends JFrame {
 	private int _fieldSizeX = BeeSimulation.getEnvironment().getMaxX();
 	private int _fieldSizeY = BeeSimulation.getEnvironment().getMaxY();
 	private final int _fieldScaleFactor = 10;
-	private JButton _startButton;
-	private JButton _pauseButton;
-	private JButton _stopButton;
-	private ButtonActionListener _actionListener = new ButtonActionListener();
 	private Sheet _drawitSheet;
-	private Sheet _drawButtonSheet;
 
 	private static final long serialVersionUID = 1L;
 
@@ -124,9 +115,7 @@ public class VisualisationCanvas extends JFrame {
 		setSize((_fieldSizeX * _fieldScaleFactor * 2) + 40, (_fieldSizeY * _fieldScaleFactor * 2) + 85);
 		setLocationRelativeTo(null);
 		setTitle("BeeHive Simulation");
-		_drawButtonSheet = new Sheet(env);
-		drawButtons(_drawButtonSheet);
-		add(_drawButtonSheet);
+
 		setVisible(true);
 	}
 
@@ -140,44 +129,5 @@ public class VisualisationCanvas extends JFrame {
 		setVisible(true);
 		// _drawitSheet.paintComponent(getGraphics());
 		repaint();
-	}
-
-	public void drawButtons(Sheet sheet) {
-		_startButton = new JButton();
-		_pauseButton = new JButton();
-		_stopButton = new JButton();
-		_startButton.setText("Start");
-		_pauseButton.setText("Pause");
-		_stopButton.setText("Stop");
-
-		_startButton.setPreferredSize(new Dimension(100, 20));
-		_pauseButton.setPreferredSize(new Dimension(100, 20));
-		_stopButton.setPreferredSize(new Dimension(100, 20));
-
-		_startButton.addActionListener(_actionListener);
-		_pauseButton.addActionListener(_actionListener);
-		_stopButton.addActionListener(_actionListener);
-
-		sheet.add(_startButton);
-		sheet.add(_pauseButton);
-		sheet.add(_stopButton);
-	}
-
-	class ButtonActionListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == _startButton) {
-				System.err.println("Start");
-			}
-
-			if (e.getSource() == _pauseButton) {
-				System.err.println("Pause");
-			}
-
-			if (e.getSource() == _stopButton) {
-				System.err.println("Stop");
-			}
-		}
 	}
 }
