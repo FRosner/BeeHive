@@ -161,6 +161,23 @@ public class Bee extends PositionedEntity {
 		}
 	}
 
+	public void setTimeToLive(double timeToLive) {
+		if (_isAlive) {
+			System.err.println("Must only set TTL before registering the bee.");
+			System.exit(1);
+		}
+		if (timeToLive <= 0) {
+			System.err.println("TTL must be > 0.");
+			System.exit(1);
+		}
+		_timeToLive = timeToLive;
+	}
+
+	public void setRandomTimeToLive() {
+		double randomTimeToLive = Math.round(_random.nextDouble() * _timeToLive) + 1.0d;
+		setTimeToLive(randomTimeToLive);
+	}
+
 	@Override
 	public void initialize() {
 		infoWithPosition("I am alive!");

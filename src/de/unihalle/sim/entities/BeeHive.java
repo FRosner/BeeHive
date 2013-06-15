@@ -77,6 +77,7 @@ public class BeeHive extends PositionedEntity {
 			}
 			_beeCounter++;
 			_currentPopulation++;
+			newBee.setRandomTimeToLive();
 		}
 		BeeSimulation.getEnvironment().applyInitialInfectionToHive(this, INITIAL_INFECTION_PERCENTAGE);
 	}
