@@ -24,6 +24,7 @@ public class ReportEventListener implements EventListener {
 		private int _numberOfInfectedBees;
 		private double _beeInfectionRatio;
 		private double _averageFlowerNectarRatio;
+		private double _collapsedHiveRatio;
 
 		private SimulationState(double time) {
 			_time = time;
@@ -71,6 +72,11 @@ public class ReportEventListener implements EventListener {
 				return this;
 			}
 
+			public Builder collapsedHiveRatio(double ratio) {
+				_state.setCollapsedHiveRatio(ratio);
+				return this;
+			}
+
 			public SimulationState build() {
 				return _state;
 			}
@@ -101,14 +107,19 @@ public class ReportEventListener implements EventListener {
 			_averageFlowerNectarRatio = averageFlowerNectarRatio;
 		}
 
+		private void setCollapsedHiveRatio(double ratio) {
+			_collapsedHiveRatio = ratio;
+		}
+
 		@Override
 		public String toString() {
 			return _time + ";" + _numberOfHives + ";" + _numberOfFlowers + ";" + _numberOfBees + ";"
-					+ _numberOfInfectedBees + ";" + _beeInfectionRatio + ";" + _averageFlowerNectarRatio;
+					+ _numberOfInfectedBees + ";" + _beeInfectionRatio + ";" + _averageFlowerNectarRatio + ";"
+					+ _collapsedHiveRatio;
 		}
 
 		public static String getSchema() {
-			return "time;numberOfHives;numberOfFlowers;numberOfBees;numberOfInfectedBees;beeInfectionRatio;averageFlowerNectarRatio";
+			return "time;numberOfHives;numberOfFlowers;numberOfBees;numberOfInfectedBees;beeInfectionRatio;averageFlowerNectarRatio;collapsedHiveRatio";
 		}
 
 	}
@@ -140,12 +151,15 @@ public class ReportEventListener implements EventListener {
 			averageFlowerNectarRatio += (double) f.getNectarAmount() / (double) f.getMaxNectarAmount();
 		}
 		averageFlowerNectarRatio /= flowers.size();
+		double collapsedHiveRatio = (double) environment.getNumberOfCollapsedHives()
+				/ (double) environment.getNumberOfHives();
+
 		if (_lastNotificationTime == currentTime) {
 			_states.remove(_states.size() - 1);
 		}
 		_states.add(SimulationState.Builder.time(currentTime).numberOfBees(numBees).numberOfFlowers(numFlowers)
 				.numberOfHives(numHives).numberOfInfectedBees(numInfected).beeInfectionRatio(infectionRatio)
-				.averageFlowerNectarRatio(averageFlowerNectarRatio).build());
+				.averageFlowerNectarRatio(averageFlowerNectarRatio).collapsedHiveRatio(collapsedHiveRatio).build());
 		_lastNotificationTime = currentTime;
 	}
 
