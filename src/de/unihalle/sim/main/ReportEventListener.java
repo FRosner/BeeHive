@@ -127,13 +127,14 @@ public class ReportEventListener implements EventListener {
 
 	@Override
 	public void notify(PositionedEntity e) {
+		Environment environment = BeeSimulation.getEnvironment();
 		double currentTime = (Math.round(e.getTimeNow() * 1000)) / 1000d;
-		int numBees = BeeSimulation.getEnvironment().getNumberOfBees();
-		int numHives = BeeSimulation.getEnvironment().getNumberOfHives();
-		int numFlowers = BeeSimulation.getEnvironment().getNumberOfFlowers();
-		int numInfected = BeeSimulation.getEnvironment().getNumberOfInfectedBees();
+		int numBees = environment.getNumberOfBees();
+		int numHives = environment.getNumberOfHives();
+		int numFlowers = environment.getNumberOfFlowers();
+		int numInfected = environment.getNumberOfInfectedBees();
 		double infectionRatio = (double) numInfected / (double) numBees;
-		List<Flower> flowers = BeeSimulation.getEnvironment().getFlowers();
+		List<Flower> flowers = environment.getFlowers();
 		double averageFlowerNectarRatio = 0;
 		for (Flower f : flowers) {
 			averageFlowerNectarRatio += (double) f.getNectarAmount() / (double) f.getMaxNectarAmount();
