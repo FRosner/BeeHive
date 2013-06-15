@@ -23,6 +23,7 @@ public class BeeSimulation extends Simulation {
 	private static Environment _environment = new Environment(-500, 500, -500, 500);
 	private static List<EventListener> _listeners = Lists.newArrayList();
 	private static InputData _inputData = new InputData();
+	private static BeeSimulation _simulation;
 
 	@Override
 	public void initialize() {
@@ -69,6 +70,15 @@ public class BeeSimulation extends Simulation {
 		return _inputData;
 	}
 
+	public static BeeSimulation getSimulation() {
+		return _simulation;
+	}
+
+	public void stopSimulation() {
+		simulationComplete();
+		System.exit(0);
+	}
+
 	public static void notifyListeners(PositionedEntity entity) {
 		for (EventListener e : _listeners) {
 			e.notify(entity);
@@ -96,6 +106,8 @@ public class BeeSimulation extends Simulation {
 		BeeSimulation.addEventListener(new VisualisationEventListener());
 		Simulation mySimulation = new BeeSimulation();
 		mySimulation.run();
+		_simulation = new BeeSimulation();
+		_simulation.run();
 	}
 
 }
