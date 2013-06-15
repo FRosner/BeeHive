@@ -83,16 +83,6 @@ public class Environment implements Cloneable {
 		return _bees.size();
 	}
 
-	public int getNumberOfInfectedBees() {
-		int numberOfInfectedBees = 0;
-		for (Bee bee : _bees) {
-			if (bee.isInfected()) {
-				numberOfInfectedBees++;
-			}
-		}
-		return numberOfInfectedBees;
-	}
-
 	public int getNumberOfFlowers() {
 		return _flowers.size();
 	}
@@ -101,8 +91,28 @@ public class Environment implements Cloneable {
 		return _hives.size();
 	}
 
+	public int getNumberOfCollapsedHives() {
+		int numberOfCollapsedHives = 0;
+		for (BeeHive hive : _hives) {
+			if (hive.isCollapsed()) {
+				numberOfCollapsedHives++;
+			}
+		}
+		return numberOfCollapsedHives;
+	}
+
 	public Position getRandomValidPosition() {
 		return Position.createRandomPositionWithin(_minX, _maxX, _minY, _maxY);
+	}
+
+	public int getNumberOfInfectedBees() {
+		int numberOfInfectedBees = 0;
+		for (Bee bee : _bees) {
+			if (bee.isInfected()) {
+				numberOfInfectedBees++;
+			}
+		}
+		return numberOfInfectedBees;
 	}
 
 	/**

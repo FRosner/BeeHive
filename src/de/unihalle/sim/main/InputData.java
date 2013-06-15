@@ -13,6 +13,7 @@ public class InputData {
 	private double _eggSpawnRate = TimeUtil.seconds(43.2);
 	private double _initialInfectionPercentage = 0.01;
 	private double _workerBeePercentage = 0.55;
+	private double _collapseThreshold = 0.75;
 
 	// bee data
 	private double _flyBackToWrongHiveChance = 0.30;
@@ -96,6 +97,10 @@ public class InputData {
 
 	public double getNectarRefreshRate() {
 		return _nectarRefreshRate;
+	}
+
+	public double getCollapseThreshold() {
+		return _collapseThreshold;
 	}
 
 }

@@ -1,5 +1,7 @@
 package de.unihalle.sim.entities;
 
+import java.util.List;
+
 import de.unihalle.sim.main.BeeSimulation;
 import de.unihalle.sim.util.Position;
 
@@ -17,6 +19,7 @@ public class BeeHive extends PositionedEntity {
 	private int _currentWorkerBeePopulation = 0;
 	private int _beeCounter = 0;
 	private int _storedNectar = 0;
+	private boolean _infected = false;
 
 	public BeeHive(Position position, int capacity) {
 		super();
@@ -26,6 +29,10 @@ public class BeeHive extends PositionedEntity {
 
 	@Event
 	public void spawnBee() {
+		if (hasTooMuchInfectedBees()) {
+			_infected = true;
+			return;
+		}
 		if (_populationCapacity > _currentPopulation) {
 			boolean newBeeIsWorker = _currentWorkerBeePopulation < _currentPopulation * WORKER_BEE_PERCENTAGE;
 			Bee newBee = Bee.create(this, newBeeIsWorker);
@@ -38,6 +45,17 @@ public class BeeHive extends PositionedEntity {
 			_currentPopulation++;
 		}
 		schedule("spawnBee", EGG_SPAWN_RATE);
+	}
+
+	private boolean hasTooMuchInfectedBees() {
+		List<Bee> bees = BeeSimulation.getEnvironment().getBeesAt(this);
+		int numberOfInfectedBees = 0;
+		for (Bee bee : bees) {
+			if (bee.isInfected()) {
+				numberOfInfectedBees++;
+			}
+		}
+		return ((double) numberOfInfectedBees / (double) bees.size()) > 0.75;
 	}
 
 	@Override
@@ -82,6 +100,10 @@ public class BeeHive extends PositionedEntity {
 
 	public int getStoredNectar() {
 		return _storedNectar;
+	}
+
+	public boolean isCollapsed() {
+		return _infected;
 	}
 
 }
