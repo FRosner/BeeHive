@@ -113,7 +113,7 @@ public class BeeSimulation extends Simulation {
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints information about passing arguments");
 		options.addOption("n", "number", true, "number of groups of hives");
-		options.addOption("s", "size", true, "size of each hive");
+		options.addOption("s", "size", true, "size of each group, number of hives in group");
 		
 		CommandLineParser commandLineParser = new BasicParser();
 		CommandLine commandLine = commandLineParser.parse(options, args);
