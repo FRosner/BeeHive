@@ -2,6 +2,11 @@ package de.unihalle.sim.main;
 
 import java.util.List;
 
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 import org.mitre.sim.Simulation;
 
 import com.google.common.collect.Lists;
@@ -104,8 +109,27 @@ public class BeeSimulation extends Simulation {
 	public static void main(String[] args) throws Exception {
 		BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
 		BeeSimulation.addEventListener(new VisualisationEventListener());
-		Simulation mySimulation = new BeeSimulation();
-		mySimulation.run();
+		
+		Options options = new Options();
+		options.addOption("h", "help", false, "prints information about passing arguments");
+		options.addOption("n", "number", true, "number of groups of hives");
+		options.addOption("s", "size", true, "size of each hive");
+		
+		CommandLineParser commandLineParser = new BasicParser();
+		CommandLine commandLine = commandLineParser.parse(options, args);
+		
+		if (commandLine.hasOption("h")) {
+			HelpFormatter helpFormatter = new HelpFormatter();
+			helpFormatter.printHelp("BeeSimulation <command> [<arg>]", options);
+		}
+		if (commandLine.hasOption("n")) {
+			System.out.println(commandLine.getOptionValue("n"));
+		}
+		
+		if (commandLine.hasOption("s")) {
+			System.out.println(commandLine.getOptionValue("s"));
+		}
+
 		_simulation = new BeeSimulation();
 		_simulation.run();
 	}
