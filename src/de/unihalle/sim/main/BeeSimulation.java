@@ -30,6 +30,18 @@ public class BeeSimulation extends Simulation {
 	private static InputData _inputData = new InputData();
 	private static BeeSimulation _simulation;
 
+	private int _hiveGroupNumbers;
+	private int _hiveGroupSize;
+	private boolean _showGui;
+	private boolean _generateReport;
+
+	public BeeSimulation(int n, int s, boolean g, boolean r) {
+		_hiveGroupNumbers = n;
+		_hiveGroupSize = s;
+		_showGui = g;
+		_generateReport = r;
+	}
+
 	@Override
 	public void initialize() {
 		setTimeLast(SIMULATION_TIME);
@@ -164,32 +176,52 @@ public class BeeSimulation extends Simulation {
 	public static void main(String[] args) throws Exception {
 		BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
 		BeeSimulation.addEventListener(new VisualisationEventListener());
-		
+
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints information about passing arguments");
 		options.addOption("n", "number", true, "number of groups of hives");
 		options.addOption("s", "size", true, "size of each group, number of hives in group");
 		options.addOption("c", "configuration", true, "determines which alignment of groups should be used");
-		
+		options.addOption("g", "gui", true, "says if the gui will be displayed during the simulation [yes|no]");
+		options.addOption("r", "report", true, "says if a report will be generated after a simuluation [yes|no]");
+
 		CommandLineParser commandLineParser = new BasicParser();
-		CommandLine commandLine = commandLineParser.parse(options, args);
-		
-		if (commandLine.hasOption("h")) {
+		CommandLine _commandLine = commandLineParser.parse(options, args);
+
+		if (_commandLine.hasOption("h")) {
 			HelpFormatter helpFormatter = new HelpFormatter();
 			helpFormatter.printHelp("BeeSimulation <command> [<arg>]", options);
 		}
-		if (commandLine.hasOption("n")) {
-			System.out.println(commandLine.getOptionValue("n"));
-		}
-		
-		if (commandLine.hasOption("s")) {
-			System.out.println(commandLine.getOptionValue("s"));
-		}
-		if (commandLine.hasOption("c")) {
-			System.out.println(commandLine.getOptionValue("c"));
+		if (_commandLine.hasOption("n")) {
+			System.out.println(_commandLine.getOptionValue("n"));
 		}
 
-		_simulation = new BeeSimulation();
+		if (_commandLine.hasOption("s")) {
+			System.out.println(_commandLine.getOptionValue("s"));
+		}
+		if (_commandLine.hasOption("c")) {
+			System.out.println(_commandLine.getOptionValue("c"));
+		}
+		if (_commandLine.hasOption("g")) {
+			System.out.println(_commandLine.getOptionValue("g"));
+		}
+		if (_commandLine.hasOption("r")) {
+			System.out.println(_commandLine.getOptionValue("r"));
+		}
+
+		boolean showGui;
+		boolean generateReport;
+		if (_commandLine.getOptionValue("g").equals("yes"))
+			showGui = true;
+		else
+			showGui = false;
+		if (_commandLine.getOptionValue("r").equals("yes"))
+			generateReport = true;
+		else
+			generateReport = false;
+
+		_simulation = new BeeSimulation(Integer.parseInt(_commandLine.getOptionValue("n")),
+				Integer.parseInt(_commandLine.getOptionValue("s")), showGui, generateReport);
 		_simulation.run();
 	}
 
