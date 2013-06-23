@@ -39,17 +39,72 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createHives() {
-		registerHive(Position.createFromCoordinates(5, 5), _inputData.getNumberOfBeesPerHive(), "Rome");
-		registerHive(Position.createFromCoordinates(5, 5), 4, "Rome");
-		registerHive(Position.createFromCoordinates(-5, -5), 4, "Milan");
-		registerHive(Position.createFromCoordinates(5, -5), 4, "Naples");
-		registerHive(Position.createFromCoordinates(-5, 5), 4, "Turin");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Palermo");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Genoa");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Bologna");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Florence");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Bari");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1), "Catania");
+		int anzahlGruppen = _hiveGroupNumbers;
+		int gruppenGesetzt = 0;
+		int gruppengroesse = _hiveGroupSize;
+		double platzierungenProSplateUndZeile = Math.sqrt(anzahlGruppen);
+		int platzierungsanzahl = 0;
+
+		if ((platzierungenProSplateUndZeile % 1) == 0) {
+			platzierungsanzahl = (int) platzierungenProSplateUndZeile;
+		} else {
+			platzierungsanzahl = (int) platzierungenProSplateUndZeile;
+			platzierungsanzahl++;
+		}
+
+		int dimensionX = Math.abs(_environment.getMaxX()) + Math.abs(_environment.getMinX());
+		int dimensionY = Math.abs(_environment.getMaxY()) + Math.abs(_environment.getMinY());
+
+		int pixel_x = Math.round(dimensionX / platzierungsanzahl);
+		int pixel_y = Math.round(dimensionY / platzierungsanzahl);
+
+		for (int y = pixel_y; y <= dimensionY; y += pixel_y) {
+			for (int x = pixel_x; x <= dimensionX; x += pixel_x) {
+
+				if (gruppenGesetzt < anzahlGruppen) {
+
+					int gruppenDimension;
+					int gruppenDurchlaufen = 0;
+					if ((Math.sqrt(gruppengroesse) % 1) == 0)
+						gruppenDimension = (int) Math.sqrt(gruppengroesse);
+					else {
+						gruppenDimension = (int) Math.sqrt(gruppengroesse);
+						gruppenDimension++;
+					}
+
+					for (int xg = 0; xg < gruppenDimension; xg++)
+						for (int yg = 0; yg < gruppenDimension; yg++) {
+							if (gruppenDurchlaufen < gruppengroesse) {
+								registerHive(Position.createFromCoordinates((x - dimensionX / 2) - pixel_x / 2 + xg,
+										(y - dimensionY / 2) - pixel_y / 2 + yg), _inputData.getNumberOfBeesPerHive(),
+										"Hive" + gruppenGesetzt + "_" + gruppenDurchlaufen);
+
+								gruppenDurchlaufen++;
+							}
+						}
+				}
+				gruppenGesetzt++;
+			}
+		}
+
+		// registerHive(Position.createFromCoordinates(5, 5),
+		// _inputData.getNumberOfBeesPerHive(), "Rome");
+		// registerHive(Position.createFromCoordinates(5, 5), 4, "Rome");
+		// registerHive(Position.createFromCoordinates(-5, -5), 4, "Milan");
+		// registerHive(Position.createFromCoordinates(5, -5), 4, "Naples");
+		// registerHive(Position.createFromCoordinates(-5, 5), 4, "Turin");
+		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
+		// "Palermo");
+		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
+		// "Genoa");
+		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
+		// "Bologna");
+		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
+		// "Florence");
+		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
+		// "Bari");
+		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
+		// "Catania");
 	}
 
 	private void createFlowers() {
