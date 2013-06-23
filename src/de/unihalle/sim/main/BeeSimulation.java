@@ -114,6 +114,7 @@ public class BeeSimulation extends Simulation {
 		options.addOption("h", "help", false, "prints information about passing arguments");
 		options.addOption("n", "number", true, "number of groups of hives");
 		options.addOption("s", "size", true, "size of each group, number of hives in group");
+		options.addOption("c", "configuration", true, "determines which alignment of groups should be used");
 		
 		CommandLineParser commandLineParser = new BasicParser();
 		CommandLine commandLine = commandLineParser.parse(options, args);
@@ -128,6 +129,9 @@ public class BeeSimulation extends Simulation {
 		
 		if (commandLine.hasOption("s")) {
 			System.out.println(commandLine.getOptionValue("s"));
+		}
+		if (commandLine.hasOption("c")) {
+			System.out.println(commandLine.getOptionValue("c"));
 		}
 
 		_simulation = new BeeSimulation();
