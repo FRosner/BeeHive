@@ -75,23 +75,23 @@ public class BeeSimulation extends Simulation {
 
 				if (groupFixed < groupNumbers) {
 
-					int gruppenDimension;
-					int gruppenDurchlaufen = 0;
+					int groupDimension;
+					int groupCount = 0;
 					if ((Math.sqrt(groupSize) % 1) == 0)
-						gruppenDimension = (int) Math.sqrt(groupSize);
+						groupDimension = (int) Math.sqrt(groupSize);
 					else {
-						gruppenDimension = (int) Math.sqrt(groupSize);
-						gruppenDimension++;
+						groupDimension = (int) Math.sqrt(groupSize);
+						groupDimension++;
 					}
 
-					for (int xg = 0; xg < gruppenDimension; xg++)
-						for (int yg = 0; yg < gruppenDimension; yg++) {
-							if (gruppenDurchlaufen < groupSize) {
+					for (int xg = 0; xg < groupDimension; xg++)
+						for (int yg = 0; yg < groupDimension; yg++) {
+							if (groupCount < groupSize) {
 								registerHive(Position.createFromCoordinates((x - dimensionX / 2) - pixel_x / 2 + xg,
 										(y - dimensionY / 2) - pixel_y / 2 + yg), _inputData.getNumberOfBeesPerHive(),
-										"Hive" + groupFixed + "_" + gruppenDurchlaufen);
+										"Hive" + groupFixed + "_" + groupCount);
 
-								gruppenDurchlaufen++;
+								groupCount++;
 							}
 						}
 				}
