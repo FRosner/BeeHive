@@ -4,12 +4,14 @@ import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
 public class BeeCommandLineParser {
 
-	Options _options;
-	CommandLine _commandLine = null;
+	private Options _options;
+	private CommandLine _commandLine = null;
 
 	private static final int DEFAULT_NUMBER_OF_GROUPS = 1;
 	private static final int DEFAULT_GROUP_SIZE = 1;
@@ -17,12 +19,14 @@ public class BeeCommandLineParser {
 	private BeeCommandLineParser(String[] args) {
 		_options = new Options();
 		_options.addOption("h", "help", false, "usage information");
-		_options.addOption("n", "number", true, "number of hive groups (int)");
-		_options.addOption("s", "size", true, "number of hives in each group (int)");
+		_options.addOption("n", "number", true, "number of hive groups");
+		_options.getOption("n").setArgName("int");
+		_options.addOption("s", "size", true, "number of hives in each group");
+		_options.getOption("s").setArgName("int");
 		_options.addOption("c", "controls", false, "display control panel");
 		_options.addOption("g", "gui", false, "display graphical user interface");
 		_options.addOption("r", "report", false, "generate report (into report.csv)");
-
+		
 		CommandLineParser commandLineParser = new BasicParser();
 
 		try {
