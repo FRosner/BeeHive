@@ -133,7 +133,6 @@ public class BeeSimulation extends Simulation {
 
 	private void registerFlower(String name) {
 		Flower currentFlower = Flower.create();
-		register(currentFlower, name);
 		_environment.addFlower(currentFlower);
 	}
 
