@@ -26,7 +26,7 @@ public class BeeSimulation extends Simulation {
 	private static final double SIMULATION_TIME = TimeUtil.months(12);
 
 	private static Environment _environment = new Environment(-500, 500, -500, 500);
-	private static List<EventListener> _listeners = Lists.newArrayList();
+	private List<EventListener> _listeners = Lists.newArrayList();
 	private static InputData _inputData = new InputData();
 
 	private BeeFactory _beeFactory;
@@ -121,13 +121,13 @@ public class BeeSimulation extends Simulation {
 		System.exit(0);
 	}
 
-	public static void notifyListeners(PositionedEntity entity) {
+	public void notifyListeners(PositionedEntity entity) {
 		for (EventListener e : _listeners) {
 			e.notify(entity);
 		}
 	}
 
-	public static void addEventListener(EventListener e) {
+	public void addEventListener(EventListener e) {
 		_listeners.add(e);
 	}
 
@@ -149,12 +149,12 @@ public class BeeSimulation extends Simulation {
 		BeeSimulation simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize());
 
 		if (arguments.showGui()) {
-			BeeSimulation.addEventListener(new VisualisationEventListener(simulation));
+			simulation.addEventListener(new VisualisationEventListener(simulation));
 		}
 
 		if (arguments.generateReport()) {
 			try {
-				BeeSimulation.addEventListener(new ReportEventListener("report.csv", simulation));
+				simulation.addEventListener(new ReportEventListener("report.csv", simulation));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
