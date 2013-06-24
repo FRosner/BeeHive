@@ -1,5 +1,6 @@
 package de.unihalle.sim.main;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.apache.commons.cli.BasicParser;
@@ -32,14 +33,19 @@ public class BeeSimulation extends Simulation {
 
 	private int _hiveGroupNumbers;
 	private int _hiveGroupSize;
-	private boolean _showGui;
-	private boolean _generateReport;
 
 	public BeeSimulation(int n, int s, boolean g, boolean r) {
 		_hiveGroupNumbers = n;
 		_hiveGroupSize = s;
-		_showGui = g;
-		_generateReport = r;
+
+		if (g == true)
+			BeeSimulation.addEventListener(new VisualisationEventListener());
+		if (r == true)
+			try {
+				BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
+			} catch (FileNotFoundException e) {
+				System.err.println("Something went wrong with the \"ReportEventListener\".");
+			}
 	}
 
 	@Override
@@ -51,72 +57,47 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createHives() {
-		int anzahlGruppen = _hiveGroupNumbers;
-		int gruppenGesetzt = 0;
-		int gruppengroesse = _hiveGroupSize;
-		double platzierungenProSplateUndZeile = Math.sqrt(anzahlGruppen);
-		int platzierungsanzahl = 0;
+		int groupNumbers = _hiveGroupNumbers;
+		int groupFixed = 0;
+		int groupSize = _hiveGroupSize;
+		int numbersOfGroupsSet = 0;
 
-		if ((platzierungenProSplateUndZeile % 1) == 0) {
-			platzierungsanzahl = (int) platzierungenProSplateUndZeile;
-		} else {
-			platzierungsanzahl = (int) platzierungenProSplateUndZeile;
-			platzierungsanzahl++;
-		}
+		numbersOfGroupsSet = (int) Math.ceil(Math.sqrt(groupNumbers));
 
 		int dimensionX = Math.abs(_environment.getMaxX()) + Math.abs(_environment.getMinX());
 		int dimensionY = Math.abs(_environment.getMaxY()) + Math.abs(_environment.getMinY());
 
-		int pixel_x = Math.round(dimensionX / platzierungsanzahl);
-		int pixel_y = Math.round(dimensionY / platzierungsanzahl);
+		int pixel_x = Math.round(dimensionX / numbersOfGroupsSet);
+		int pixel_y = Math.round(dimensionY / numbersOfGroupsSet);
 
 		for (int y = pixel_y; y <= dimensionY; y += pixel_y) {
 			for (int x = pixel_x; x <= dimensionX; x += pixel_x) {
 
-				if (gruppenGesetzt < anzahlGruppen) {
+				if (groupFixed < groupNumbers) {
 
 					int gruppenDimension;
 					int gruppenDurchlaufen = 0;
-					if ((Math.sqrt(gruppengroesse) % 1) == 0)
-						gruppenDimension = (int) Math.sqrt(gruppengroesse);
+					if ((Math.sqrt(groupSize) % 1) == 0)
+						gruppenDimension = (int) Math.sqrt(groupSize);
 					else {
-						gruppenDimension = (int) Math.sqrt(gruppengroesse);
+						gruppenDimension = (int) Math.sqrt(groupSize);
 						gruppenDimension++;
 					}
 
 					for (int xg = 0; xg < gruppenDimension; xg++)
 						for (int yg = 0; yg < gruppenDimension; yg++) {
-							if (gruppenDurchlaufen < gruppengroesse) {
+							if (gruppenDurchlaufen < groupSize) {
 								registerHive(Position.createFromCoordinates((x - dimensionX / 2) - pixel_x / 2 + xg,
 										(y - dimensionY / 2) - pixel_y / 2 + yg), _inputData.getNumberOfBeesPerHive(),
-										"Hive" + gruppenGesetzt + "_" + gruppenDurchlaufen);
+										"Hive" + groupFixed + "_" + gruppenDurchlaufen);
 
 								gruppenDurchlaufen++;
 							}
 						}
 				}
-				gruppenGesetzt++;
+				groupFixed++;
 			}
 		}
-
-		// registerHive(Position.createFromCoordinates(5, 5),
-		// _inputData.getNumberOfBeesPerHive(), "Rome");
-		// registerHive(Position.createFromCoordinates(5, 5), 4, "Rome");
-		// registerHive(Position.createFromCoordinates(-5, -5), 4, "Milan");
-		// registerHive(Position.createFromCoordinates(5, -5), 4, "Naples");
-		// registerHive(Position.createFromCoordinates(-5, 5), 4, "Turin");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
-		// "Palermo");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
-		// "Genoa");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
-		// "Bologna");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
-		// "Florence");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
-		// "Bari");
-		// register(new BeeHive(Position.createFromCoordinates(0, 0), 1),
-		// "Catania");
 	}
 
 	private void createFlowers() {
@@ -174,8 +155,6 @@ public class BeeSimulation extends Simulation {
 	}
 
 	public static void main(String[] args) throws Exception {
-		BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
-		BeeSimulation.addEventListener(new VisualisationEventListener());
 
 		Options options = new Options();
 		options.addOption("h", "help", false, "prints information about passing arguments");
@@ -186,42 +165,42 @@ public class BeeSimulation extends Simulation {
 		options.addOption("r", "report", true, "says if a report will be generated after a simuluation [yes|no]");
 
 		CommandLineParser commandLineParser = new BasicParser();
-		CommandLine _commandLine = commandLineParser.parse(options, args);
+		CommandLine commandLine = commandLineParser.parse(options, args);
 
-		if (_commandLine.hasOption("h")) {
+		if (commandLine.hasOption("h")) {
 			HelpFormatter helpFormatter = new HelpFormatter();
 			helpFormatter.printHelp("BeeSimulation <command> [<arg>]", options);
 		}
-		if (_commandLine.hasOption("n")) {
-			System.out.println(_commandLine.getOptionValue("n"));
+		if (commandLine.hasOption("n")) {
+			System.out.println(commandLine.getOptionValue("n"));
 		}
 
-		if (_commandLine.hasOption("s")) {
-			System.out.println(_commandLine.getOptionValue("s"));
+		if (commandLine.hasOption("s")) {
+			System.out.println(commandLine.getOptionValue("s"));
 		}
-		if (_commandLine.hasOption("c")) {
-			System.out.println(_commandLine.getOptionValue("c"));
+		if (commandLine.hasOption("c")) {
+			System.out.println(commandLine.getOptionValue("c"));
 		}
-		if (_commandLine.hasOption("g")) {
-			System.out.println(_commandLine.getOptionValue("g"));
+		if (commandLine.hasOption("g")) {
+			System.out.println(commandLine.getOptionValue("g"));
 		}
-		if (_commandLine.hasOption("r")) {
-			System.out.println(_commandLine.getOptionValue("r"));
+		if (commandLine.hasOption("r")) {
+			System.out.println(commandLine.getOptionValue("r"));
 		}
 
 		boolean showGui;
 		boolean generateReport;
-		if (_commandLine.getOptionValue("g").equals("yes"))
+		if (commandLine.getOptionValue("g").equals("yes"))
 			showGui = true;
 		else
 			showGui = false;
-		if (_commandLine.getOptionValue("r").equals("yes"))
+		if (commandLine.getOptionValue("r").equals("yes"))
 			generateReport = true;
 		else
 			generateReport = false;
 
-		_simulation = new BeeSimulation(Integer.parseInt(_commandLine.getOptionValue("n")),
-				Integer.parseInt(_commandLine.getOptionValue("s")), showGui, generateReport);
+		_simulation = new BeeSimulation(Integer.parseInt(commandLine.getOptionValue("n")), Integer.parseInt(commandLine
+				.getOptionValue("s")), showGui, generateReport);
 		_simulation.run();
 	}
 
