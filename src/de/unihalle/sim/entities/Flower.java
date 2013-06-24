@@ -25,7 +25,7 @@ public class Flower extends PositionedEntity {
 		 * @return a new <tt>Flower</tt> instance at random position
 		 */
 		public Flower createFlower() {
-			return createFlowerAtPosition(BeeSimulation.getEnvironment().getRandomValidPosition());
+			return createFlowerAtPosition(_simulation.environment().getRandomValidPosition());
 		}
 
 		/**

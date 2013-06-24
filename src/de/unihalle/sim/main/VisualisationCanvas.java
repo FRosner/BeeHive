@@ -102,14 +102,16 @@ public class VisualisationCanvas extends JFrame {
 		}
 	}
 
-	private int _fieldSizeX = BeeSimulation.getEnvironment().getMaxX();
-	private int _fieldSizeY = BeeSimulation.getEnvironment().getMaxY();
+	private int _fieldSizeX;
+	private int _fieldSizeY;
 	private final int _fieldScaleFactor = 10;
 	private Sheet _drawitSheet;
 
 	private static final long serialVersionUID = 1L;
 
 	public VisualisationCanvas(Environment env) {
+		_fieldSizeX = env.getMaxX();
+		_fieldSizeY = env.getMaxY();
 		this.setBackground(new Color(0, 0, 0));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setSize((_fieldSizeX * _fieldScaleFactor * 2) + 40, (_fieldSizeY * _fieldScaleFactor * 2) + 85);

@@ -125,20 +125,22 @@ public class ReportEventListener implements EventListener {
 	}
 
 	private List<SimulationState> _states;
+	private BeeSimulation _simulation;
 
-	public ReportEventListener(PrintWriter out) {
+	public ReportEventListener(PrintWriter out, BeeSimulation simulation) {
+		_simulation = simulation;
 		_out = out;
 		_states = Lists.newArrayList();
 		_states = Collections.synchronizedList(_states);
 	}
 
-	public ReportEventListener(String fileName) throws FileNotFoundException {
-		this(new PrintWriter(fileName));
+	public ReportEventListener(String fileName, BeeSimulation simulation) throws FileNotFoundException {
+		this(new PrintWriter(fileName), simulation);
 	}
 
 	@Override
 	public void notify(PositionedEntity e) {
-		Environment environment = BeeSimulation.getEnvironment();
+		Environment environment = _simulation.environment();
 		double currentTime = (Math.round(e.getTimeNow() * 1000)) / 1000d;
 		int numBees = environment.getNumberOfBees();
 		int numHives = environment.getNumberOfHives();

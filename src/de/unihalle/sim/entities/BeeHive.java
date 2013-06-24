@@ -61,9 +61,9 @@ public class BeeHive extends PositionedEntity {
 		}
 		if (_populationCapacity > _currentPopulation) {
 			boolean newBeeIsWorker = _currentWorkerBeePopulation < _currentPopulation * WORKER_BEE_PERCENTAGE;
-			Bee newBee = _simulation.getBeeFactory().createBee(this, newBeeIsWorker);
+			Bee newBee = _simulation.beeFactory().createBee(this, newBeeIsWorker);
 			register(newBee, getName() + "." + (newBeeIsWorker ? "WorkerBee" : "HiveBee") + _beeCounter);
-			BeeSimulation.getEnvironment().addBee(newBee);
+			_simulation.environment().addBee(newBee);
 			if (newBeeIsWorker) {
 				_currentWorkerBeePopulation++;
 			}
@@ -74,7 +74,7 @@ public class BeeHive extends PositionedEntity {
 	}
 
 	private boolean hasTooMuchInfectedBees() {
-		List<Bee> bees = BeeSimulation.getEnvironment().getBeesAt(this);
+		List<Bee> bees = _simulation.environment().getBeesAt(this);
 		int numberOfInfectedBees = 0;
 		for (Bee bee : bees) {
 			if (bee.isInfected()) {
@@ -94,9 +94,9 @@ public class BeeHive extends PositionedEntity {
 	private void fillHive() {
 		for (int i = 0; i < _populationCapacity; i++) {
 			boolean newBeeIsWorker = _currentWorkerBeePopulation < _currentPopulation * WORKER_BEE_PERCENTAGE;
-			Bee newBee = _simulation.getBeeFactory().createBee(this, newBeeIsWorker);
+			Bee newBee = _simulation.beeFactory().createBee(this, newBeeIsWorker);
 			register(newBee, getName() + "." + (newBeeIsWorker ? "WorkerBee" : "HiveBee") + _beeCounter);
-			BeeSimulation.getEnvironment().addBee(newBee);
+			_simulation.environment().addBee(newBee);
 			if (newBeeIsWorker) {
 				_currentWorkerBeePopulation++;
 			}
@@ -104,11 +104,11 @@ public class BeeHive extends PositionedEntity {
 			_currentPopulation++;
 			newBee.setRandomTimeToLive();
 		}
-		BeeSimulation.getEnvironment().applyInitialInfectionToHive(this, INITIAL_INFECTION_PERCENTAGE);
+		_simulation.environment().applyInitialInfectionToHive(this, INITIAL_INFECTION_PERCENTAGE);
 	}
 
 	public void reportDead(Bee deadBee) {
-		if (_currentPopulation <= 0 || !BeeSimulation.getEnvironment().removeBee(deadBee)) {
+		if (_currentPopulation <= 0 || !_simulation.environment().removeBee(deadBee)) {
 			// Exception is caught by Tortuga framework
 			// throw new RuntimeException("A bee of an empty hive wanted to die. This is impossible.");
 			System.err.println("A bee of an empty hive wanted to die. This is impossible.");

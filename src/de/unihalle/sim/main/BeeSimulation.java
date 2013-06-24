@@ -96,7 +96,7 @@ public class BeeSimulation extends Simulation {
 		for (int i = 0; i < _inputData.getNumberOfFlowers(); i++) {
 			registerFlower("Flower" + i);
 		}
-		register(new Meadow(), "Meadow");
+		register(new Meadow(this), "Meadow");
 	}
 
 	@Override
@@ -107,7 +107,8 @@ public class BeeSimulation extends Simulation {
 		}
 	}
 
-	public static Environment getEnvironment() {
+	// do not call this method getEnvironment as tortuga will crash
+	public Environment environment() {
 		return _environment;
 	}
 
@@ -148,12 +149,12 @@ public class BeeSimulation extends Simulation {
 		BeeSimulation simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize());
 
 		if (arguments.showGui()) {
-			BeeSimulation.addEventListener(new VisualisationEventListener());
+			BeeSimulation.addEventListener(new VisualisationEventListener(simulation));
 		}
 
 		if (arguments.generateReport()) {
 			try {
-				BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
+				BeeSimulation.addEventListener(new ReportEventListener("report.csv", simulation));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -166,7 +167,8 @@ public class BeeSimulation extends Simulation {
 		}
 	}
 
-	public BeeFactory getBeeFactory() {
+	// do not call this method getEnvironment as tortuga will crash
+	public BeeFactory beeFactory() {
 		return _beeFactory;
 	}
 
