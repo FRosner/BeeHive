@@ -5,8 +5,8 @@ import de.unihalle.sim.util.Position;
 
 public class Flower extends PositionedEntity {
 
-	private static final int MAX_NECTAR_CAPACITY = BeeSimulation.getInputData().getFlowerMaxNectarCapacity();
-	private static final double KEEP_ALIVE_TIMER = BeeSimulation.getInputData().getKeepAliveTimer();
+	private static final int MAX_NECTAR_CAPACITY = BeeSimulation.inputData().getFlowerMaxNectarCapacity();
+	private static final double KEEP_ALIVE_TIMER = BeeSimulation.inputData().getKeepAliveTimer();
 
 	private int _nectar;
 

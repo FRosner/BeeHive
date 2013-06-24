@@ -9,10 +9,10 @@ public class BeeHive extends PositionedEntity {
 
 	// http://en.wikipedia.org/wiki/List_of_cities_in_Italy
 
-	private static final double EGG_SPAWN_RATE = BeeSimulation.getInputData().getEggSpawnRate();
-	private static final double INITIAL_INFECTION_PERCENTAGE = BeeSimulation.getInputData()
+	private static final double EGG_SPAWN_RATE = BeeSimulation.inputData().getEggSpawnRate();
+	private static final double INITIAL_INFECTION_PERCENTAGE = BeeSimulation.inputData()
 			.getInitialInfectionPercentage();
-	private static final double WORKER_BEE_PERCENTAGE = BeeSimulation.getInputData().getWorkerBeePercentage();
+	private static final double WORKER_BEE_PERCENTAGE = BeeSimulation.inputData().getWorkerBeePercentage();
 
 	private int _populationCapacity;
 	private int _currentPopulation = 0;

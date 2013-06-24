@@ -10,18 +10,17 @@ import de.unihalle.sim.util.TimeUtil;
 
 public class Bee extends PositionedEntity {
 
-	private static final int MAX_NECTAR_CAPACITY = BeeSimulation.getInputData().getBeeMaxNectarCapacity();
-	private static final double NECTAR_COLLECTION_TIME = BeeSimulation.getInputData().getNectarCollectionTime();
-	private static final double MOVEMENT_SPEED = BeeSimulation.getInputData().getMovementSpeed();
-	private static final double STORE_TIME = BeeSimulation.getInputData().getNectarStoreTime();
-	private static final double KEEP_ALIVE_TIMER = BeeSimulation.getInputData().getKeepAliveTimer();
-	private static final double INCUBATION_TIME = BeeSimulation.getInputData().getIncubationTime();
-	private static final double INFECTION_PROBABILITY = BeeSimulation.getInputData().getInfectionProbability();
-	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = BeeSimulation.getInputData()
-			.getFlyBackToWrongHiveChance();
+	private static final int MAX_NECTAR_CAPACITY = BeeSimulation.inputData().getBeeMaxNectarCapacity();
+	private static final double NECTAR_COLLECTION_TIME = BeeSimulation.inputData().getNectarCollectionTime();
+	private static final double MOVEMENT_SPEED = BeeSimulation.inputData().getMovementSpeed();
+	private static final double STORE_TIME = BeeSimulation.inputData().getNectarStoreTime();
+	private static final double KEEP_ALIVE_TIMER = BeeSimulation.inputData().getKeepAliveTimer();
+	private static final double INCUBATION_TIME = BeeSimulation.inputData().getIncubationTime();
+	private static final double INFECTION_PROBABILITY = BeeSimulation.inputData().getInfectionProbability();
+	private static final double FLY_BACK_TO_WRONG_HIVE_CHANCE = BeeSimulation.inputData().getFlyBackToWrongHiveChance();
 
-	private double _initialTimeToLive = BeeSimulation.getInputData().getInitialTimeToLive();
-	private double _initialTimeToLiveDueToInfection = BeeSimulation.getInputData().getInitialTimeToLiveDueToInfection();
+	private double _initialTimeToLive = BeeSimulation.inputData().getInitialTimeToLive();
+	private double _initialTimeToLiveDueToInfection = BeeSimulation.inputData().getInitialTimeToLiveDueToInfection();
 	private double _timeToLive = _initialTimeToLive;
 	private double _timeToLiveDueToInfection = _initialTimeToLive;
 	private boolean _infected = false;
@@ -247,8 +246,7 @@ public class Bee extends PositionedEntity {
 	private BeeHive tryToFindHome() {
 		BeeHive destination = _home;
 		if (_random.nextDouble() <= FLY_BACK_TO_WRONG_HIVE_CHANCE) {
-			destination = _simulation.environment()
-					.getRandomBeeHiveCloseToPositionButNot(_home, _home.getPosition());
+			destination = _simulation.environment().getRandomBeeHiveCloseToPositionButNot(_home, _home.getPosition());
 		}
 		if (destination == null) {
 			destination = _home;

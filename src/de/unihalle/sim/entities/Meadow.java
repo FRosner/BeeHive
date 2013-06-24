@@ -8,7 +8,7 @@ public class Meadow extends DefaultEntity {
 		_simulation = simulation;
 	}
 
-	private static final double NECTAR_REFRESH_RATE = BeeSimulation.getInputData().getNectarRefreshRate();
+	private static final double NECTAR_REFRESH_RATE = BeeSimulation.inputData().getNectarRefreshRate();
 
 	@Event
 	public void refreshNectar() {

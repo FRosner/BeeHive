@@ -112,7 +112,8 @@ public class BeeSimulation extends Simulation {
 		return _environment;
 	}
 
-	public static InputData getInputData() {
+	// do not call this method getEnvironment as tortuga will crash
+	public static InputData inputData() {
 		return _inputData;
 	}
 
