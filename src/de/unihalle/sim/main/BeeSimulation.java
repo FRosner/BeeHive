@@ -146,12 +146,10 @@ public class BeeSimulation extends Simulation {
 
 		_simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize());
 
-		if (arguments.showControls()) {
-			_simulation.setVisible(true);
-		}
 		if (arguments.showGui()) {
 			BeeSimulation.addEventListener(new VisualisationEventListener());
 		}
+		
 		if (arguments.generateReport()) {
 			try {
 				BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
@@ -160,7 +158,11 @@ public class BeeSimulation extends Simulation {
 			}
 		}
 
-		_simulation.run();
+		if (arguments.showControls()) {
+			_simulation.setVisible(true);
+		} else {
+			_simulation.run();
+		}
 	}
 
 }
