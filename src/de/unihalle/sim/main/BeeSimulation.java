@@ -8,6 +8,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.UnrecognizedOptionException;
 import org.mitre.sim.Simulation;
 
 import com.google.common.collect.Lists;
@@ -34,18 +35,9 @@ public class BeeSimulation extends Simulation {
 	private int _hiveGroupNumbers;
 	private int _hiveGroupSize;
 
-	public BeeSimulation(int n, int s, boolean g, boolean r) {
+	public BeeSimulation(int n, int s) {
 		_hiveGroupNumbers = n;
 		_hiveGroupSize = s;
-
-		if (g == true)
-			BeeSimulation.addEventListener(new VisualisationEventListener());
-		if (r == true)
-			try {
-				BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
-			} catch (FileNotFoundException e) {
-				System.err.println("Something went wrong with the \"ReportEventListener\".");
-			}
 	}
 
 	@Override
@@ -161,46 +153,39 @@ public class BeeSimulation extends Simulation {
 		options.addOption("n", "number", true, "number of groups of hives");
 		options.addOption("s", "size", true, "size of each group, number of hives in group");
 		options.addOption("c", "configuration", true, "determines which alignment of groups should be used");
-		options.addOption("g", "gui", true, "says if the gui will be displayed during the simulation [yes|no]");
-		options.addOption("r", "report", true, "says if a report will be generated after a simuluation [yes|no]");
+		options.addOption("g", "gui", false, "says if the gui will be displayed during the simulation");
+		options.addOption("r", "report", false, "says if a report will be generated after a simuluation");
 
 		CommandLineParser commandLineParser = new BasicParser();
-		CommandLine commandLine = commandLineParser.parse(options, args);
+		CommandLine commandLine = null;
+		try {
+			commandLine = commandLineParser.parse(options, args);
+		} catch (UnrecognizedOptionException e) {
+			HelpFormatter helpFormatter = new HelpFormatter();
+			helpFormatter.printHelp("java -jar BeeSimulation.jar <command> [<arg>]", options);
+			System.exit(1);
+		}
 
 		if (commandLine.hasOption("h")) {
 			HelpFormatter helpFormatter = new HelpFormatter();
-			helpFormatter.printHelp("BeeSimulation <command> [<arg>]", options);
+			helpFormatter.printHelp("java -jar BeeSimulation.jar <command> [<arg>]", options);
+			System.exit(1);
 		}
-		if (commandLine.hasOption("n")) {
-			System.out.println(commandLine.getOptionValue("n"));
-		}
-
-		if (commandLine.hasOption("s")) {
-			System.out.println(commandLine.getOptionValue("s"));
-		}
-		if (commandLine.hasOption("c")) {
-			System.out.println(commandLine.getOptionValue("c"));
-		}
-		if (commandLine.hasOption("g")) {
-			System.out.println(commandLine.getOptionValue("g"));
-		}
-		if (commandLine.hasOption("r")) {
-			System.out.println(commandLine.getOptionValue("r"));
-		}
-
-		boolean showGui;
-		boolean generateReport;
-		if (commandLine.getOptionValue("g").equals("yes"))
-			showGui = true;
-		else
-			showGui = false;
-		if (commandLine.getOptionValue("r").equals("yes"))
-			generateReport = true;
-		else
-			generateReport = false;
 
 		_simulation = new BeeSimulation(Integer.parseInt(commandLine.getOptionValue("n")), Integer.parseInt(commandLine
-				.getOptionValue("s")), showGui, generateReport);
+				.getOptionValue("s")));
+
+		if (commandLine.hasOption("g")) {
+			BeeSimulation.addEventListener(new VisualisationEventListener());
+		}
+		if (commandLine.hasOption("r")) {
+			try {
+				BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+
 		_simulation.run();
 	}
 
