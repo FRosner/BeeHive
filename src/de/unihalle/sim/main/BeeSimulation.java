@@ -3,12 +3,6 @@ package de.unihalle.sim.main;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.UnrecognizedOptionException;
 import org.mitre.sim.Simulation;
 
 import com.google.common.collect.Lists;
@@ -148,40 +142,17 @@ public class BeeSimulation extends Simulation {
 
 	public static void main(String[] args) throws Exception {
 
-		Options options = new Options();
-		options.addOption("h", "help", false, "usage information");
-		options.addOption("n", "number", true, "number of hive groups");
-		options.addOption("s", "size", true, "number of hives in each group");
-		options.addOption("c", "controls", false, "display control panel");
-		options.addOption("g", "gui", false, "display graphical user interface");
-		options.addOption("r", "report", false, "generate report (into report.csv)");
+		BeeCommandLineParser arguments = BeeCommandLineParser.parse(args);
 
-		CommandLineParser commandLineParser = new BasicParser();
-		CommandLine commandLine = null;
-		try {
-			commandLine = commandLineParser.parse(options, args);
-		} catch (UnrecognizedOptionException e) {
-			HelpFormatter helpFormatter = new HelpFormatter();
-			helpFormatter.printHelp("java -jar BeeSimulation.jar <command> [<arg>]", options);
-			System.exit(1);
-		}
+		_simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize());
 
-		if (commandLine.hasOption("h")) {
-			HelpFormatter helpFormatter = new HelpFormatter();
-			helpFormatter.printHelp("java -jar BeeSimulation.jar <command> [<arg>]", options);
-			System.exit(1);
-		}
-
-		_simulation = new BeeSimulation(Integer.parseInt(commandLine.getOptionValue("n")), Integer.parseInt(commandLine
-				.getOptionValue("s")));
-
-		if (commandLine.hasOption("c")) {
+		if (arguments.showControls()) {
 			_simulation.setVisible(true);
 		}
-		if (commandLine.hasOption("g")) {
+		if (arguments.showGui()) {
 			BeeSimulation.addEventListener(new VisualisationEventListener());
 		}
-		if (commandLine.hasOption("r")) {
+		if (arguments.generateReport()) {
 			try {
 				BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
 			} catch (FileNotFoundException e) {
