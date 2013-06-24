@@ -25,7 +25,7 @@ public class BeeSimulation extends Simulation {
 	private static final int SIMULATION_PACE = 0;
 	private static final double SIMULATION_TIME = TimeUtil.months(12);
 
-	private static Environment _environment = new Environment(-500, 500, -500, 500);
+	private Environment _environment = new Environment(-500, 500, -500, 500);
 	private List<EventListener> _listeners = Lists.newArrayList();
 	private static InputData _inputData = new InputData();
 
