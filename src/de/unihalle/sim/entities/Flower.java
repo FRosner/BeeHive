@@ -37,7 +37,7 @@ public class Flower extends PositionedEntity {
 		 * @return a new <tt>Flower</tt> instance at the specified position
 		 */
 		public Flower createFlowerAtPosition(Position position) {
-			return new Flower(position, MAX_NECTAR_CAPACITY);
+			return new Flower(position);
 		}
 
 	}
@@ -46,9 +46,9 @@ public class Flower extends PositionedEntity {
 		return new FlowerFactory(simulation);
 	}
 
-	private Flower(Position position, int nectar) {
+	private Flower(Position position) {
 		_position = position;
-		_nectar = nectar;
+		_nectar = MAX_NECTAR_CAPACITY;
 	}
 
 	public void refreshNectar() {
