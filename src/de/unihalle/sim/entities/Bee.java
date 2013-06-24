@@ -32,37 +32,52 @@ public class Bee extends PositionedEntity {
 	private boolean _isWorker;
 	private boolean _isAlive = false;
 
-	private Bee(Position position, BeeHive home, boolean isWorker) {
+	public static class BeeFactory {
+
+		BeeSimulation _simulation;
+
+		private BeeFactory(BeeSimulation simulation) {
+			_simulation = simulation;
+		}
+
+		/**
+		 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home. The bee will spawn at the
+		 * location of its home.
+		 * 
+		 * @param home
+		 *            hive the <tt>Bee</tt> belongs to
+		 * @return a new <tt>Bee</tt> instance linked to and located at the specified <tt>BeeHive</tt> instance
+		 */
+		public Bee createBee(BeeHive home, boolean isWorker) {
+			return new Bee(home.getPosition(), home, isWorker, _simulation);
+		}
+
+		/**
+		 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home at the specified
+		 * <tt>Position</tt> position.
+		 * 
+		 * @param home
+		 *            hive the <tt>Bee</tt> belongs to
+		 * @param position
+		 *            the <tt>Bee</tt> will spawn at
+		 * @return a new <tt>Bee</tt> instance linked to the specified home and located at the specified position
+		 */
+		public Bee createBeeAtPosition(Position position, BeeHive home, boolean isWorker) {
+			return new Bee(position, home, isWorker, _simulation);
+		}
+
+	}
+
+	public static BeeFactory createFactory(BeeSimulation simulation) {
+		return new BeeFactory(simulation);
+	}
+
+	private Bee(Position position, BeeHive home, boolean isWorker, BeeSimulation simulation) {
 		_position = position;
 		_home = home;
 		_isWorker = isWorker;
 		_random = new Random();
-	}
-
-	/**
-	 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home. The bee will spawn at the
-	 * location of its home.
-	 * 
-	 * @param home
-	 *            hive the <tt>Bee</tt> belongs to
-	 * @return a new <tt>Bee</tt> instance linked to and located at the specified <tt>BeeHive</tt> instance
-	 */
-	public static Bee create(BeeHive home, boolean isWorker) {
-		return new Bee(home.getPosition(), home, isWorker);
-	}
-
-	/**
-	 * Create a new <tt>Bee</tt> instance belonging to specified <tt>BeeHive</tt> home at the specified
-	 * <tt>Position</tt> position.
-	 * 
-	 * @param home
-	 *            hive the <tt>Bee</tt> belongs to
-	 * @param position
-	 *            the <tt>Bee</tt> will spawn at
-	 * @return a new <tt>Bee</tt> instance linked to the specified home and located at the specified position
-	 */
-	public static Bee createAtPosition(Position position, BeeHive home, boolean isWorker) {
-		return new Bee(position, home, isWorker);
+		_simulation = simulation;
 	}
 
 	@Event
@@ -73,7 +88,7 @@ public class Bee extends PositionedEntity {
 		if (_capacity == 0) {
 			scheduleIfNotDead("flyBack", NECTAR_COLLECTION_TIME);
 		} else {
-			scheduleIfNotDead("flyToFlower", NECTAR_COLLECTION_TIME, BeeSimulation.getEnvironment()
+			scheduleIfNotDead("flyToFlower", NECTAR_COLLECTION_TIME, _simulation.getEnvironment()
 					.getRandomFlowerWithNectarCloseTo(_position));
 		}
 	}
@@ -116,7 +131,7 @@ public class Bee extends PositionedEntity {
 		_home.storeNectar(MAX_NECTAR_CAPACITY - _capacity);
 		infoWithPosition("Storing nectar (" + _home.getStoredNectar() + ").");
 		_capacity = MAX_NECTAR_CAPACITY;
-		scheduleIfNotDead("flyToFlower", STORE_TIME, BeeSimulation.getEnvironment().getRandomFlowerWithNectarCloseTo(
+		scheduleIfNotDead("flyToFlower", STORE_TIME, _simulation.getEnvironment().getRandomFlowerWithNectarCloseTo(
 				_position));
 	}
 
@@ -183,7 +198,7 @@ public class Bee extends PositionedEntity {
 		infoWithPosition("I am alive!");
 		_isAlive = true;
 		if (_isWorker) {
-			scheduleIfNotDead("flyToFlower", TimeUtil.seconds(1), BeeSimulation.getEnvironment()
+			scheduleIfNotDead("flyToFlower", TimeUtil.seconds(1), _simulation.getEnvironment()
 					.getRandomFlowerWithNectarCloseTo(_position));
 		} else {
 			scheduleIfNotDead("keepAlive", TimeUtil.seconds(1));
@@ -191,7 +206,7 @@ public class Bee extends PositionedEntity {
 	}
 
 	private void applyInfectionActions() {
-		List<Bee> beesAtPosition = BeeSimulation.getEnvironment().getBeesAt(this);
+		List<Bee> beesAtPosition = _simulation.getEnvironment().getBeesAt(this);
 		for (Bee bee : beesAtPosition) {
 			if (isInfected()) {
 				if (_random.nextDouble() <= INFECTION_PROBABILITY) {
@@ -232,8 +247,8 @@ public class Bee extends PositionedEntity {
 	private BeeHive tryToFindHome() {
 		BeeHive destination = _home;
 		if (_random.nextDouble() <= FLY_BACK_TO_WRONG_HIVE_CHANCE) {
-			destination = BeeSimulation.getEnvironment().getRandomBeeHiveCloseToPositionButNot(_home,
-					_home.getPosition());
+			destination = _simulation.getEnvironment()
+					.getRandomBeeHiveCloseToPositionButNot(_home, _home.getPosition());
 		}
 		if (destination == null) {
 			destination = _home;

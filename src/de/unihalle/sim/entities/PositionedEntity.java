@@ -1,7 +1,5 @@
 package de.unihalle.sim.entities;
 
-import org.mitre.sim.DefaultEntity;
-
 import de.unihalle.sim.main.BeeSimulation;
 import de.unihalle.sim.util.Position;
 

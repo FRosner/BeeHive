@@ -10,31 +10,45 @@ public class Flower extends PositionedEntity {
 
 	private int _nectar;
 
+	public static class FlowerFactory {
+
+		BeeSimulation _simulation;
+
+		private FlowerFactory(BeeSimulation simulation) {
+			_simulation = simulation;
+		}
+
+		/**
+		 * Create a new <tt>Flower</tt> instance at a random position. The position will be in range of the min and max
+		 * coordinates specified in the <tt>BeeSimulation</tt>.
+		 * 
+		 * @return a new <tt>Flower</tt> instance at random position
+		 */
+		public Flower createFlower() {
+			return createFlowerAtPosition(BeeSimulation.getEnvironment().getRandomValidPosition());
+		}
+
+		/**
+		 * Create a new <tt>Flower</tt> instance at the specified position. The position should be in range of the min
+		 * and max coordinates specified in the <tt>BeeSimulation</tt>. However this will not be checked.
+		 * 
+		 * @param position
+		 *            of the new flower
+		 * @return a new <tt>Flower</tt> instance at the specified position
+		 */
+		public Flower createFlowerAtPosition(Position position) {
+			return new Flower(position, MAX_NECTAR_CAPACITY);
+		}
+
+	}
+
+	public static FlowerFactory createFactory(BeeSimulation simulation) {
+		return new FlowerFactory(simulation);
+	}
+
 	private Flower(Position position, int nectar) {
 		_position = position;
 		_nectar = nectar;
-	}
-
-	/**
-	 * Create a new <tt>Flower</tt> instance at a random position. The position will be in range of the min and max
-	 * coordinates specified in the <tt>BeeSimulation</tt>.
-	 * 
-	 * @return a new <tt>Flower</tt> instance at random position
-	 */
-	public static Flower create() {
-		return createAtPosition(BeeSimulation.getEnvironment().getRandomValidPosition());
-	}
-
-	/**
-	 * Create a new <tt>Flower</tt> instance at the specified position. The position should be in range of the min and
-	 * max coordinates specified in the <tt>BeeSimulation</tt>. However this will not be checked.
-	 * 
-	 * @param position
-	 *            of the new flower
-	 * @return a new <tt>Flower</tt> instance at the specified position
-	 */
-	public static Flower createAtPosition(Position position) {
-		return new Flower(position, MAX_NECTAR_CAPACITY);
 	}
 
 	public void refreshNectar() {

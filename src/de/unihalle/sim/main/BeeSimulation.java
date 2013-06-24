@@ -7,10 +7,14 @@ import org.mitre.sim.Simulation;
 
 import com.google.common.collect.Lists;
 
+import de.unihalle.sim.entities.Bee;
 import de.unihalle.sim.entities.BeeHive;
 import de.unihalle.sim.entities.Flower;
 import de.unihalle.sim.entities.Meadow;
 import de.unihalle.sim.entities.PositionedEntity;
+import de.unihalle.sim.entities.Bee.BeeFactory;
+import de.unihalle.sim.entities.BeeHive.BeeHiveFactory;
+import de.unihalle.sim.entities.Flower.FlowerFactory;
 import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
 
@@ -24,14 +28,19 @@ public class BeeSimulation extends Simulation {
 	private static Environment _environment = new Environment(-500, 500, -500, 500);
 	private static List<EventListener> _listeners = Lists.newArrayList();
 	private static InputData _inputData = new InputData();
-	private static BeeSimulation _simulation;
 
+	private BeeFactory _beeFactory;
+	private BeeHiveFactory _hiveFactory;
+	private FlowerFactory _flowerFactory;
 	private int _hiveGroups;
 	private int _hivesPerGroup;
 
 	public BeeSimulation(int hiveGroups, int hivesPerGroup) {
 		_hiveGroups = hiveGroups;
 		_hivesPerGroup = hivesPerGroup;
+		_beeFactory = Bee.createFactory(this);
+		_hiveFactory = BeeHive.createFactory(this);
+		_flowerFactory = Flower.createFactory(this);
 	}
 
 	@Override
@@ -106,10 +115,6 @@ public class BeeSimulation extends Simulation {
 		return _inputData;
 	}
 
-	public static BeeSimulation getSimulation() {
-		return _simulation;
-	}
-
 	public void stopSimulation() {
 		simulationComplete();
 		System.exit(0);
@@ -126,13 +131,13 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void registerHive(Position pos, int capacity, String name) {
-		BeeHive newHive = new BeeHive(pos, capacity);
+		BeeHive newHive = _hiveFactory.createHiveAtPosition(pos, capacity);
 		register(newHive, name);
 		_environment.addHive(newHive);
 	}
 
 	private void registerFlower(String name) {
-		Flower currentFlower = Flower.create();
+		Flower currentFlower = _flowerFactory.createFlower();
 		_environment.addFlower(currentFlower);
 	}
 
@@ -140,7 +145,7 @@ public class BeeSimulation extends Simulation {
 
 		BeeCommandLineParser arguments = BeeCommandLineParser.parse(args);
 
-		_simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize());
+		BeeSimulation simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize());
 
 		if (arguments.showGui()) {
 			BeeSimulation.addEventListener(new VisualisationEventListener());
@@ -155,10 +160,14 @@ public class BeeSimulation extends Simulation {
 		}
 
 		if (arguments.showControls()) {
-			_simulation.setVisible(true);
+			simulation.setVisible(true);
 		} else {
-			_simulation.run();
+			simulation.run();
 		}
+	}
+
+	public BeeFactory getBeeFactory() {
+		return _beeFactory;
 	}
 
 }

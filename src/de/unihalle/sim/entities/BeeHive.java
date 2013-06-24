@@ -21,10 +21,35 @@ public class BeeHive extends PositionedEntity {
 	private int _storedNectar = 0;
 	private boolean _infected = false;
 
-	public BeeHive(Position position, int capacity) {
-		super();
+	public static class BeeHiveFactory {
+
+		BeeSimulation _simulation;
+
+		private BeeHiveFactory(BeeSimulation simulation) {
+			_simulation = simulation;
+		}
+
+		/**
+		 * Create a new <tt>BeeHive</tt> at the specified <tt>Position</tt> position.
+		 * 
+		 * @param position
+		 *            the <tt>BeeHive</tt> will spawn at
+		 * @return a new <tt>BeeHive</tt> instance at the specified position
+		 */
+		public BeeHive createHiveAtPosition(Position position, int capacity) {
+			return new BeeHive(position, capacity, _simulation);
+		}
+
+	}
+
+	public static BeeHiveFactory createFactory(BeeSimulation simulation) {
+		return new BeeHiveFactory(simulation);
+	}
+
+	private BeeHive(Position position, int capacity, BeeSimulation simulation) {
 		_populationCapacity = capacity;
 		_position = position;
+		_simulation = simulation;
 	}
 
 	@Event
@@ -36,7 +61,7 @@ public class BeeHive extends PositionedEntity {
 		}
 		if (_populationCapacity > _currentPopulation) {
 			boolean newBeeIsWorker = _currentWorkerBeePopulation < _currentPopulation * WORKER_BEE_PERCENTAGE;
-			Bee newBee = Bee.create(this, newBeeIsWorker);
+			Bee newBee = _simulation.getBeeFactory().createBee(this, newBeeIsWorker);
 			register(newBee, getName() + "." + (newBeeIsWorker ? "WorkerBee" : "HiveBee") + _beeCounter);
 			BeeSimulation.getEnvironment().addBee(newBee);
 			if (newBeeIsWorker) {
@@ -69,7 +94,7 @@ public class BeeHive extends PositionedEntity {
 	private void fillHive() {
 		for (int i = 0; i < _populationCapacity; i++) {
 			boolean newBeeIsWorker = _currentWorkerBeePopulation < _currentPopulation * WORKER_BEE_PERCENTAGE;
-			Bee newBee = Bee.create(this, newBeeIsWorker);
+			Bee newBee = _simulation.getBeeFactory().createBee(this, newBeeIsWorker);
 			register(newBee, getName() + "." + (newBeeIsWorker ? "WorkerBee" : "HiveBee") + _beeCounter);
 			BeeSimulation.getEnvironment().addBee(newBee);
 			if (newBeeIsWorker) {
