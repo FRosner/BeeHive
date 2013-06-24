@@ -149,12 +149,12 @@ public class BeeSimulation extends Simulation {
 	public static void main(String[] args) throws Exception {
 
 		Options options = new Options();
-		options.addOption("h", "help", false, "prints information about passing arguments");
-		options.addOption("n", "number", true, "number of groups of hives");
-		options.addOption("s", "size", true, "size of each group, number of hives in group");
-		options.addOption("c", "configuration", true, "determines which alignment of groups should be used");
-		options.addOption("g", "gui", false, "says if the gui will be displayed during the simulation");
-		options.addOption("r", "report", false, "says if a report will be generated after a simuluation");
+		options.addOption("h", "help", false, "usage information");
+		options.addOption("n", "number", true, "number of hive groups");
+		options.addOption("s", "size", true, "number of hives in each group");
+		options.addOption("c", "controls", false, "display control panel");
+		options.addOption("g", "gui", false, "display graphical user interface");
+		options.addOption("r", "report", false, "generate report (into report.csv)");
 
 		CommandLineParser commandLineParser = new BasicParser();
 		CommandLine commandLine = null;
@@ -175,6 +175,9 @@ public class BeeSimulation extends Simulation {
 		_simulation = new BeeSimulation(Integer.parseInt(commandLine.getOptionValue("n")), Integer.parseInt(commandLine
 				.getOptionValue("s")));
 
+		if (commandLine.hasOption("c")) {
+			_simulation.setVisible(true);
+		}
 		if (commandLine.hasOption("g")) {
 			BeeSimulation.addEventListener(new VisualisationEventListener());
 		}
