@@ -26,12 +26,12 @@ public class BeeSimulation extends Simulation {
 	private static InputData _inputData = new InputData();
 	private static BeeSimulation _simulation;
 
-	private int _hiveGroupNumbers;
-	private int _hiveGroupSize;
+	private int _hiveGroups;
+	private int _hivesPerGroup;
 
-	public BeeSimulation(int n, int s) {
-		_hiveGroupNumbers = n;
-		_hiveGroupSize = s;
+	public BeeSimulation(int hiveGroups, int hivesPerGroup) {
+		_hiveGroups = hiveGroups;
+		_hivesPerGroup = hivesPerGroup;
 	}
 
 	@Override
@@ -43,29 +43,27 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createHives() {
-		int groupNumbers = _hiveGroupNumbers;
+		int groupNumbers = _hiveGroups;
 		int groupFixed = 0;
-		int groupSize = _hiveGroupSize;
-		int numbersOfGroupsSet = 0;
-
-		numbersOfGroupsSet = (int) Math.ceil(Math.sqrt(groupNumbers));
+		int groupSize = _hivesPerGroup;
+		int numbersOfGroupsSet = (int) Math.ceil(Math.sqrt(groupNumbers));
 
 		int dimensionX = Math.abs(_environment.getMaxX()) + Math.abs(_environment.getMinX());
 		int dimensionY = Math.abs(_environment.getMaxY()) + Math.abs(_environment.getMinY());
 
-		int pixel_x = Math.round(dimensionX / numbersOfGroupsSet);
-		int pixel_y = Math.round(dimensionY / numbersOfGroupsSet);
+		int pixelX = Math.round(dimensionX / numbersOfGroupsSet);
+		int pixelY = Math.round(dimensionY / numbersOfGroupsSet);
 
-		for (int y = pixel_y; y <= dimensionY; y += pixel_y) {
-			for (int x = pixel_x; x <= dimensionX; x += pixel_x) {
+		for (int y = pixelY; y <= dimensionY; y += pixelY) {
+			for (int x = pixelX; x <= dimensionX; x += pixelX) {
 
 				if (groupFixed < groupNumbers) {
 
 					int groupDimension;
 					int groupCount = 0;
-					if ((Math.sqrt(groupSize) % 1) == 0)
+					if ((Math.sqrt(groupSize) % 1) == 0) {
 						groupDimension = (int) Math.sqrt(groupSize);
-					else {
+					} else {
 						groupDimension = (int) Math.sqrt(groupSize);
 						groupDimension++;
 					}
@@ -73,10 +71,9 @@ public class BeeSimulation extends Simulation {
 					for (int xg = 0; xg < groupDimension; xg++)
 						for (int yg = 0; yg < groupDimension; yg++) {
 							if (groupCount < groupSize) {
-								registerHive(Position.createFromCoordinates((x - dimensionX / 2) - pixel_x / 2 + xg,
-										(y - dimensionY / 2) - pixel_y / 2 + yg), _inputData.getNumberOfBeesPerHive(),
+								registerHive(Position.createFromCoordinates((x - dimensionX / 2) - pixelX / 2 + xg,
+										(y - dimensionY / 2) - pixelY / 2 + yg), _inputData.getNumberOfBeesPerHive(),
 										"Hive" + groupFixed + "_" + groupCount);
-
 								groupCount++;
 							}
 						}
@@ -149,7 +146,7 @@ public class BeeSimulation extends Simulation {
 		if (arguments.showGui()) {
 			BeeSimulation.addEventListener(new VisualisationEventListener());
 		}
-		
+
 		if (arguments.generateReport()) {
 			try {
 				BeeSimulation.addEventListener(new ReportEventListener("report.csv"));
