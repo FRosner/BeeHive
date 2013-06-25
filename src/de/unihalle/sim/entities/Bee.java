@@ -98,11 +98,7 @@ public class Bee extends PositionedEntity {
 		double distance = _position.distance(destination.getPosition());
 		double movementTime = MovementUtil.calculateMovementTime(distance, MOVEMENT_SPEED);
 		moveTo(destination.getPosition(), movementTime);
-		if (isAtHomeAt(destination)) {
-			scheduleIfNotDead("storeNectar", movementTime);
-		} else {
-			scheduleIfNotDead("arriveAtWrongHive", movementTime, destination);
-		}
+		scheduleIfNotDead("storeNectarAt", movementTime, destination);
 		infoWithPosition("Flying back to the hive.");
 	}
 
@@ -111,14 +107,7 @@ public class Bee extends PositionedEntity {
 	}
 
 	@Event
-	public void arriveAtWrongHive(BeeHive destination) {
-		infoWithPosition("Oops that's not home: " + destination.getName() + ".");
-		applyInfectionActions();
-		scheduleIfNotDead("flyBack", TimeUtil.minutes(1));
-	}
-
-	@Event
-	public void storeNectar() {
+	public void storeNectarAt(BeeHive hive) {
 		applyInfectionActions();
 		if (isIncubated()) {
 			// TODO check whether banned bees unload their nectar before getting
@@ -127,11 +116,11 @@ public class Bee extends PositionedEntity {
 			scheduleIfNotDead("die", TimeUtil.seconds(0));
 			return;
 		}
-		_home.storeNectar(MAX_NECTAR_CAPACITY - _capacity);
-		infoWithPosition("Storing nectar (" + _home.getStoredNectar() + ").");
+		hive.storeNectar(MAX_NECTAR_CAPACITY - _capacity);
+		infoWithPosition("Storing nectar (" + hive.getStoredNectar() + ").");
 		_capacity = MAX_NECTAR_CAPACITY;
-		scheduleIfNotDead("flyToFlower", STORE_TIME, _simulation.environment().getRandomFlowerWithNectarCloseTo(
-				_position));
+		scheduleIfNotDead("flyToFlower", STORE_TIME,
+				_simulation.environment().getRandomFlowerWithNectarCloseTo(_position));
 	}
 
 	@Event
