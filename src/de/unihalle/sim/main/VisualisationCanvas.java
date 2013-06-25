@@ -82,23 +82,21 @@ public class VisualisationCanvas extends JFrame {
 
 			List<Bee> beeList = _temporaryEnvironment.getBees();
 			for (Bee f : beeList) {
-
 				g.setColor(_hiveMap.get(f.getHomeName()));
 
-				if (f.isMoving() == true) {
+				if (f.isMoving()) {
 					drawArrow(g,
 							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().x * _fieldScaleFactor) - 1) + 15,
 							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().y * _fieldScaleFactor) - 1) + 15,
 							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().x * _fieldScaleFactor) - 1) + 15,
 							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().y * _fieldScaleFactor) - 1) + 15);
 				} else {
-
 					g.fillRect((_fieldSizeX) * _fieldScaleFactor
 							+ ((((f.getPosition().x) * _fieldScaleFactor) - 1) + 15), (_fieldSizeY) * _fieldScaleFactor
 							+ ((((f.getPosition().y) * _fieldScaleFactor) - 1) + 15), 4, 4);
-
 				}
 			}
+
 		}
 	}
 

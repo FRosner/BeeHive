@@ -18,8 +18,9 @@ public class VisualisationEventListener implements EventListener {
 	@Override
 	public void notify(PositionedEntity e) {
 
-		if (e.getTimeNow() > _oldTimestamp)
+		if (e.getTimeNow() > _oldTimestamp) {
 			_canvas.drawit(_tempVisualisationEnvironment);
+		}
 		_tempVisualisationEnvironment = _simulation.environment().clone();
 		_oldTimestamp = e.getTimeNow();
 	}
