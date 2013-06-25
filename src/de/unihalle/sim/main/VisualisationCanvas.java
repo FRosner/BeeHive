@@ -115,6 +115,7 @@ public class VisualisationCanvas extends JFrame {
 		setSize((_fieldSizeX * _fieldScaleFactor * 2) + 40, (_fieldSizeY * _fieldScaleFactor * 2) + 60);
 		setLocationRelativeTo(null);
 		setTitle("BeeHive Simulation");
+		setAutoRequestFocus(false);
 
 		setVisible(true);
 	}
