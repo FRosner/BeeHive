@@ -25,7 +25,7 @@ public class BeeSimulation extends Simulation {
 	private static final int SIMULATION_PACE = 0;
 	private static final double SIMULATION_TIME = TimeUtil.months(12);
 
-	private Environment _environment = new Environment(-500, 500, -500, 500);
+	private Environment _environment;
 	private List<EventListener> _listeners = Lists.newArrayList();
 	private static InputData _inputData = new InputData();
 
@@ -35,9 +35,10 @@ public class BeeSimulation extends Simulation {
 	private int _hiveGroups;
 	private int _hivesPerGroup;
 
-	public BeeSimulation(int hiveGroups, int hivesPerGroup) {
+	public BeeSimulation(int hiveGroups, int hivesPerGroup, Environment environment) {
 		_hiveGroups = hiveGroups;
 		_hivesPerGroup = hivesPerGroup;
+		_environment = environment;
 		_beeFactory = Bee.createFactory(this);
 		_hiveFactory = BeeHive.createFactory(this);
 		_flowerFactory = Flower.createFactory(this);
@@ -142,10 +143,10 @@ public class BeeSimulation extends Simulation {
 
 		BeeCommandLineParser arguments = BeeCommandLineParser.parse(args);
 
-		BeeSimulation simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize());
+		BeeSimulation simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize(),
+				(arguments.showGui()) ? new Environment(-30, 30, -30, 30) : new Environment(-500, 500, -500, 500));
 
 		if (arguments.showGui()) {
-			simulation._environment = new Environment(-20, 30, -20, 30);
 			simulation.addEventListener(new VisualisationEventListener(simulation));
 		}
 
