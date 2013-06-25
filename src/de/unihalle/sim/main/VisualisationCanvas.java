@@ -67,7 +67,7 @@ public class VisualisationCanvas extends JFrame {
 
 				g.setColor(new Color(255, 0, 0));
 				g.fillOval((_fieldSizeX) * _fieldScaleFactor + (((f.getPosition().x * _fieldScaleFactor) - 5) + 15),
-						(_fieldSizeY) * _fieldScaleFactor + (((f.getPosition().y * _fieldScaleFactor) - 5) + 40), 10,
+						(_fieldSizeY) * _fieldScaleFactor + (((f.getPosition().y * _fieldScaleFactor) - 5) + 15), 10,
 						10);
 
 			}
@@ -76,7 +76,7 @@ public class VisualisationCanvas extends JFrame {
 			for (Flower f : flowerList) {
 				g.setColor(new Color(0, 255, 0));
 				g.drawRect((_fieldSizeX) * _fieldScaleFactor + ((((f.getPosition().x) * _fieldScaleFactor) - 2) + 15),
-						(_fieldSizeY) * _fieldScaleFactor + ((((f.getPosition().y) * _fieldScaleFactor) - 2) + 40), 5,
+						(_fieldSizeY) * _fieldScaleFactor + ((((f.getPosition().y) * _fieldScaleFactor) - 2) + 15), 5,
 						5);
 			}
 
@@ -88,14 +88,14 @@ public class VisualisationCanvas extends JFrame {
 				if (f.isMoving() == true) {
 					drawArrow(g,
 							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().x * _fieldScaleFactor) - 1) + 15,
-							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().y * _fieldScaleFactor) - 1) + 40,
+							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().y * _fieldScaleFactor) - 1) + 15,
 							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().x * _fieldScaleFactor) - 1) + 15,
-							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().y * _fieldScaleFactor) - 1) + 40);
+							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().y * _fieldScaleFactor) - 1) + 15);
 				} else {
 
 					g.fillRect((_fieldSizeX) * _fieldScaleFactor
 							+ ((((f.getPosition().x) * _fieldScaleFactor) - 1) + 15), (_fieldSizeY) * _fieldScaleFactor
-							+ ((((f.getPosition().y) * _fieldScaleFactor) - 1) + 40), 4, 4);
+							+ ((((f.getPosition().y) * _fieldScaleFactor) - 1) + 15), 4, 4);
 
 				}
 			}
@@ -114,7 +114,7 @@ public class VisualisationCanvas extends JFrame {
 		_fieldSizeY = env.getMaxY();
 		this.setBackground(new Color(0, 0, 0));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setSize((_fieldSizeX * _fieldScaleFactor * 2) + 40, (_fieldSizeY * _fieldScaleFactor * 2) + 85);
+		setSize((_fieldSizeX * _fieldScaleFactor * 2) + 40, (_fieldSizeY * _fieldScaleFactor * 2) + 60);
 		setLocationRelativeTo(null);
 		setTitle("BeeHive Simulation");
 

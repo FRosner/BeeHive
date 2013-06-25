@@ -68,14 +68,8 @@ public class BeeSimulation extends Simulation {
 
 				if (groupFixed < groupNumbers) {
 
-					int groupDimension;
 					int groupCount = 0;
-					if ((Math.sqrt(groupSize) % 1) == 0) {
-						groupDimension = (int) Math.sqrt(groupSize);
-					} else {
-						groupDimension = (int) Math.sqrt(groupSize);
-						groupDimension++;
-					}
+					int groupDimension = (int) Math.ceil(Math.sqrt(groupSize));
 
 					for (int xg = 0; xg < groupDimension; xg++)
 						for (int yg = 0; yg < groupDimension; yg++) {
@@ -150,6 +144,7 @@ public class BeeSimulation extends Simulation {
 		BeeSimulation simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize());
 
 		if (arguments.showGui()) {
+			simulation._environment = new Environment(-20, 30, -20, 30);
 			simulation.addEventListener(new VisualisationEventListener(simulation));
 		}
 
