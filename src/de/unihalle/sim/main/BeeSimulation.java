@@ -106,7 +106,7 @@ public class BeeSimulation extends Simulation {
 		return _environment;
 	}
 
-	// do not call this method getEnvironment as tortuga will crash
+	// do not call this method getInputData as tortuga will crash
 	public static InputData inputData() {
 		return _inputData;
 	}
@@ -163,7 +163,7 @@ public class BeeSimulation extends Simulation {
 		}
 	}
 
-	// do not call this method getEnvironment as tortuga will crash
+	// do not call this method getBeeFactory as tortuga will crash
 	public BeeFactory beeFactory() {
 		return _beeFactory;
 	}
