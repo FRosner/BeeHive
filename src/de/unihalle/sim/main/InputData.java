@@ -9,7 +9,7 @@ public class InputData {
 
 	private Random _random = new Random();
 	// environmental data
-	private int _numberOfFlowers = 8;
+	private int _numberOfFlowersPerBee = 8;
 	private int _numberOfBeesPerHive = 2;
 
 	// hive data
@@ -39,8 +39,8 @@ public class InputData {
 		return _random.nextGaussian() * standardDeviation + mean;
 	}
 
-	public int getNumberOfFlowers() {
-		return _numberOfFlowers;
+	public int getNumberOfFlowersPerBee() {
+		return _numberOfFlowersPerBee;
 	}
 
 	public int getNumberOfBeesPerHive() {

@@ -87,7 +87,8 @@ public class BeeSimulation extends Simulation {
 	}
 
 	private void createFlowers() {
-		for (int i = 0; i < _inputData.getNumberOfFlowers(); i++) {
+		for (int i = 0; i < _inputData.getNumberOfFlowersPerBee() * _hiveGroups * _hivesPerGroup
+				* _inputData.getNumberOfBeesPerHive(); i++) {
 			registerFlower("Flower" + i);
 		}
 		register(new Meadow(this), "Meadow");
