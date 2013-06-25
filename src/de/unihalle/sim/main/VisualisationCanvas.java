@@ -23,7 +23,7 @@ public class VisualisationCanvas extends JFrame {
 		private Environment _temporaryEnvironment;
 		private Map<String, Color> _hiveMap = Maps.newHashMap();
 		private Color[] _colorArray = new Color[4];
-		private int _currentColor = 0;
+		private int _currentColor;
 
 		public Sheet(Environment drawingEnvironment) {
 			_temporaryEnvironment = drawingEnvironment;
@@ -34,24 +34,39 @@ public class VisualisationCanvas extends JFrame {
 			_colorArray[3] = new Color(255, 118, 71);
 
 			_currentColor = 0;
+
+			List<BeeHive> beeHiveList = _temporaryEnvironment.getBeeHives();
+			for (BeeHive f : beeHiveList) {
+				if (_currentColor == 4) {
+					_currentColor = 0;
+				}
+
+				_hiveMap.put(f.getName(), _colorArray[_currentColor]);
+				_currentColor++;
+			}
 		}
 
 		private void drawArrow(Graphics g, int x1, int y1, int x2, int y2) {
-			g.drawLine(x1, y1, x2, y2);
-			double directionCorrection = 1;
-			if (x2 > x1) {
-				directionCorrection = -1;
+			if (x1 == x2 && y1 == y2) {
+
+			} else {
+				g.drawLine(x1, y1, x2, y2);
+
+				double directionCorrection = 1;
+				if (x2 > x1) {
+					directionCorrection = -1;
+				}
+				double alpha = Math.atan((double) (y2 - y1) / (double) (x2 - x1));
+				double theta1 = alpha + Math.PI / 8d;
+				double theta2 = alpha - Math.PI / 8d;
+				int r = (int) Math.ceil(0.5 * _fieldScaleFactor);
+				double linie1x = x2 + (r * Math.cos(theta1)) * directionCorrection;
+				double linie1y = y2 + (r * Math.sin(theta1)) * directionCorrection;
+				double linie2x = x2 + (r * Math.cos(theta2)) * directionCorrection;
+				double linie2y = y2 + (r * Math.sin(theta2)) * directionCorrection;
+				g.drawLine(x2, y2, (int) linie1x, (int) linie1y);
+				g.drawLine(x2, y2, (int) linie2x, (int) linie2y);
 			}
-			double alpha = Math.atan((double) (y2 - y1) / (double) (x2 - x1));
-			double theta1 = alpha + Math.PI / 8d;
-			double theta2 = alpha - Math.PI / 8d;
-			int r = (int) Math.ceil(0.5 * _fieldScaleFactor);
-			double linie1x = x2 + (r * Math.cos(theta1)) * directionCorrection;
-			double linie1y = y2 + (r * Math.sin(theta1)) * directionCorrection;
-			double linie2x = x2 + (r * Math.cos(theta2)) * directionCorrection;
-			double linie2y = y2 + (r * Math.sin(theta2)) * directionCorrection;
-			g.drawLine(x2, y2, (int) linie1x, (int) linie1y);
-			g.drawLine(x2, y2, (int) linie2x, (int) linie2y);
 		}
 
 		@Override
@@ -59,25 +74,21 @@ public class VisualisationCanvas extends JFrame {
 
 			List<BeeHive> beeHiveList = _temporaryEnvironment.getBeeHives();
 			for (BeeHive f : beeHiveList) {
-				if (_currentColor == 4)
-					_currentColor = 0;
-
-				_hiveMap.put(f.getName(), _colorArray[_currentColor]);
-				_currentColor++;
-
 				g.setColor(new Color(255, 0, 0));
-				g.fillOval((_fieldSizeX) * _fieldScaleFactor + (((f.getPosition().x * _fieldScaleFactor) - 5) + 15),
-						(_fieldSizeY) * _fieldScaleFactor + (((f.getPosition().y * _fieldScaleFactor) - 5) + 15), 10,
-						10);
+				g.fillOval(
+						(_fieldSizeX / 2) * _fieldScaleFactor + (((f.getPosition().x * _fieldScaleFactor) - 5) + 15),
+						(_fieldSizeY / 2) * _fieldScaleFactor + (((f.getPosition().y * _fieldScaleFactor) - 5) + 15),
+						10, 10);
 
 			}
 
 			List<Flower> flowerList = _temporaryEnvironment.getFlowers();
 			for (Flower f : flowerList) {
 				g.setColor(new Color(0, 255, 0));
-				g.drawRect((_fieldSizeX) * _fieldScaleFactor + ((((f.getPosition().x) * _fieldScaleFactor) - 2) + 15),
-						(_fieldSizeY) * _fieldScaleFactor + ((((f.getPosition().y) * _fieldScaleFactor) - 2) + 15), 5,
-						5);
+				g.drawRect(
+						(_fieldSizeX / 2) * _fieldScaleFactor + (((f.getPosition().x * _fieldScaleFactor) - 2) + 15),
+						(_fieldSizeY / 2) * _fieldScaleFactor + (((f.getPosition().y * _fieldScaleFactor) - 2) + 15),
+						5, 5);
 			}
 
 			List<Bee> beeList = _temporaryEnvironment.getBees();
@@ -85,15 +96,16 @@ public class VisualisationCanvas extends JFrame {
 				g.setColor(_hiveMap.get(f.getHomeName()));
 
 				if (f.isMoving()) {
-					drawArrow(g,
-							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().x * _fieldScaleFactor) - 1) + 15,
-							(_fieldSizeX * _fieldScaleFactor) + ((f.getPosition().y * _fieldScaleFactor) - 1) + 15,
-							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().x * _fieldScaleFactor) - 1) + 15,
-							(_fieldSizeX * _fieldScaleFactor) + ((f.getDestination().y * _fieldScaleFactor) - 1) + 15);
+					drawArrow(g, (_fieldSizeX / 2 * _fieldScaleFactor) + ((f.getPosition().x * _fieldScaleFactor) - 1)
+							+ 15, (_fieldSizeY / 2 * _fieldScaleFactor) + ((f.getPosition().y * _fieldScaleFactor) - 1)
+							+ 15, (_fieldSizeX / 2 * _fieldScaleFactor)
+							+ ((f.getDestination().x * _fieldScaleFactor) - 1) + 15,
+							(_fieldSizeY / 2 * _fieldScaleFactor) + ((f.getDestination().y * _fieldScaleFactor) - 1)
+									+ 15);
 				} else {
-					g.fillRect((_fieldSizeX) * _fieldScaleFactor
-							+ ((((f.getPosition().x) * _fieldScaleFactor) - 1) + 15), (_fieldSizeY) * _fieldScaleFactor
-							+ ((((f.getPosition().y) * _fieldScaleFactor) - 1) + 15), 4, 4);
+					g.fillRect((_fieldSizeX / 2) * _fieldScaleFactor
+							+ ((((f.getPosition().x) * _fieldScaleFactor) - 1) + 15), (_fieldSizeY / 2)
+							* _fieldScaleFactor + ((((f.getPosition().y) * _fieldScaleFactor) - 1) + 15), 4, 4);
 				}
 			}
 
@@ -108,11 +120,11 @@ public class VisualisationCanvas extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public VisualisationCanvas(Environment env) {
-		_fieldSizeX = env.getMaxX();
-		_fieldSizeY = env.getMaxY();
+		_fieldSizeX = Math.abs(env.getMaxX()) + Math.abs(env.getMinX());
+		_fieldSizeY = Math.abs(env.getMaxY()) + Math.abs(env.getMinY());
 		this.setBackground(new Color(0, 0, 0));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setSize((_fieldSizeX * _fieldScaleFactor * 2) + 40, (_fieldSizeY * _fieldScaleFactor * 2) + 60);
+		setSize((_fieldSizeX * _fieldScaleFactor) + 40, (_fieldSizeY * _fieldScaleFactor) + 60);
 		setLocationRelativeTo(null);
 		setTitle("BeeHive Simulation");
 		setAutoRequestFocus(false);
