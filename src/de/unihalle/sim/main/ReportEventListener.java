@@ -163,8 +163,13 @@ public class ReportEventListener implements EventListener {
 				.numberOfHives(numHives).numberOfInfectedBees(numInfected).beeInfectionRatio(infectionRatio)
 				.averageFlowerNectarRatio(averageFlowerNectarRatio).collapsedHiveRatio(collapsedHiveRatio).build());
 		_lastNotificationTime = currentTime;
+
+		if (numBees == 0 && _lastNotificationTime > 0d) {
+			_simulation.stopSimulation();
+		}
 	}
 
+	@Override
 	public void close() {
 		_out.write(SimulationState.getSchema() + "\n");
 		for (SimulationState s : _states) {
