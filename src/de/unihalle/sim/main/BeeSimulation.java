@@ -8,13 +8,13 @@ import org.mitre.sim.Simulation;
 import com.google.common.collect.Lists;
 
 import de.unihalle.sim.entities.Bee;
+import de.unihalle.sim.entities.Bee.BeeFactory;
 import de.unihalle.sim.entities.BeeHive;
+import de.unihalle.sim.entities.BeeHive.BeeHiveFactory;
 import de.unihalle.sim.entities.Flower;
+import de.unihalle.sim.entities.Flower.FlowerFactory;
 import de.unihalle.sim.entities.Meadow;
 import de.unihalle.sim.entities.PositionedEntity;
-import de.unihalle.sim.entities.Bee.BeeFactory;
-import de.unihalle.sim.entities.BeeHive.BeeHiveFactory;
-import de.unihalle.sim.entities.Flower.FlowerFactory;
 import de.unihalle.sim.util.Position;
 import de.unihalle.sim.util.TimeUtil;
 
@@ -52,6 +52,32 @@ public class BeeSimulation extends Simulation {
 		createHives();
 	}
 
+	private void createHiveGroups(int groupDimension, int groupCount, int groupSize, int x, int y, int dimensionX,
+			int dimensionY, int pixelX, int pixelY, int groupFixed, int fullLineSwitch) {
+		for (int yg = 0; yg < groupDimension; yg++) {
+			for (int xg = 0; xg < groupDimension; xg++) {
+				if (groupCount < groupSize) {
+
+					int lastPositionedHiveX;
+					int lastPositionedHiveY;
+
+					if (fullLineSwitch == 1) {
+						lastPositionedHiveX = (x - dimensionX / 2) - pixelX / 2 + xg - groupDimension / 2;
+						lastPositionedHiveY = (y - dimensionY / 2) - pixelY / 2 + yg - groupDimension / 2;
+					} else {
+						lastPositionedHiveX = (x - dimensionX / 2) + xg - groupDimension / 2;
+						lastPositionedHiveY = (y - dimensionY / 2) + yg - pixelY / 2 - groupDimension / 2;
+					}
+
+					registerHive(Position.createFromCoordinates(lastPositionedHiveX, lastPositionedHiveY),
+							_inputData.getNumberOfBeesPerHive(), "Hive" + groupFixed + "_" + groupCount);
+
+					groupCount++;
+				}
+			}
+		}
+	}
+
 	private void createHives() {
 		int groupNumbers = _hiveGroups;
 		int groupFixed = 0;
@@ -61,29 +87,83 @@ public class BeeSimulation extends Simulation {
 		int dimensionX = Math.abs(_environment.getMaxX()) + Math.abs(_environment.getMinX());
 		int dimensionY = Math.abs(_environment.getMaxY()) + Math.abs(_environment.getMinY());
 
+		int hivesPrintedInLastLine = numbersOfGroupsSet;
+		hivesPrintedInLastLine *= numbersOfGroupsSet;
+		hivesPrintedInLastLine -= groupNumbers;
+		int additionalVerticalLinesToPrint = hivesPrintedInLastLine;
+		additionalVerticalLinesToPrint = (int) Math.ceil(additionalVerticalLinesToPrint / numbersOfGroupsSet);
+		hivesPrintedInLastLine = hivesPrintedInLastLine % numbersOfGroupsSet;
+		hivesPrintedInLastLine = numbersOfGroupsSet - hivesPrintedInLastLine;
+
+		System.err.println(numbersOfGroupsSet);
+		System.err.println(hivesPrintedInLastLine);
+		System.err.println(additionalVerticalLinesToPrint);
+
 		int pixelX = Math.round(dimensionX / numbersOfGroupsSet);
-		int pixelY = Math.round(dimensionY / numbersOfGroupsSet);
+		int pixelY;
+		if (additionalVerticalLinesToPrint > 0) {
 
-		for (int y = pixelY; y <= dimensionY; y += pixelY) {
-			for (int x = pixelX; x <= dimensionX; x += pixelX) {
+			pixelY = Math.round(dimensionY / (numbersOfGroupsSet - additionalVerticalLinesToPrint));
+		} else {
+			pixelY = Math.round(dimensionY / (numbersOfGroupsSet));
+		}
 
-				if (groupFixed < groupNumbers) {
+		int actualExtraHiveToPrint = 1;
+		boolean alreadyPrintedaHive = false;
+		int extraHiveX = 0;
+		int extraHiveY = 0;
 
-					int groupCount = 0;
-					int groupDimension = (int) Math.ceil(Math.sqrt(groupSize));
+		int groupDimension = (int) Math.ceil(Math.sqrt(groupSize));
+		int groupCount = 0;
+		int lineCount = 0;
 
-					for (int xg = 0; xg < groupDimension; xg++)
-						for (int yg = 0; yg < groupDimension; yg++) {
-							if (groupCount < groupSize) {
-								registerHive(Position.createFromCoordinates((x - dimensionX / 2) - pixelX / 2 + xg,
-										(y - dimensionY / 2) - pixelY / 2 + yg), _inputData.getNumberOfBeesPerHive(),
-										"Hive" + groupFixed + "_" + groupCount);
-								groupCount++;
+		// int y = pixelY; y <= dimensionY; y += pixelY
+		for (int y = pixelY; y <= pixelY * numbersOfGroupsSet; y += pixelY) {
+			for (int x = pixelX; x <= pixelX * numbersOfGroupsSet; x += pixelX) {
+
+				if (groupFixed < groupNumbers - hivesPrintedInLastLine && lineCount < numbersOfGroupsSet) {
+
+					createHiveGroups(groupDimension, groupCount, groupSize, x, y, dimensionX, dimensionY, pixelX,
+							pixelY, groupFixed, 1);
+					groupFixed++;
+					lineCount++;
+				} else if (groupFixed >= groupNumbers - hivesPrintedInLastLine && lineCount < numbersOfGroupsSet) {
+					lineCount++;
+					if (actualExtraHiveToPrint <= hivesPrintedInLastLine) {
+
+						if (hivesPrintedInLastLine == numbersOfGroupsSet) {
+							if (!alreadyPrintedaHive) {
+								extraHiveX = 0 + (dimensionX / (hivesPrintedInLastLine));
+								extraHiveY = y;
+								alreadyPrintedaHive = true;
 							}
+
+							createHiveGroups(groupDimension, groupCount, groupSize, extraHiveX, y, dimensionX,
+									dimensionY, pixelX, pixelY, groupFixed, 1);
+							groupFixed++;
+
+							extraHiveX += (dimensionX / (hivesPrintedInLastLine));
+							extraHiveY += (dimensionY / hivesPrintedInLastLine);
+						} else {
+							if (!alreadyPrintedaHive) {
+								extraHiveX = 0 + (dimensionX / (hivesPrintedInLastLine + 1));
+								extraHiveY = y;
+								alreadyPrintedaHive = true;
+								System.err.println(y);
+							}
+
+							createHiveGroups(groupDimension, groupCount, groupSize, extraHiveX, extraHiveY, dimensionX,
+									dimensionY, pixelX, pixelY, groupFixed, 0);
+							groupFixed++;
+
+							extraHiveX += (dimensionX / (hivesPrintedInLastLine + 1));
 						}
+
+						actualExtraHiveToPrint++;
+					}
 				}
-				groupFixed++;
 			}
+			lineCount = 0;
 		}
 	}
 
