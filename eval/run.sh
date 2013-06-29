@@ -12,17 +12,18 @@ echo ""
 echo "BeeSimulation Runscript"
 echo "-----------------------"
 echo ""
-echo "Compiling helpclass..."
-javac -source "1.6" -target "1.6" factor.java
-echo "Compilation complete."
+echo "Compiling helpclass"
+javac -source "1.6" -target "1.6" factor.java && echo "Compilation complete"
+echo "Removing results from last run"
 rm log.txt
+rm collapsed*.txt
 hiveNumbers=$1
+echo "Starting simulation runs"
 for i in `java factor $hiveNumbers`
 do
-	hiveValue=`echo $i | sed -e 's/^ *//g' -e 's/ *$//g'`
+	hiveValue=`echo $i | sed -e 's/^ *//g' -e 's/ *$//g'` #remove leading and trailing whitespaces
 	hivesPerGroup=`expr $hiveNumbers / $hiveValue`
 	collapsedFile=collapsed.n$hiveValue.s$hivesPerGroup.in.txt
-	rm $collapsedFile
 	
 	for ((j=1;j<=$reps;j++));
 	do
