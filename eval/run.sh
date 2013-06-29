@@ -32,3 +32,4 @@ do
 		tail -n 1 report.csv | cut -d ";" -f 1 >> $collapsedFile
 	done
 done
+Rscript summary.R
