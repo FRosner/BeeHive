@@ -95,10 +95,6 @@ public class BeeSimulation extends Simulation {
 		hivesPrintedInLastLine = hivesPrintedInLastLine % numbersOfGroupsSet;
 		hivesPrintedInLastLine = numbersOfGroupsSet - hivesPrintedInLastLine;
 
-		System.err.println(numbersOfGroupsSet);
-		System.err.println(hivesPrintedInLastLine);
-		System.err.println(additionalVerticalLinesToPrint);
-
 		int pixelX = Math.round(dimensionX / numbersOfGroupsSet);
 		int pixelY;
 		if (additionalVerticalLinesToPrint > 0) {
