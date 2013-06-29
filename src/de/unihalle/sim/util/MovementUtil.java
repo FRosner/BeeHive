@@ -2,11 +2,11 @@ package de.unihalle.sim.util;
 
 public class MovementUtil {
 
-	public static double metersPerSecond(int mps) {
+	public static double metersPerSecond(double mps) {
 		return mps;
 	}
 
-	public static double kilometersPerHour(int kmps) {
+	public static double kilometersPerHour(double kmps) {
 		return kmps / 3.6d;
 	}
 
