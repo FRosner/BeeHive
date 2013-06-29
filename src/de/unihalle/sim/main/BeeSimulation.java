@@ -145,7 +145,6 @@ public class BeeSimulation extends Simulation {
 								extraHiveX = 0 + (dimensionX / (hivesPrintedInLastLine + 1));
 								extraHiveY = y;
 								alreadyPrintedaHive = true;
-								System.err.println(y);
 							}
 
 							createHiveGroups(groupDimension, groupCount, groupSize, extraHiveX, extraHiveY, dimensionX,
