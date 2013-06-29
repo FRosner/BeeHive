@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 reps=10
 
@@ -25,7 +25,7 @@ do
 	hivesPerGroup=`expr $hiveNumbers / $hiveValue`
 	collapsedFile=collapsed.n$hiveValue.s$hivesPerGroup.in.txt
 	
-	for ((j=1;j<=$reps;j++));
+	for (( j=1; j<=$reps; j++ ))
 	do
 		echo "n = $hiveValue, s = $hivesPerGroup, rep=$j"
 		java -jar BeeSimulation.jar -n $hiveValue -s $hivesPerGroup -r >> log.txt
