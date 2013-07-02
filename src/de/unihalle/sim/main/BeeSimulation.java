@@ -27,7 +27,7 @@ public class BeeSimulation extends Simulation {
 
 	private Environment _environment;
 	private List<EventListener> _listeners = Lists.newArrayList();
-	private static InputData _inputData;
+	private static InputData _inputData = new InputData();
 
 	private BeeFactory _beeFactory;
 	private BeeHiveFactory _hiveFactory;
@@ -36,11 +36,6 @@ public class BeeSimulation extends Simulation {
 	private int _hivesPerGroup;
 
 	public BeeSimulation(int hiveGroups, int hivesPerGroup, Environment environment) {
-		try {
-			_inputData = new InputData();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		_hiveGroups = hiveGroups;
 		_hivesPerGroup = hivesPerGroup;
 		_environment = environment;

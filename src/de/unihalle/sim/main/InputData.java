@@ -20,6 +20,7 @@ public class InputData {
 	// environmental data
 	private int _numberOfFlowersPerBee;
 	private int _numberOfBeesPerHive;
+	private double _beeGetLostRadius;
 
 	// hive data
 	private double _eggSpawnRate;
@@ -79,6 +80,7 @@ public class InputData {
 	private void applyProperties() {
 		_numberOfFlowersPerBee = Integer.parseInt(_properties.getProperty("numberOfFlowersPerBee"));
 		_numberOfBeesPerHive = Integer.parseInt(_properties.getProperty("numberOfBeesPerHive"));
+		_beeGetLostRadius = Double.parseDouble(_properties.getProperty("beeGetLostRadius"));
 		_eggSpawnRate = TimeUtil.seconds(Double.parseDouble(_properties.getProperty("eggSpawnRate.secs")));
 		_initialInfectionPercentage = Double.parseDouble(_properties.getProperty("initialInfectionPercentage"));
 		_workerBeePercentage = Double.parseDouble(_properties.getProperty("workerBeePercentage"));
@@ -178,6 +180,10 @@ public class InputData {
 
 	public double getCollapseThreshold() {
 		return _collapseThreshold;
+	}
+
+	public double getBeeGetLostRadius() {
+		return _beeGetLostRadius;
 	}
 
 }

@@ -26,7 +26,8 @@ public class Environment implements Cloneable {
 	private int _maxY = 10;
 
 	private Random _random = new Random();
-	private NormalDistribution _normalDistribution = new NormalDistribution(0, 10);
+	private NormalDistribution _normalDistribution = new NormalDistribution(0, BeeSimulation.inputData()
+			.getBeeGetLostRadius());
 
 	public Environment() {
 	}
