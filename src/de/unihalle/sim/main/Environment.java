@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.math3.distribution.NormalDistribution;
+
 import com.google.common.collect.Lists;
 
 import de.unihalle.sim.entities.Bee;
@@ -24,6 +26,7 @@ public class Environment implements Cloneable {
 	private int _maxY = 10;
 
 	private Random _random = new Random();
+	private NormalDistribution _normalDistribution = new NormalDistribution(0, 10);
 
 	public Environment() {
 	}
@@ -209,34 +212,33 @@ public class Environment implements Cloneable {
 	}
 
 	/**
-	 * Returns a random hive from all hives in the environment but the one specified. Hives closer to the specified one
-	 * have a higher probability to be selected. If no other hives are available, <tt>null</tt> is returned.
+	 * Returns a random hive from all hives in the environment. Hives closer to the specified position have a higher
+	 * probability to be selected.
 	 * 
-	 * @param hive
-	 *            to be excluded from selection
+	 * @param pos
+	 *            that the random hive will be probable close to
 	 * @return random hive
 	 */
-	public BeeHive getRandomBeeHiveCloseToPositionButNot(BeeHive hive, Position pos) {
-		if (_hives.size() <= 0) {
-			System.err.println("No hives created but tried to select one.");
-			System.exit(1);
+	public BeeHive getRandomBeeHiveCloseToPosition(Position pos) {
+		List<Double> odds = Lists.newArrayList();
+		double oddsSum = 0;
+		for (BeeHive h : _hives) {
+			double odd = _normalDistribution.density(h.getPosition().distance(pos)) / _normalDistribution.density(0);
+			oddsSum += odd;
+			odds.add(odd);
 		}
-		List<BeeHive> tempHives = Lists.newArrayList(_hives);
-		tempHives.remove(hive);
-		if (tempHives.size() == 0) {
-			return null;
-		}
-		BeeHive randomHive = null;
-		double minRandomValue = Double.POSITIVE_INFINITY;
-		double currentRandomValue;
-		for (BeeHive h : tempHives) {
-			currentRandomValue = h.getPosition().distance(pos) * _random.nextDouble();
-			if (Double.compare(currentRandomValue, minRandomValue) < 0) {
-				randomHive = h;
-				minRandomValue = currentRandomValue;
+		double cumulativeProbability = 0;
+		double random = _random.nextDouble();
+		for (int i = 0; i < odds.size(); i++) {
+			double probability = (odds.get(i) / oddsSum);
+			cumulativeProbability += probability;
+			if (random < cumulativeProbability) {
+				return _hives.get(i);
 			}
 		}
-		return randomHive;
+		System.err.println("Cumulative probabilies seem not to sum to 1.");
+		System.exit(1);
+		return null;
 	}
 
 	/**

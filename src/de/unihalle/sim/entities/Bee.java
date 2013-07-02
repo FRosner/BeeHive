@@ -233,14 +233,7 @@ public class Bee extends PositionedEntity {
 	}
 
 	private BeeHive tryToFindHome() {
-		BeeHive destination = _home;
-		if (_random.nextDouble() <= FLY_BACK_TO_WRONG_HIVE_CHANCE) {
-			destination = _simulation.environment().getRandomBeeHiveCloseToPositionButNot(_home, _home.getPosition());
-		}
-		if (destination == null) {
-			destination = _home;
-		}
-		return destination;
+		return _simulation.environment().getRandomBeeHiveCloseToPosition(_home.getPosition());
 	}
 
 	public boolean isIncubated() {
