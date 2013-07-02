@@ -6,6 +6,7 @@ import java.util.Random;
 public class Position extends Point {
 
 	private static final long serialVersionUID = 1L;
+	private static Random _random = new Random(4561651);
 
 	private Position(int x, int y) {
 		super(x, y);
@@ -51,9 +52,8 @@ public class Position extends Point {
 	 * @return random position within ((minX,maxX),(minY,maxY))
 	 */
 	public static Position createRandomPositionWithin(int minX, int maxX, int minY, int maxY) {
-		Random random = new Random();
-		int x = random.nextInt(maxX - minX) + minX;
-		int y = random.nextInt(maxY - minY) + minY;
+		int x = _random.nextInt(maxX - minX) + minX;
+		int y = _random.nextInt(maxY - minY) + minY;
 		return createFromCoordinates(x, y);
 	}
 
