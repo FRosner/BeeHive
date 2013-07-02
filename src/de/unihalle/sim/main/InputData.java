@@ -51,6 +51,7 @@ public class InputData {
 	}
 
 	private void loadDefaultProperties() {
+		System.out.println("Loading " + DEFAULT_PROPERTY_FILE);
 		try {
 			_properties = new Properties();
 			_properties.load(new FileInputStream(DEFAULT_PROPERTY_FILE));
@@ -64,6 +65,7 @@ public class InputData {
 	private void loadCustomProperties() {
 		File customPropertyFile = new File(CUSTOM_PROPERTY_FILE);
 		if (customPropertyFile.isFile()) {
+			System.out.println("Loading " + CUSTOM_PROPERTY_FILE);
 			try {
 				_properties.load(new FileInputStream(customPropertyFile));
 			} catch (Exception e) {
