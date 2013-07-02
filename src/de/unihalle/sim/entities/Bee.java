@@ -117,7 +117,7 @@ public class Bee extends PositionedEntity {
 			return;
 		}
 		hive.storeNectar(MAX_NECTAR_CAPACITY - _capacity);
-		infoWithPosition("Storing nectar (" + hive.getStoredNectar() + ").");
+		infoWithPosition("Storing nectar at " + hive.getName() + " (" + hive.getStoredNectar() + ").");
 		_capacity = MAX_NECTAR_CAPACITY;
 		scheduleIfNotDead("flyToFlower", STORE_TIME,
 				_simulation.environment().getRandomFlowerWithNectarCloseTo(_position));
