@@ -87,21 +87,17 @@ public class BeeSimulation extends Simulation {
 		int dimensionX = Math.abs(_environment.getMaxX()) + Math.abs(_environment.getMinX());
 		int dimensionY = Math.abs(_environment.getMaxY()) + Math.abs(_environment.getMinY());
 
-		int hivesPrintedInLastLine = numbersOfGroupsSet;
-		hivesPrintedInLastLine *= numbersOfGroupsSet;
-		hivesPrintedInLastLine -= groupNumbers;
-		int additionalVerticalLinesToPrint = hivesPrintedInLastLine;
-		additionalVerticalLinesToPrint = (int) Math.ceil(additionalVerticalLinesToPrint / numbersOfGroupsSet);
-		hivesPrintedInLastLine = hivesPrintedInLastLine % numbersOfGroupsSet;
-		hivesPrintedInLastLine = numbersOfGroupsSet - hivesPrintedInLastLine;
+		int hivesPrintedInLastLine = ((int) Math.pow(numbersOfGroupsSet, 2)) - groupNumbers;
+		int additionalVerticalLinesToPrint = (int) Math.ceil(hivesPrintedInLastLine / numbersOfGroupsSet);
+		hivesPrintedInLastLine = numbersOfGroupsSet - (hivesPrintedInLastLine % numbersOfGroupsSet);
 
-		int pixelX = Math.round(dimensionX / numbersOfGroupsSet);
-		int pixelY;
+		int stepsInXdirection = Math.round(dimensionX / numbersOfGroupsSet);
+		int stepsInYdirection;
 		if (additionalVerticalLinesToPrint > 0) {
 
-			pixelY = Math.round(dimensionY / (numbersOfGroupsSet - additionalVerticalLinesToPrint));
+			stepsInYdirection = Math.round(dimensionY / (numbersOfGroupsSet - additionalVerticalLinesToPrint));
 		} else {
-			pixelY = Math.round(dimensionY / (numbersOfGroupsSet));
+			stepsInYdirection = Math.round(dimensionY / (numbersOfGroupsSet));
 		}
 
 		int actualExtraHiveToPrint = 1;
@@ -113,14 +109,13 @@ public class BeeSimulation extends Simulation {
 		int groupCount = 0;
 		int lineCount = 0;
 
-		// int y = pixelY; y <= dimensionY; y += pixelY
-		for (int y = pixelY; y <= pixelY * numbersOfGroupsSet; y += pixelY) {
-			for (int x = pixelX; x <= pixelX * numbersOfGroupsSet; x += pixelX) {
+		for (int y = stepsInYdirection; y <= stepsInYdirection * numbersOfGroupsSet; y += stepsInYdirection) {
+			for (int x = stepsInXdirection; x <= stepsInXdirection * numbersOfGroupsSet; x += stepsInXdirection) {
 
 				if (groupFixed < groupNumbers - hivesPrintedInLastLine && lineCount < numbersOfGroupsSet) {
 
-					createHiveGroups(groupDimension, groupCount, groupSize, x, y, dimensionX, dimensionY, pixelX,
-							pixelY, groupFixed, 1);
+					createHiveGroups(groupDimension, groupCount, groupSize, x, y, dimensionX, dimensionY,
+							stepsInXdirection, stepsInYdirection, groupFixed, 1);
 					groupFixed++;
 					lineCount++;
 				} else if (groupFixed >= groupNumbers - hivesPrintedInLastLine && lineCount < numbersOfGroupsSet) {
@@ -135,7 +130,7 @@ public class BeeSimulation extends Simulation {
 							}
 
 							createHiveGroups(groupDimension, groupCount, groupSize, extraHiveX, y, dimensionX,
-									dimensionY, pixelX, pixelY, groupFixed, 1);
+									dimensionY, stepsInXdirection, stepsInYdirection, groupFixed, 1);
 							groupFixed++;
 
 							extraHiveX += (dimensionX / (hivesPrintedInLastLine));
@@ -148,7 +143,7 @@ public class BeeSimulation extends Simulation {
 							}
 
 							createHiveGroups(groupDimension, groupCount, groupSize, extraHiveX, extraHiveY, dimensionX,
-									dimensionY, pixelX, pixelY, groupFixed, 0);
+									dimensionY, stepsInXdirection, stepsInYdirection, groupFixed, 0);
 							groupFixed++;
 
 							extraHiveX += (dimensionX / (hivesPrintedInLastLine + 1));
