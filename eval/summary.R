@@ -1,3 +1,6 @@
+# install.packages(Hmisc)
+library(Hmisc)
+
 rm(list=ls())
 
 #all_args = commandArgs(trailingOnly = TRUE);
@@ -25,4 +28,13 @@ colnames(result) = collapsedFiles
 
 pdf("summary.pdf", title="BeeSimulation: Scenario Comparison")
 boxplot(result, main="Scenario comparison: Time passed until all bees are dead", xlab="Scenario", ylab="Simulation time (d)")
+for ( j in seq(1,ncol( result ),1) ) {
+  data <- result[,j]
+  m = mean(data)
+  e = error <- qt(0.975,df=length(data)-1)*sd(data)/sqrt(length(data))
+  left <- m-e
+  right <- m+e
+  errbar(x=j, y=m, yminus=left, yplus=right, add=TRUE)
+  j = j + 1
+}
 dev.off()
