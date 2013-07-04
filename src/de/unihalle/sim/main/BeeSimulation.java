@@ -218,8 +218,11 @@ public class BeeSimulation extends Simulation {
 
 		BeeCommandLineParser arguments = BeeCommandLineParser.parse(args);
 
+		// average available surface: 20ha
+		// 1ha = 10000 square meters -> 20ha = 200000 square meters ->
+		// sqrt(200000) approximately 450m -> Env(-225, 225, -225, 225)
 		BeeSimulation simulation = new BeeSimulation(arguments.getNumberOfGroups(), arguments.getGroupSize(),
-				(arguments.showGui()) ? new Environment(-30, 30, -30, 30) : new Environment(-500, 500, -500, 500));
+				(arguments.showGui()) ? new Environment(-30, 30, -30, 30) : new Environment(-225, 225, -225, 225));
 
 		if (arguments.showGui()) {
 			simulation.addEventListener(new VisualisationEventListener(simulation));
