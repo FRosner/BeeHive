@@ -16,6 +16,7 @@ echo "Compiling helpclass"
 javac -source "1.6" -target "1.6" factor.java && echo "Compilation complete"
 echo "Removing results from last run"
 rm log.txt
+rm errorlog.txt
 rm collapsed*.txt
 hiveNumbers=$1
 echo "Starting simulation runs"
@@ -28,7 +29,7 @@ do
 	for (( j=1; j<=$reps; j++ ))
 	do
 		echo "n = $hiveValue, s = $hivesPerGroup, rep=$j"
-		java -jar BeeSimulation.jar -n $hiveValue -s $hivesPerGroup -r >> log.txt
+		java -jar BeeSimulation.jar -n $hiveValue -s $hivesPerGroup -r >> log.txt 2>> errorlog.txt
 		tail -n 1 report.csv | cut -d ";" -f 1 >> $collapsedFile
 	done
 done
