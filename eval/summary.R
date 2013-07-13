@@ -1,4 +1,4 @@
-# install.packages(Hmisc)
+# install.packages("Hmisc")
 library(Hmisc)
 
 rm(list=ls())
@@ -20,20 +20,23 @@ for (file in collapsedFiles) {
   i = i+1
 }
 
+
 collapsedFiles = gsub("collapsed.", "", collapsedFiles)
 collapsedFiles = gsub(".in.txt", "", collapsedFiles)
 collapsedFiles = gsub("n", "n=", collapsedFiles)
 collapsedFiles = gsub(".s", ", s=", collapsedFiles)
 colnames(result) = collapsedFiles
 
+#significance level
+alpha = 0.05
+
 pdf("summary.pdf", title="BeeSimulation: Scenario Comparison")
 boxplot(result, main="Scenario comparison: Time passed until all bees are dead", xlab="Scenario", ylab="Simulation time (d)")
-for ( j in seq(1,ncol( result ),1) ) {
-  data <- result[,j]
-  m = mean(data)
-  e = error <- qt(0.975,df=length(data)-1)*sd(data)/sqrt(length(data))
-  left <- m-e
-  right <- m+e
+for (j in 1:ncol(result)) {
+  m = mean(result[,j])
+  error = qt(1-alpha/2,df=length(result[,j])-1)*sd(result[,j])/sqrt(length(result[,j]))
+  left = m-error
+  right = m+error
   errbar(x=j, y=m, yminus=left, yplus=right, add=TRUE)
   j = j + 1
 }
