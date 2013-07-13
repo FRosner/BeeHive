@@ -117,11 +117,18 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
 
 \begin{frame}{Zielstellung}
-
+\textbf{Problemstellung}
 \begin{itemize}
-\item Bienen können sich mit einer Krankheit infizieren die über kurz oder lang zum Zusammenbruch der Population führt\\
+\item Bienen können sich mit einer Krankheit infizieren
+\item erkrankte Bienen können Krankheit kompletten Bienenstock anstecken
+\item dies kann zum Absterben eines Stocks führen
+\end{itemize}
+
 \vspace*{1em}
-$\Rightarrow$ Es soll der Einfluss der Bienenstockkonfiguration auf die Ausbreitungsgeschwindigkeit der Krankheit innerhalb der Bienenpopulation untersucht werden
+
+\textbf{Zielstellung}
+\begin{itemize}
+\item daher soll Einfluss der Bienenstockplatzierung auf Ausbreitungsgeschwindigkeit der Krankheit innerhalb der Bienenpopulation untersucht werden
 \end{itemize}
 
 \end{frame}
@@ -134,22 +141,24 @@ $\Rightarrow$ Es soll der Einfluss der Bienenstockkonfiguration auf die Ausbreit
 \begin{frame}
 \frametitle{Problemabgrenzung (1)}
 \begin{itemize}
-\item Imker besitzt bestimmte Anzahl Bienenstöcke die auf einer fest definierten Fläche platziert werden können
-\item Königin produziert solange Bienen bis Kapazität des Stocks erreicht ist
-\item Bienen fliegen durch den freien Raum zu Blüten, sammeln Nektar, bringen diesen zurück und ruhen sich aus
-\item Bienen sterben entweder nach einer gewissen Zeit oder wenn sie sich mit der Krankheit infiziert haben
-\item Erkrankte Bienen können auch vor Ablauf der Inkubationszeit andere Bienen anstecken
+\item Imker besitzen eine bestimmte Anzahl Bienenstöcke, die auf einer festgelegten Fläche platziert werden sollen
+\item eine Bienenkönigin legt solange Eier bis Kapazität ihres Stocks erreicht ist
+\item Bienen fliegen zu Blüten, sammeln Nektar, bringen diesen zurück und ruhen sich aus
+\item Bienen sterben entweder eines natürlichen Todes oder durch die Krankheit
+\item erkrankte Bienen können vor Ablauf der Inkubationszeit andere Bienen anstecken
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Problemabgrenzung (2)}
 \begin{itemize}
-\item Eine Ansteckung ist entweder durch das gemeinsame Sammeln an einer Blüte oder durch den gemeinsamen Aufenthalt im Stock möglich
-\item Sobald eine Biene Symptome zeigt, wird sie vom Stock ausgestoßen, fliegt ziellos umher und stirbt nach kurzer Zeit ohne weitere Bienen anzustecken % Annahme von uns??
-\item Falls sich Bienen zu einem fremden Stock verirren, dürfen sie ihren Nektar abladen, werden danach aber von dessen Wachen fortgeschickt.\\
-$\Rightarrow$ Dieser Vorgang kann ebenfalls zu einer Ansteckung führen
-
+\item eine erkrankte Biene kann weitere Bienen im Stock oder an Blüten anstecken
+\item sobald eine Biene Symptome zeigt, wird sie vom Stock ausgestoßen, fliegt ziellos umher und stirbt nach kurzer Zeit ohne weitere Bienen anzustecken % Annahme von uns??
+\item Bienen können versehentlich zu einem falschen Stock fliegen
+	\begin{itemize}
+	\item nachdem sie dort ihren Nektar abgegeben haben, werden sie aus dem Stock entfernt
+	\item während des Aufenthalts können andere Bienen angesteckt werden
+	\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -159,30 +168,39 @@ $\Rightarrow$ Dieser Vorgang kann ebenfalls zu einer Ansteckung führen
 \begin{frame}
 \frametitle{Annahmen}
 \begin{itemize}
-\item In der Natur werden verschiedenen Bienen, verschiedene Aufgaben zugeteilt (Bienenstock umsorgen, Nektar sammeln)\\
-\vspace*{1em}
-$\Rightarrow$ Im Modell wird auf diese Teilung verzichtet und davon ausgegangen das sich immer ein fester Prozentsatz an Bienen im Stock befindet
-\vspace*{1em}
-\item Es wird davon ausgegangen das initial ein bestimmter Anteil an Bienen erkrankt ist
+\item in Natur werden verschiedenen Bienen, verschiedene Aufgaben zugeteilt (Bienenstock umsorgen, Nektar sammeln)
+\begin{itemize}
+\item[$\Rightarrow$] 
+ im Modell wird darauf verzichtet und es befindet sich immer ein bestimmter Anteil im Stock
 \end{itemize}
+\item ein bestimmter Prozentsatz Bienen ist am Anfang der Simulation bereits erkrankt
+\end{itemize}
+\bigskip
+\footnotesize\cite[Vgl.][]{tautz2007phaenomen} \\
+\footnotesize\cite[Vgl.][]{genersch2010honey} \\
+\footnotesize\cite[Vgl.][]{tautz2013bee} \\
 \end{frame}
 
-\subsection{Eingabeaten}
+\subsection{Eingabedaten}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
 
 \begin{frame}
 \frametitle{Eingabedaten}
 \begin{itemize}
-\item Verfügbare Imkerfläche
-\item Maximale Anzahl Bienenstöcke des Imkers
+\item verfügbare Anbaufläche und maximale Anzahl Bienenstöcke des Imkers
 \item Lebensdauer, Tragekapazität, Fluggeschwindigkeit einer Biene
 \item Nektarmenge und Regenerationsdauer einer Blüte
 \item Verweildauer einer Biene im eigenen/fremden Stock
-\item Wahrscheinlichkeit für Verfliegen zum fremden Stock
+\item Wahrscheinlichkeit für Verfliegen zu fremdem Stock
 \item Eierlegerate einer Königin und Kapazität eines Bienenstocks
 \item Anteil der Sammler im Stock
-\item Anteil initial erkrankter Bienen, Inkubationszeit und Ansteckungswahrscheinlichkeit für andere Bienen
+\item Anteil initial erkrankter Bienen
+\item Inkubationszeit und Ansteckungswahrscheinlichkeit für gesunde Bienen
 \end{itemize}
+\bigskip
+\footcite[Vgl.][]{tautz2007phaenomen} \\
+\footnotesize\cite[Vgl.][]{genersch2010honey} \\
+\footnotesize\cite[Vgl.][]{tautz2013bee} \\
 \end{frame}
 
 \subsection{Ziel- und Stellgröße}
@@ -193,7 +211,7 @@ $\Rightarrow$ Im Modell wird auf diese Teilung verzichtet und davon ausgegangen 
 \textbf{Zielgröße}
 \begin{itemize}
 \item Zeitdauer bis komplette Bienenpopulation kollabiert\\
-$\Rightarrow$ Maximierungsproblem
+\item[$\Rightarrow$]  Maximierungsproblem
 \end{itemize}
 \vspace*{1em}
 \textbf{Stellgröße}
