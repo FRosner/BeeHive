@@ -136,8 +136,8 @@ public class Bee extends PositionedEntity {
 	public void die() {
 		if (_isAlive) {
 			_isAlive = false;
-			infoWithPosition("I am dead.");
 			_home.reportDead(this);
+			infoWithPosition("I am dead.");
 		} else {
 			// already dead
 			return;
