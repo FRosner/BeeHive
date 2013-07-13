@@ -117,9 +117,11 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
 
 \begin{frame}{Zielstellung}
+
 \begin{itemize}
-\item Bienen können sich mit einer Krankheit infizieren die über kurz oder lang zum Zusammenbruch der Population führt
-\item Es soll der Einfluss der Bienenstockkonfiguration auf die Ausbreitungsgeschwindigkeit der Krankheit innerhalb der Bienenpopulation untersucht werden
+\item Bienen können sich mit einer Krankheit infizieren die über kurz oder lang zum Zusammenbruch der Population führt\\
+\vspace*{1em}
+$\Rightarrow$ Es soll der Einfluss der Bienenstockkonfiguration auf die Ausbreitungsgeschwindigkeit der Krankheit innerhalb der Bienenpopulation untersucht werden
 \end{itemize}
 
 \end{frame}
@@ -127,7 +129,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \section{Problemabgrenzung, Daten und Annahmen}
 
 \subsection{Problemabgrenzung}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
 
 \begin{frame}
 \frametitle{Problemabgrenzung (1)}
@@ -143,35 +145,37 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \begin{frame}
 \frametitle{Problemabgrenzung (2)}
 \begin{itemize}
-\item Eine Ansteckung ist entweder durch das gemeinsame Sammeln an einer Blüte oder der gemeinsame Aufenthalt im Stock möglich
-\item Sobald Biene Symptome zeigt, wird sie vom Stock ausgestoßen, fliegt ziellos umher und stirbt nach kurzer Zeit ohne weitere Bienen anzustecken % Annahme von uns??
-\item Falls sich Bienen zu einem fremden Stock verirren, dürfen sie ihren Nektar abladen, werden dann aber von dessen Wachen fortgeschickt.\\
-$\Rightarrow$ Kann ebenfalls zu einer Ansteckung führen
+\item Eine Ansteckung ist entweder durch das gemeinsame Sammeln an einer Blüte oder durch den gemeinsamen Aufenthalt im Stock möglich
+\item Sobald eine Biene Symptome zeigt, wird sie vom Stock ausgestoßen, fliegt ziellos umher und stirbt nach kurzer Zeit ohne weitere Bienen anzustecken % Annahme von uns??
+\item Falls sich Bienen zu einem fremden Stock verirren, dürfen sie ihren Nektar abladen, werden danach aber von dessen Wachen fortgeschickt.\\
+$\Rightarrow$ Dieser Vorgang kann ebenfalls zu einer Ansteckung führen
 
 \end{itemize}
 \end{frame}
 
 \subsection{Annahmen}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
 
 \begin{frame}
 \frametitle{Annahmen}
 \begin{itemize}
-\item In Natur werden verschiedenen Bienen verschiedene Aufgaben zugeteilt\\
-$\Rightarrow$ Junge Bienen umsorgen den Stock und die Eier während Ältere Bienen Nektar sammeln
-\item Im Model wird auf diese Teilung verzichtet und davon ausgegangen das immer ein fester Prozentsatz an Bienen sich im Stock befindet
-\item Es wird davon ausgegangen das initial ein bestimmter Anteil Bienen erkrankt ist
+\item In der Natur werden verschiedenen Bienen, verschiedene Aufgaben zugeteilt (Bienenstock umsorgen, Nektar sammeln)\\
+\vspace*{1em}
+$\Rightarrow$ Im Modell wird auf diese Teilung verzichtet und davon ausgegangen das sich immer ein fester Prozentsatz an Bienen im Stock befindet
+\vspace*{1em}
+\item Es wird davon ausgegangen das initial ein bestimmter Anteil an Bienen erkrankt ist
 \end{itemize}
 \end{frame}
 
 \subsection{Eingabeaten}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
 
 \begin{frame}
 \frametitle{Eingabedaten}
 \begin{itemize}
-\item Verfügbare Imkerfläche und maximale Anzahl Bienenstöcke des Imkers
-\item Lebensdauer, Tragekapazität und Fluggeschwindigkeit der Biene
+\item Verfügbare Imkerfläche
+\item Maximale Anzahl Bienenstöcke des Imkers
+\item Lebensdauer, Tragekapazität, Fluggeschwindigkeit einer Biene
 \item Nektarmenge und Regenerationsdauer einer Blüte
 \item Verweildauer einer Biene im eigenen/fremden Stock
 \item Wahrscheinlichkeit für Verfliegen zum fremden Stock
@@ -182,13 +186,14 @@ $\Rightarrow$ Junge Bienen umsorgen den Stock und die Eier während Ältere Bienen
 \end{frame}
 
 \subsection{Ziel- und Stellgröße}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
 
 \begin{frame}
 \frametitle{Ziel- und Stellgröße}
 \textbf{Zielgröße}
 \begin{itemize}
-\item Zeitdauer bis komplette Bienenpopulation kollabiert
+\item Zeitdauer bis komplette Bienenpopulation kollabiert\\
+$\Rightarrow$ Maximierungsproblem
 \end{itemize}
 \vspace*{1em}
 \textbf{Stellgröße}
