@@ -1,0 +1,13 @@
+example reports:
+1 hive, 1 group
+numberOfFlowersPerBee = 8
+numberOfBeesPerHive = 2000
+initialInfectionPercentage = 0.002
+infectionProbability = 0.001
+
+demo example:
+3 groups with 1 hive
+numberOfFlowersPerBee = 8
+numberOfBeesPerHive = 25
+initialInfectionPercentage = 0.02
+infectionProbability = 0.01
