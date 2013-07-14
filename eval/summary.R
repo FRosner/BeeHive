@@ -1,7 +1,7 @@
+rm(list=ls())
+
 # install.packages("Hmisc")
 library(Hmisc)
-
-rm(list=ls())
 
 #all_args = commandArgs(trailingOnly = TRUE);
 
