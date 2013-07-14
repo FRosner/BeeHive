@@ -113,10 +113,10 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \tableofcontents
 \end{frame}
 
-\section{Zielstellung}
+\section{Einleitung}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
 
-\begin{frame}{Zielstellung}
+\begin{frame}{Problem- und Zielstellung}
 \textbf{Problemstellung}
 \begin{itemize}
 \item Bienen können sich mit einer Krankheit infizieren
@@ -133,10 +133,8 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 
 \end{frame}
 
-\section{Problemabgrenzung, Daten und Annahmen}
-
-\subsection{Problemabgrenzung}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
+\section{Simulationsmodell}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
 
 \begin{frame}
 \frametitle{Problemabgrenzung (1)}
@@ -162,9 +160,6 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \end{itemize}
 \end{frame}
 
-\subsection{Annahmen}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
-
 \begin{frame}
 \frametitle{Annahmen}
 \begin{itemize}
@@ -175,14 +170,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \end{itemize}
 \item ein bestimmter Prozentsatz Bienen ist am Anfang der Simulation bereits erkrankt
 \end{itemize}
-\bigskip
-\footnotesize\cite[Vgl.][]{tautz2007phaenomen} \\
-\footnotesize\cite[Vgl.][]{genersch2010honey} \\
-\footnotesize\cite[Vgl.][]{tautz2013bee} \\
 \end{frame}
-
-\subsection{Eingabedaten}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
 
 \begin{frame}
 \frametitle{Eingabedaten}
@@ -197,14 +185,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \item Anteil initial erkrankter Bienen
 \item Inkubationszeit und Ansteckungswahrscheinlichkeit für gesunde Bienen
 \end{itemize}
-\bigskip
-\footnotesize\cite[Vgl.][]{tautz2007phaenomen} \\
-\footnotesize\cite[Vgl.][]{genersch2010honey} \\
-\footnotesize\cite[Vgl.][]{tautz2013bee} \\
 \end{frame}
-
-\subsection{Ziel- und Stellgröße}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsubsection]}
 
 \begin{frame}
 \frametitle{Ziel- und Stellgröße}
@@ -216,7 +197,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \vspace*{1em}
 \textbf{Stellgröße}
 \begin{itemize}
-\item Anzahl Bienenstöcke und deren Positionierung auf der verfügbaren Fläche
+\item Positionierung der Bienenstöcke auf der verfügbaren Fläche
 \end{itemize}
 \end{frame}
 
@@ -224,31 +205,27 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
 \begin{frame}
 \frametitle{Demonstration}
-\textbf{Demo Konfiguration:}
-\vspace*{1em}
+\textbf{Konfiguration:}
 \begin{itemize}
 \item Anzahl Bienenstöcke: 3
 \item Anzahl Bienen pro Stock: 25
 \item Anzahl Blumen: 200
 \item Anteil initial erkrankter Bienen: 2\%
 \item Infektionswahrscheinlichkeit: 1\%
-
 \end{itemize}
+\vspace*{-2em}
+\hfill\includegraphics[width=3.5cm]{bee_demo.PNG}
 \end{frame}
 
 \begin{frame}
-\frametitle{Demonstration}
-\textbf{Report Beispiel(1):}
-\vspace*{1em}
+\frametitle{Demonstration -- Krankheitsverlauf}
 \begin{center}
 \includegraphics[width=9cm]{bee1.pdf}
 \end{center}
 \end{frame}
 
 \begin{frame}
-\frametitle{Demonstration}
-\textbf{Report Beispiel(2):}
-\vspace*{1em}
+\frametitle{Demonstration -- Blütenauslastung}
 \begin{center}
 \includegraphics[width=9cm]{bee2.pdf}
 \end{center}
@@ -267,14 +244,31 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
 \begin{frame}
 \frametitle{Fazit}
+\begin{itemize}
+	\item keine genaue Aussage möglich, welche Konfiguration die Beste ist
+	\begin{itemize}
+		\item[$\Rightarrow$] weitere Experimente nötig
+	\end{itemize}
+	\item viele kleine Gruppen verringern die Varianz
+\end{itemize}
 \end{frame}
-
 
 % cite all resources to be printed in bibliography
 % this frame will not be shown
 \begin{frame}<0>
 \frametitle{Quellen}
+\bigskip
+\footnotesize\cite[Vgl.][]{tautz2007phaenomen} \\
+\footnotesize\cite[Vgl.][]{genersch2010honey} \\
+\footnotesize\cite[Vgl.][]{tautz2013bee} \\
+\end{frame}
 
+\section{Quellen}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+\begin{frame}
+\frametitle{Quellen}
+\def\bibfont{\scriptsize}
+\printbibliography
 \end{frame}
 
 \begin{frame}
