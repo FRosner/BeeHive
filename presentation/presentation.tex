@@ -137,51 +137,87 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
 
 \begin{frame}
-\frametitle{Problemabgrenzung (1)}
+\frametitle{Problemabgrenzung}
+\textbf{Situation}
 \begin{itemize}
-\item Imker besitzen eine bestimmte Anzahl Bienenstöcke, die auf einer festgelegten Fläche platziert werden sollen
+\item Imker besitzen eine bestimmte Anzahl Bienenstöcke, die er auf einer festgelegten Fläche platzieren kann
+\end{itemize}
+
+\vspace*{1em}
+\textbf{Leben einer Biene}
+\begin{itemize}
 \item eine Bienenkönigin legt solange Eier bis Kapazität ihres Stocks erreicht ist
 \item Bienen fliegen zu Blüten, sammeln Nektar, bringen diesen zurück und ruhen sich aus
-\item Bienen sterben entweder eines natürlichen Todes oder durch die Krankheit
-\item erkrankte Bienen können vor Ablauf der Inkubationszeit andere Bienen anstecken
+\item Bienen können versehentlich zu einem falschen Stock fliegen
+	\begin{itemize}
+	\item[$\Rightarrow$] nachdem sie dort ihren Nektar abgeliefert haben, werden sie aus dem Stock entfernt
+	\end{itemize}
 \end{itemize}
+
 \end{frame}
 
 \begin{frame}
-\frametitle{Problemabgrenzung (2)}
+\frametitle{Problemabgrenzung}
+\textbf{Krankheit und Tod}
 \begin{itemize}
+\item Bienen sterben entweder eines natürlichen Todes oder durch die Krankheit
+\item erkrankte Bienen können andere Bienen anstecken
 \item eine erkrankte Biene kann weitere Bienen im Stock oder an Blüten anstecken
-\item sobald eine Biene Symptome zeigt, wird sie vom Stock ausgestoßen, fliegt ziellos umher und stirbt nach kurzer Zeit ohne weitere Bienen anzustecken % Annahme von uns??
-\item Bienen können versehentlich zu einem falschen Stock fliegen
-	\begin{itemize}
-	\item nachdem sie dort ihren Nektar abgegeben haben, werden sie aus dem Stock entfernt
-	\item während des Aufenthalts können andere Bienen angesteckt werden
-	\end{itemize}
+\item sobald eine Biene Symptome zeigt, wird sie vom Stock ausgestoßen % fliegt ziellos umher und stirbt nach kurzer Zeit ohne weitere Bienen anzustecken % Annahme von uns??
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Annahmen}
+\textbf{Aufgabenverteilung}
 \begin{itemize}
-\item in Natur werden verschiedenen Bienen, verschiedene Aufgaben zugeteilt (Bienenstock umsorgen, Nektar sammeln)
+\item in der Natur werden den Bienen je nach Alter verschiedene Aufgaben zugeteilt (Bienenstock umsorgen, Nektar sammeln)
 \begin{itemize}
 \item[$\Rightarrow$] 
- im Modell wird darauf verzichtet und es befindet sich immer ein bestimmter Anteil im Stock
+ im Modell wird darauf verzichtet: Es gibt Sammelbienen und Stockbienen
 \end{itemize}
+
+\vspace*{1em}
+\end{itemize}
+\textbf{Initialer Krankheitszustand}
+\begin{itemize}
 \item ein bestimmter Prozentsatz Bienen ist am Anfang der Simulation bereits erkrankt
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Eingabedaten}
+\textbf{Imker}
 \begin{itemize}
-\item verfügbare Anbaufläche und maximale Anzahl Bienenstöcke des Imkers
-\item Lebensdauer, Tragekapazität, Fluggeschwindigkeit einer Biene
-\item Nektarmenge und Regenerationsdauer einer Blüte
-\item Verweildauer einer Biene im eigenen/fremden Stock
-\item Wahrscheinlichkeit für Verfliegen zu fremdem Stock
-\item Eierlegerate einer Königin und Kapazität eines Bienenstocks
+\item verfügbare Anbaufläche
+\item Anzahl Bienenstöcke
+\end{itemize}
+
+\vspace*{0.5em}
+\textbf{Bienen und Blüten}
+\begin{itemize}
+\item Eierlegerate einer Königin
+\item Kapazität eines Bienenstocks
 \item Anteil der Sammler im Stock
+\item Lebensdauer einer Biene
+\item Nektartragekapazität einer Biene
+\item Fluggeschwindigkeit einer Biene
+\item $\ldots$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Eingabedaten}
+\begin{itemize}
+\item $\ldots$
+\item Verweildauer einer Biene im Stock (nach Nektarlieferung)
+\item Wahrscheinlichkeit für Verfliegen zu fremdem Stock
+\item Nektarmenge und Regenerationsdauer einer Blüte
+\end{itemize}
+
+\vspace*{1em}
+\textbf{Krankheit}
+\begin{itemize}
 \item Anteil initial erkrankter Bienen
 \item Inkubationszeit und Ansteckungswahrscheinlichkeit für gesunde Bienen
 \end{itemize}
@@ -191,8 +227,10 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \frametitle{Ziel- und Stellgröße}
 \textbf{Zielgröße}
 \begin{itemize}
-\item Zeitdauer bis komplette Bienenpopulation kollabiert\\
+\item Zeitdauer bis komplette Bienenpopulation kollabiert
+\begin{itemize}
 \item[$\Rightarrow$]  Maximierungsproblem
+\end{itemize}
 \end{itemize}
 \vspace*{1em}
 \textbf{Stellgröße}
