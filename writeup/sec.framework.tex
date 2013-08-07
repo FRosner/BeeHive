@@ -6,7 +6,7 @@ Basisklassen für eine Simulation und Entitäten sind in Tortuga vorhanden, wobei 
 
 Ereignisse werden in Tortuga als gewöhnliche Methoden deklariert und bei der Simulation mit Methodennamen und Parametern in die Ereigniswarteschlange eingereiht. Das Framework ruft die Methoden dann zur entsprechenden Simulationszeit über die \emph{Java Reflection API}\footnote{Die Java Reflection API kann unter anderem verwendet werden, um Klassen oder Methoden aufzurufen, die zur Compiletime noch unbekannt sind. Sie müssen somit erst zur Laufzeit vorhanden sein. Nähere Informationen finden sich auf \texttt{http://docs.oracle.com/javase/tutorial/reflect/}.} auf.
 
-Für unsere Simulation werden drei konkrete \code{PositionedEntity} Klassen benötigt: Bienenstöcke, Bienen und Blumen. Abbildung~\ref{img:entities} zeigt die entsprechenden Klassen. Damit Bienen die Blumen in ihrer Umwelt sehen können sind alle aktiven Entitäten der Simulation in einer Klasse \code{Environment} registriert. Die \code{Environment} zeigt den Bienen verfügbare Blumen und kümmert sich um das Erneuern des Nektars aller Blüten.
+Für unsere Simulation werden drei konkrete \code{PositionedEntity} Klassen benötigt: Bienenstöcke, Bienen und Blumen. Abbildung~\ref{img:entities} zeigt die entsprechenden Klassen.
 
 \begin{description}
 \item[Bienenstöcke] beherbergen die Bienen, die zur aktuellen Simulationszeit lebendig sind. Das Ereignis \code{spawnBee()} wird periodisch ausgeführt. Es erstellt, sofern der Stock noch Kapazitäten hat, eine neue Biene und simuliert das Eierlegen der Königin.
@@ -19,6 +19,8 @@ Bei Kontakt mit anderen Bienen im Stock oder an einer Blüte kann eine Ansteckung
 Nach Ablauf der normalen Lebenszeit oder am Ende des Krankheitsverlaufes sterben Bienen, indem das Ereignis \code{die()} ausgeführt wird.
 \item[Blumen] dienen den Bienen als Nektarlieferanten. Sie haben keine Ereignisse, da ihr Nektar über die Simulation zentral erneuert wird. Blumen bleiben für den gesamten Simulationszeitraum bestehen.
 \end{description}
+
+Damit Bienen die Blumen in ihrer Umwelt sehen können sind alle aktiven Entitäten der Simulation in einer Klasse \code{Environment} registriert. Die \code{Environment} zeigt den Bienen verfügbare Blumen und kümmert sich um das Erneuern des Nektars aller Blüten.
 
 \begin{figure}[t]
 	\begin{center}
