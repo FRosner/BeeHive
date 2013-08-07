@@ -1,9 +1,19 @@
 \section{Schlussbetrachtung}
 
-Das Finden von korrelierten Wörtern in großen Dokumentsammlungen ist eine wichtige Zutat für das Analysieren von Texten. Kommen zwei Wörter häufig gemeinsam in einzelnen Dokumenten einer Sammlung vor, so weisen sie eine hohe Korrelation auf. Solche korrelierten Wörter können verwendet werden, um automatisiert Thesauri zu erzeugen (\cite{baeza1992introduction,lin1998automatic,lassi2002automatic}). Das Finden von Synonymen ist ebenfalls eine wichtige Anwendung des Textminings (\cite{turney2001mining}).
+Zusammenfassung
+\begin{itemize}
+\item
+\end{itemize}
 
-Zur Bestimmung hoher Wortkorrelationen einer Dokumentsammlung kann eine Korrelationsmatrix mit den paarweisen Korrelationen aller Wörter berechnet werden, aus der anschließend die hohen Korrelationen extrahiert werden. Beinhalten Dokumentsammlungen viele Dokumente und Wörter, ist dies jedoch auf Grund des quadratischen Rechenaufwandes kaum noch möglich. Um dennoch in der Lage zu sein, hohe und damit interessante Wortkorrelationen zu bestimmen, lässt sich eine von \textcite{indyk1998approximate} entwickelte Technik zum Finden ähnlicher Objekte im hochdimensionalen Raum, das sogenannte Locality-Sensitive-Hashing (LSH), anwenden. \textcite{charikar2002similarity} hat ein spezielles LSH-Schema entwickelt, welches das effiziente Finden von Vektoren mit großer Kosinusähnlichkeit in einem hochdimensionalen Vektorraum ermöglicht. Werden zwei Vektoren mit Hilfe dieses Schemas gehasht, haben sie eine um so größere Kollisionswahrscheinlichkeit, je kleiner der von ihnen eingeschlossene Winkel ist. Werden Wörter als Vektoren repräsentiert, ist es möglich, ähnliche Wörter schnell herauszufinden. Werden die Wortvektoren zentriert, so ist die Kollisionswahrscheinlichkeit proportional zur Korrelation. Somit ist es nicht nötig alle möglichen Korrelationen auszurechnen. Es genügt, alle Wörter einmalig zu hashen und Kollisionen mit Hilfe einer Sortierung der Hashwerte herauszufiltern. Kollisionen treten zwischen Vektoren potenziell hoch korrelierter Wörter auf.
+Kritische Würdigung
+\begin{itemize}
+\item Threadproblematik (und damit verbundene Limitation bei den Experimenten -> Zeit und Entitätszahl))
+\item Andere Einflüsse wie Medikamentation oder genetische Diversität / Immunisierung unberücksichtigt
+\item Konfigurationen mit Strategie nach fest forgegebenem Schema
+\end{itemize}
 
-Das Finden ähnlicher Objekte in hochdimensionalen Vektorräumen ist ein aktuelles Forschungsthema. \textcite{Zhai:2011:APA:1989323.1989428} untersuchten das effiziente Finden ähnlicher Vektoren mit Hilfe eines probabilistischen Similarity-Search-Algorithmus. \textcite{Bayardo:2007:SUP:1242572.1242591} entwickelten einen auf Neuindizierung und Optimierungsstrategien basierenden Algorithmus für dieses Problem. Weitere Ansätze wurden unter anderem von \textcite{zhu2011scaling} und \textcite{Awekar:2009:IPS:1731011.1731012} untersucht. Ein Vergleich von LSH gegen einen Brute-Force-Ansatz zum Extrahieren ähnlicher Dokumente über verschiedene Sprachen hinweg wurde von \textcite{Ture:2011:NFL:2009916.2010042} vorgenommen.
-
-Ziel dieser Arbeit ist es, ein effizientes Verfahren zum Finden hoher Wortkorrelationen mittels LSH vorzustellen und zu evaluieren. Im ersten Abschnitt der Arbeit wird zunächst erläutert, wie große Dokumentsammlungen modelliert werden. Es wird eine formale Definition von Wortkorrelationen aufgestellt und diese im Kontext des Modells beleuchtet. Anschließend folgt die Vorstellung des naiven Algorithmus sowie des effizienten Algorithmus mittels LSH zur Bestimmung hoher Wortkorrelationen. Im dritten Abschnitt schließen sich Experimente zur Evaluation der effizienten Methode an. Abschließend folgt eine Zusammenfassung, eine kritische Würdigung und ein Ausblick auf weitere Forschungsarbeit. Die Ergebnisse der Arbeit wurden durch Implementierung der Algorithmen sowie den Entwurf und die Durchführung zahlreicher Experimente ermittelt. Für die Implementierung der Algorithmen wurde die Programmiersprache \texttt{R} verwendet. Die Grafiken wurden mit Hilfe von \texttt{gnuplot}, \texttt{R} und \texttt{tikz} erstellt. Die Vorverarbeitung der Datensätze zur experimentellen Evaluation geschah mit Hilfe selbst geschriebener \texttt{Java}-Programme und \texttt{Apache} \texttt{Lucene}. Die Zusammenarbeit der einzelnen Programme wurde durch \texttt{Shell} \texttt{Scripts} koordiniert.
+Ausblick / Erweiterungsmöglichkeiten
+\begin{itemize}
+\item Einbezug von Immunisierung oder genetischer Diversität
+\item genauere Untersuchung des Infektionsverlaufs (nicht nur Zeit bis alle tot sind sondern auch lokale Ausbreitungsgeschwindigkeit z.B.)
+\end{itemize}
