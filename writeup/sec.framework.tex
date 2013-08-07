@@ -1,1 +1,13 @@
 \section{Framework}
+
+Zur Umsetzung der Simulation verwenden und erweitern wir das Java Framework \emph{Tortuga}\footnote{\texttt{http://code.google.com/p/tortugades/}}, welches die grundlegenden Funktionalitäten einer ereignisdiskreten Simulation anbietet. Mit Hilfe aspektorientierter Programmierung wird ermöglicht, dass innerhalb des Programmcodes der selbstdefinierten Entitätsklassen jederzeit Zugriff auf die Simulation möglich ist um beispielsweise ein neues Ereignis zu registrieren.\footnote{Näheres zum Thema aspektorientierter Programmierung kann der geneigte Leser zum Beispiel \textcite{kiczales1997aspect} entnehmen. \textcite{laddad2003aspectj} beleuchtet die AspectJ-Erweiterung für aspektorientiertes Programmieren in Java genauer.}
+
+Basisklassen für eine Simulation und Entitäten sind in Tortuga vorhanden, wobei die abstrakte Klasse \emph{org.mitre.sim.DefaultEntity} vom Frame\-work\-nutzer erweitert werden muss.
+
+\begin{figure}[t]
+	\begin{center}
+    	\includegraphics[width=1\linewidth]{entities}
+  \caption{UML-Klassendiagramm der Simulationsentitäten. Private oder nicht simulationsbezogene Methoden und Attribute wurden aus Übersichtlichkeitsgründen weggelassen.}
+  \label{img:entities} 
+	\end{center}
+\end{figure}
