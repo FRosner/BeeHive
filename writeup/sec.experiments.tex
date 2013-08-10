@@ -52,7 +52,7 @@ Dauer der Nektarregenerierung & 1\,d
 \end{center}
 \end{table}
 
-Ein Bienenstock beherbergt normalerweise ungefähr 50{.}000 Bienen. Aufgrund implementierungstechnischer Beschränkungen durch das verwendete Simulationsframework musste diese Größe auf 1000 Bienen pro Stock reduziert werden. Eine Bienenkönigin legt ca. 2000 Eier pro Tag. Das entspricht einer Legerate von einem Ei alle 43 Sekunden. In der Natur erledigen Bienen im Laufe ihres Lebens verschiedene Aufgaben. Wir verzichten auf dieses Detail und führen eine Unterscheidung in Sammler- und Stockbienen ein. Bei der Geburt einer Biene wird festgelegt, ob sie für das Sammeln des Nektars zuständig ist oder im Stock verbleibt. Der Anteil der Sammlerbienen beträgt 55\,\%. 
+Ein Bienenstock beherbergt normalerweise ungefähr 50{.}000 Bienen. Aufgrund implementierungstechnischer Beschränkungen durch das verwendete Simulationsframework musste diese Größe auf 1000 Bienen pro Stock reduziert werden. Eine Bienenkönigin legt ca. 2000 Eier pro Tag. Das entspricht einer Legerate von einem Ei alle 43 Sekunden. Der Anteil der Sammlerbienen beträgt 55\,\%. 
 
 Eine Biene lebt im Mittel 45 Tage. Um natürliche Lebensdauerschwankungen zu modellieren, nehmen wir eine Normalverteilung $\mathcal N(\mu, \sigma)$ der Lebensdauer mit $\mu = 45$ und $\sigma = 5$ an. Die Zeit, die eine Sammlerin zum Nektarsammeln benötigt, wird mit einer halbe Minute angenommen. Nachdem eine Biene zu ihrem Stock zurückkehrte, gibt sie den Nektar ab und ruht sich danach aus. Es wird eine Aufenthaltsdauer von fünf Stunden angenommen, bis die Biene erneut losfliegt. 
 
