@@ -1,10 +1,7 @@
-BeeHive
-=======
-
-Bee population simulation using Tortuga.
-
 Documentation
 -------------
+
+Bee population simulation using Tortuga.
 
 ### Running simulation
 
