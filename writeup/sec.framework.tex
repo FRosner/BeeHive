@@ -2,30 +2,32 @@
 
 Zur Umsetzung der Simulation verwenden und erweitern wir das Java Framework \emph{Tortuga}\footnote{\texttt{http://code.google.com/p/tortugades/}}, welches die grundlegenden Funktionalitäten einer ereignisdiskreten Simulation anbietet. Mit Hilfe aspektorientierter Programmierung wird gewährleistet, dass innerhalb des Programmcodes der selbstdefinierten Entitätsklassen jederzeit Zugriff auf die Simulation möglich ist um beispielsweise ein neues Ereignis zu registrieren, damit es in die Ereignisliste eingefügt wird.\footnote{Näheres zum Thema aspektorientierter Programmierung kann der geneigte Leser zum Beispiel \textcite{kiczales1997aspect} entnehmen. \textcite{laddad2003aspectj} beleuchtet die AspectJ-Erweiterung für aspektorientiertes Programmieren in Java genauer.}
 
-Basisklassen für eine Simulation und Entitäten sind in Tortuga vorhanden, wobei die abstrakte Klasse \code{org.mitre.sim.DefaultEntity} vom Frame\-work\-nutzer erweitert werden muss. Abbildung~\ref{img:entities} zeigt ein UML-Klassendiagramm der Entitätshierarchie unserer Simulation. Um Bewegungen im zweidimensionalen Raum zu ermöglichen, wird zunächst die \code{DefaultEntity} um Positionsdaten und Zielkoordinaten erweitert. Die entstehende abstrakte Klasse \code{PositionedEntity} bietet bereits ein erstes Ereignis an: \code{moveTo(Position, double)}. Sie registriert ein neues Ereignis, das die Position der Entität nach einer bestimmten Zeit ändert.
+Basisklassen für eine Simulation und Entitäten sind in Tortuga vorhanden, wobei die abstrakte Klasse \code{org.mitre.sim.DefaultEntity} vom Frame\-work\-nutzer erweitert werden muss. Abbildung~\ref{img:entities} zeigt ein UML-Klassendiagramm der Entitätshierarchie unserer Simulation. Um Bewegungen im zweidimensionalen Raum zu ermöglichen, wird zunächst die \code{DefaultEntity} um Positionsdaten erweitert. Die entstehende abstrakte Klasse \code{PositionedEntity} bietet bereits eine erste ereignisauslösende Methode an: \code{moveTo(Position, double)}. Beim Aufruf dieser Methode wird das Ereignis \code{arriveAt(Position)} für das Ende der angegebenen Bewegungszeit bei der Simulation registriert, also in die Ereigniswarteschlange eingefügt. Es ändert dann beim Eintreten die Position der Entität.
 
-Ereignisse werden in Tortuga als gewöhnliche Methoden deklariert und bei der Simulation mit Methodennamen und Parametern in die Ereigniswarteschlange eingereiht. Das Framework ruft die Methoden dann zur entsprechenden Simulationszeit über die \emph{Java Reflection API}\footnote{Die Java Reflection API kann unter anderem verwendet werden, um Klassen oder Methoden aufzurufen, die zur Compiletime noch unbekannt sind. Sie müssen somit erst zur Laufzeit vorhanden sein. Nähere Informationen finden sich auf \texttt{http://docs.oracle.com/javase/tutorial/reflect/}.} auf.
+Ereignisse werden in Tortuga als gewöhnliche Methoden deklariert und bei der Simulation mit Methodennamen und Parametern registriert. Das Framework ruft die Methoden zur entsprechenden Simulationszeit über die \emph{Java Reflection API}\footnote{Die Java Reflection API kann unter anderem verwendet werden, um Klassen oder Methoden aufzurufen, die zur Compiletime noch unbekannt sind. Sie müssen somit erst zur Laufzeit vorhanden sein. Nähere Informationen finden sich auf \texttt{http://docs.oracle.com/javase/tutorial/reflect/}.} auf.
 
 Für unsere Simulation werden drei konkrete \code{PositionedEntity} Klassen benötigt: Bienenstöcke, Bienen und Blumen. Abbildung~\ref{img:entities} zeigt die entsprechenden Klassen.
 
+\begin{figure}[t]
+	\begin{center}
+    	\includegraphics[width=1\linewidth]{entities}
+  \caption{UML-Klassendiagramm der Simulationsentitäten. Auf die Darstellung privater und nicht simulationsbezogener Methoden und Attribute wird aus Übersichtlichkeitsgründen verzichtet. Die Klasse \code{DefaultEntity} wird vom Simulationsframework Tortuga bereitgestellt.}
+  \label{img:entities} 
+	\end{center}
+\end{figure}
+
 \begin{description}
 \item[Bienenstöcke] beherbergen die Bienen, die zur aktuellen Simulationszeit lebendig sind. Das Ereignis \code{spawnBee()} wird periodisch ausgeführt. Es erstellt, sofern der Stock noch Kapazitäten hat, eine neue Biene und simuliert das Eierlegen der Königin.
-\item[Bienen] erledigen das Sammeln des Nektars. Die Simulation löst \code{flyToFlower(Flower)} aus, wenn die Biene sich eine neue Blume zum Nektar sammeln suchen soll. Anschließend wird das \code{moveTo}-Ereignis ausgelöst und \code{collectNectarAtFlower(Flower)} für die Ankunft an der Blume in die Ereignisliste eingefügt.
+\item[Bienen] erledigen das Sammeln des Nektars. Die Simulation löst \code{flyToFlower(Flower)} aus, wenn die Biene sich eine neue Blume zum Nektar sammeln suchen soll. Anschließend wird die \code{moveTo}-Methode aufgerufen und \code{collectNectarAtFlower(Flower)} für die Ankunft an der Blume in die Ereignisliste eingefügt.
 
 Nach dem Sammeln des Nektars an der Blüte entscheidet sich die Biene, ob sie noch Kapazität für weiteren Nektar hat oder zurück zum Stock fliegt um den Nektar abzuladen. Falls sie weitere Blumen anfliegen möchte, löst sie wieder \code{flyToFlower(Flower)} aus. Anderenfalls wird \code{flyBack()} ausgelöst, welches die Biene bewegt und für die Ankunft \code{storeNectarAt(Hive)} registriert. Sollte sich die Biene verfliegen, ist der als Parameter übergebene Bienenstock ein anderer als der Heimatstock der Biene.
 
-Bei Kontakt mit anderen Bienen im Stock oder an einer Blüte kann eine Ansteckung stattfinden. Mit einer bestimmten Wahrscheinlichkeit wird, falls eine der beiden Bienen an der selben Position krank ist, das Ereignis \code{becomeInfected()} aufgerufen. Dort wird die restliche Lebenszeit verringert und die Inkubationszeit beginnt. Für den Ablauf der Inkubationszeit reiht sich das Ereignis \code{incubate()} in die Ereignisliste ein, sodass andere Bienen die Infektion bemerken können.
+Bei Kontakt mit anderen Bienen im Stock oder an einer Blüte kann eine Ansteckung stattfinden. Mit einer bestimmten Wahrscheinlichkeit wird, falls eine der beiden Bienen an der selben Position krank ist, das Ereignis \code{becomeInfected()} aufgerufen. Dort wird die restliche Lebenszeit der angesteckten Biene verringert und die Inkubationszeit beginnt. Für den Ablauf der Inkubationszeit reiht sich das Ereignis \code{incubate()} in die Ereignisliste ein, sodass andere Bienen die Infektion bemerken können.
 
 Nach Ablauf der normalen Lebenszeit oder am Ende des Krankheitsverlaufes sterben Bienen, indem das Ereignis \code{die()} ausgeführt wird.
 \item[Blumen] dienen den Bienen als Nektarlieferanten. Sie haben keine Ereignisse, da ihr Nektar über die Simulation zentral erneuert wird. Blumen bleiben für den gesamten Simulationszeitraum bestehen.
 \end{description}
 
-Damit Bienen die Blumen in ihrer Umwelt sehen können sind alle aktiven Entitäten der Simulation in einer Klasse \code{Environment} registriert. Die \code{Environment} zeigt den Bienen verfügbare Blumen und kümmert sich um das Erneuern des Nektars aller Blüten.
+Damit Bienen die Blumen in ihrer Umwelt sehen können sind alle aktiven Entitäten der Simulation in einer \code{Environment} registriert. Die \code{Environment} zeigt den Bienen verfügbare Blumen und kümmert sich um das Erneuern des Nektars aller Blüten.
 
-\begin{figure}[t]
-	\begin{center}
-    	\includegraphics[width=1\linewidth]{entities}
-  \caption{UML-Klassendiagramm der Simulationsentitäten. Private oder nicht simulationsbezogene Methoden und Attribute wurden aus Übersichtlichkeitsgründen weggelassen. Die Klasse \code{DefaultEntity} wird vom Simulationsframework Tortuga bereitgestellt.}
-  \label{img:entities} 
-	\end{center}
-\end{figure}
+
