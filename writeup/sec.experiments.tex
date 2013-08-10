@@ -1,8 +1,13 @@
 \section{Experimente}
 
+\begin{itemize}
+\item Ziel nochmal kurz erklären
+\item Zielerreichung (gucken, welche Config länger zum Sterben braucht)
+\end{itemize}
+
 \subsection{Eingabegrößen}
 
-Viele Eingabegrößen der Simulation stammen aus \textcite{tautz2007phaenomen}, \textcite{genersch2010honey} und \textcite{tautz2013bee}. Größen, für die keine verlässliche Angabe gefunden wurde, wurden durch eine Sensitivitätsanalyse gewählt. Eine exakte Auflistung der verwendeten Eingabegrößen findet sich in Tabelle~\ref{tab:inputs}. Die folgenden Absätze erläutern die Eingabegrößen genauer.
+Viele Eingabegrößen der Simulation stammen aus \textcite{tautz2007phaenomen}, \textcite{genersch2010honey} und \textcite{tautz2013bee}. Größen, für die keine verlässliche Angabe gefunden wurde, wurden durch eine Sensitivitätsanalyse gewählt. Eine exakte Auflistung der verwendeten Eingabegrößen findet sich in Tabelle~\ref{tab:inputs}.
 
 \vspace*{1em}
 \begin{table}[h]
@@ -14,7 +19,7 @@ Viele Eingabegrößen der Simulation stammen aus \textcite{tautz2007phaenomen}, \t
 	Nektartragekapazität & 40\,mg\\
 	Dauer des Nektarsammelns & 0{,}5\,m \\
 	Dauer des Stockaufenthalts & 5\,h \\
-	Verfliegeradius & 200\,m \\
+	maximaler Verfliegeradius & 200\,m \\
 	Lebensdauer ($\mu$) & 45\,d \\
 	Lebensdauer ($\sigma$) & 5\,d \\
 	Lebensdauer nach Erkrankung & 4\,d \\
@@ -47,13 +52,15 @@ Dauer der Nektarregenerierung & 1\,d
 \end{center}
 \end{table}
 
-Ein Bienenstock beherbergt normalerweise ungefähr 50{.}000 Bienen. Aufgrund softwaretechnischer Beschränkungen durch das verwendete Simulationsframework musste diese Größe auf 1000 Bienen pro Stock reduziert werden. Eine Bienenkönigin legt ca. 2000 Eier pro Tag. Das entspricht einer Legerate von einem Ei alle 43 Sekunden. In der Natur erledigen Bienen im Laufe ihres Lebens verschiedene Aufgaben. Wir verzichten auf dieses Detail und führen eine Unterscheidung in Sammler- und Stockbienen ein. Bei der Geburt einer Biene wird festgelegt, ob sie für das Sammeln des Nektars zuständig ist oder im Stock verbleibt. Der Anteil der Sammlerbienen beträgt 55\,\%. 
+Ein Bienenstock beherbergt normalerweise ungefähr 50{.}000 Bienen. Aufgrund implementierungstechnischer Beschränkungen durch das verwendete Simulationsframework musste diese Größe auf 1000 Bienen pro Stock reduziert werden. Eine Bienenkönigin legt ca. 2000 Eier pro Tag. Das entspricht einer Legerate von einem Ei alle 43 Sekunden. In der Natur erledigen Bienen im Laufe ihres Lebens verschiedene Aufgaben. Wir verzichten auf dieses Detail und führen eine Unterscheidung in Sammler- und Stockbienen ein. Bei der Geburt einer Biene wird festgelegt, ob sie für das Sammeln des Nektars zuständig ist oder im Stock verbleibt. Der Anteil der Sammlerbienen beträgt 55\,\%. 
 
-Zu Beginn der Simulation sind 0{,}1\,\% der Bienen erkrankt. Das entspricht ungefähr einer Biene pro Stock. Die Ansteckungswahrscheinlichkeit wurde so gewählt, dass die Populationen eine bestimmte Zeit überleben, aber bis zum Ende des Simulationszeitraums (ein Jahr) gerade alle abgestorben sind. Bei Werten kleiner als 0.0005 kam es zum Überleben einiger Stöcke zum Simulationsende. Werte größer als 0.0005 führten dazu, dass die Bienenstämme wesentlich kürzer als ein Jahr lebten. Sobald 75\% der Bienen eines Stocks ausgestorben sind, zerfällt der ganze Stock. 
+Eine Biene lebt im Mittel 45 Tage. Um natürliche Lebensdauerschwankungen zu modellieren, nehmen wir eine Normalverteilung $\mathcal N(\mu, \sigma)$ der Lebensdauer mit $\mu = 45$ und $\sigma = 5$ an. Die Zeit, die eine Sammlerin zum Nektarsammeln benötigt, wird mit einer halbe Minute angenommen. Nachdem eine Biene zu ihrem Stock zurückkehrte, gibt sie den Nektar ab und ruht sich danach aus. Es wird eine Aufenthaltsdauer von fünf Stunden angenommen, bis die Biene erneut losfliegt. 
 
-Die Bienen bewegen sich im Flug mit 5\,\nicefrac{km}{h} fort. Eine Biene lebt im Mittel 45 Tage. Die tatsächliche Lebenszeit liegt zwischen 40 und 50 Tagen. Die Zeit bis zum Ausbruch der Krankheit beträgt zwei Tage. Nach dem Ausbruch überlebt eine Biene noch vier Tage. Die Zeit, die eine Sammlerin zum Nektarsammeln benötigt, beträgt eine halbe Minute. Nachdem eine Biene zu ihrem Stock zurückkehrte, gibt sie den Nektar ab und ruht sich danach aus. Daher dauert die Nektarabgabe so lange. Eine Biene kann pro Flug 40 Einheiten Nektar transportieren. Falls der Nektar einer einzelnen Blume aufgebraucht ist, fliegt eine Biene zur nächsten Blume. Es besteht eine Wahrscheinlichkeit, dass Bienen nach dem Nektarsammeln zum falschen Stock fliegen. Es wird zufällig ein Stock aus einem bestimmten Radius ausgewählt. Stöcke in der Nähe des Heimatstocks haben eine höhere Wahrscheinlichkeit ausgewählt zu werden. Der Heimatstock erhält die höchste Wahrscheinlichkeit.
- 
-Die Anzahl der Blumen pro Biene wurde so ermittelt, dass die Blumen zu jeder Zeit über Nektar verfügen und es zu keinen Engpässen kommt. Nach Beginn der Simulation pegelt sich der verfügbare Nektar bei 50\% ein. \textbf{Missing: Nektarmenge, woher? Einheit?}. Eine Blume benötigt einen Tag um den Nektar vollständig zu regenerieren.
+Bienen bewegen sich im Flug mit 5\,\nicefrac{km}{h} fort und können 40\,mg Nektar transportieren. Die Wahrscheinlichkeit, dass beim Rückflug der Heimatstock nicht gefunden wird (die Biene sich verfliegt) hängt von der räumlichen Nähe des fremden Stockes ab. Je näher ein fremder Stock dem Heimatstock ist, desto größer ist die Verfliegwahrscheinlichkeit. Stöcke, die weiter als 200\,m vom Heimatstock entfernt sind, können nicht ausgewählt werden.
+
+Zu Beginn der Simulation sind 0{,}1\,\% der Bienen erkrankt. Das entspricht ungefähr einer Biene pro Stock. Die Ansteckungswahrscheinlichkeit\footnote{Die Ansteckungswahrscheinlichkeit ist in der Natur erheblich höher. Jedoch kann eine Ansteckung nur stattfinden, wenn sich zwei Bienen berühren. In unserem Modell wird keine Berührung simuliert und eine Biene kann theoretisch jede andere an der gleichen Position (Blüte oder Stock) anstecken. Somit ist die von uns modellierte Ansteckungswahrscheinlichkeit genauer gesagt die Wahrscheinlichkeit für das zufällige Berühren zweier Bienen gefolgt von einer Ansteckung.} wurde so gewählt, dass die Populationen eine längere Zeit überleben, aber trotzdem nach gewisser Zeit alle Stöcke kollabiert sind. Bei Wahrscheinlichkeiten kleiner als 0{,}05\,\% kommt es zum Überleben einiger Stöcke. Ist die Wahrscheinlichkeit größer, sterben die Bienen alle nach ungefähr vier Tagen. Sobald 75\,\% der Bienen eines Stocks infiziert sind, kollabiert der ganze Stock. Die Inkubationszeit beträgt zwei Tage. Insgesamt überlebt eine infizierte Biene maximal vier Tage.
+
+Die Anzahl der Blumen pro Biene wurde so angenommen, dass die Blumen zu jeder Zeit über Nektar verfügen und es zu keinen Engpässen kommt. Nach Beginn der Simulation pegelt sich der verfügbare Nektar bei ungefähr 50\,\% der Gesamtkapazität aller Blüten ein. Eine Blume regeneriert 1\,mg Nektar pro Tag (Annahme).
 
 \subsection{Stellgröße und Simulationsszenarien}
 
@@ -62,7 +69,7 @@ Das Platzieren der Bienenstöcke geschieht folgendermaßen: Die Bienenstöcke werde
 \begin{figure}[t]
 	\begin{center}
     	\includegraphics[width=1\linewidth]{summary}
-  \caption{Zeitdauer bis zum Absterben aller Bienen, wobei n die Anzahl der Gruppen und s die Bienenstöcke pro Gruppe bezeichnet.}
+  \caption{Zeitdauer bis zum Absterben aller Bienen, wobei $n$ die Anzahl der Gruppen und $s$ die Bienenstöcke pro Gruppe bezeichnet.}
   \label{img:summary} 
 	\end{center}
 \end{figure}
