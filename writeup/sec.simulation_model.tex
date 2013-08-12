@@ -12,12 +12,11 @@ Eine Biene stirbt nach einer bestimmten Zeit eines natürlichen Todes oder verend
 
 Blüten sind gleichmäßig über die Fläche verteilt. Jede Blüte verfügt über eine Menge von Nektar. Nachdem der Nektar entnommen wurde, dauert es eine bestimmte Zeit bis sich der Vorrat wieder auffüllt.
 
-\subsection{Simulationsende}
+\subsection{Simulationsablauf}
 
-Das Ziel der Simulation ist herauszufinden, ob die Platzierung der Bienenstöcke Einfluss auf die Zeitdauer bis zum Kollaps aller Bienenpopulationen eines Imkers hat. Dazu soll die Zeitdauer bis zum Kollaps unter verschiedenen Platzierungsszenarien gemessen werden.
+Die Simulation ist dynamisch und ereignisdiskret. Das System wird über einen bestimmten Zeitraum betrachtet und der Zustand des Systems ändert sich durch das Eintreten bestimmter Ereignisse. Solche Ereignisse wären beispielsweise: das Schlüpfen und Sterben einer Biene, das Losfliegen zu einer Blüte oder die Ansteckung einer Biene mit der Krankheit.
 
+Das Ziel der Simulation ist herauszufinden, ob die Platzierung der Bienenstöcke Einfluss auf die Ausbreitungsgeschwindkeit der Krankheit hat. Um die Ausbreitungsgeschwindigkeit zu messen, werden die Modellparameter so gewählt, dass die Bienenpopulation auf jeden Fall kollabiert und sich nicht erholen kann. Nach dem Tod aller Bienen wird die Zeit gemessen. Je schneller die Krankheit sich ausbreitet, desto früher sind alle Bienen gestorben. Näheres zum Versuchsplan, den Eingabe- und Stellgrößen findet sich in Abschnitt~\ref{sec:experiments}.
 
+Um Verzerrung der Ergebnisse zu verhindern, werden zu Beginn der Simulation alle Stöcke mit Bienen zufälligen Alters gefüllt. So wird eine Einschwingphase vermieden.
 
-Um eine Verzerrung der Outputgrößen zu unterbinden, werden alle Bienenstöcke zu Beginn einer Simulation mit einer zufälligen Bienenpopulation ausgestattet. D.h. in jedem Stock ist bereits eine Anzahl von Bienen vorhanden, die sich in unterschiedlichen Lebensabschnitten befinden.
-
-Die Simulation ist dynamisch und ereignisdiskret. Das System wird über einen bestimmten Zeitraum betrachtet und der Zustand des Systems ändert sich durch das Eintreten bestimmter Ereignisse. Solche Ereignisse wären beispielsweise: das Schlüpfen und Sterben einer Biene, das Losfliegen zu einer Blüte oder die Ansteckung einer Biene mit der Krankheit. Als Inputdaten werden teils Daten aus wissenschaftlichen Veröffentlichungen, teils durch Sensitivitätsanalysen ermittelte Daten benutzt. Die Simulation endet, wenn alle Bienenpopulationen kollabiert sind.
