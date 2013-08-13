@@ -17,7 +17,7 @@ Für diese Simulation werden drei konkrete \code{PositionedEntity} Klassen benöti
 \end{figure}
 
 \begin{description}
-\item[Bienenstöcke] beherbergen die Bienen, die zur aktuellen Simulationszeit lebendig sind. Das Ereignis \code{spawnBee()} wird periodisch ausgeführt. Es erstellt, sofern der Stock noch Kapazitäten hat, eine neue Biene und simuliert das Eierlegen der Königin.
+\item[Bienenstöcke] beherbergen die Bienen, die zur aktuellen Simulationszeit lebendig sind. Das Ereignis \code{spawnBee()} wird periodisch ausgeführt. Es erstellt, sofern der Stock noch Kapazitäten hat, eine neue Biene und simuliert so das Eierlegen der Königin.
 \item[Bienen] erledigen das Sammeln des Nektars. Die Simulation löst \code{flyToFlower(Flower)} aus, wenn die Biene sich eine neue Blume zum Nektar sammeln suchen soll. Anschließend wird die \code{moveTo}-Methode aufgerufen und \code{collectNectarAtFlower(Flower)} für die Ankunft an der Blume in die Ereignisliste eingefügt.
 
 Nach dem Sammeln des Nektars an der Blüte entscheidet die Biene, ob sie noch Kapazität für weiteren Nektar hat oder zurück zum Stock fliegt um den Nektar abzuladen. Falls sie weitere Blumen anfliegen möchte, löst sie wieder \code{flyToFlower(Flower)} aus. Anderenfalls wird \code{flyBack()} ausgelöst, welches die Biene bewegt und für die Ankunft \code{storeNectarAt(Hive)} registriert. Sollte sich die Biene verfliegen, ist der als Parameter übergebene Bienenstock ein anderer als der Heimatstock der Biene.
