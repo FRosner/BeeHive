@@ -7,7 +7,7 @@ In den folgenden Abschnitten werden die Eingabe- und Stellgrößen der Simulation,
 
 \subsection{Eingabegrößen}
 
-Allgemeine Informationen über Bienen wurden \textcite{tautz2013bee} entnommen. Dort ließen sich Daten über den Aufbau eines Bienenstocks, die Verhaltensweisen der Bienen in- und außerhalb eines Bienenstocks bzw. auch zu Bewegungen der Bienen zwischen verschiedenen Orten finden. Fakten über die einzelnen Rollen der Bienen innerhalb eines Stocks, das Verhalten bei der Nektarbeschaffung und die Funktion der Blüten bot \textcite{tautz2007phaenomen}. Angaben zu Auswirkungen von Krankheiten auf Bienen im allgemeinen und speziell zum ACBV lieferte \textcite{genersch2010honey}. Größen, die keiner verlässlichen Quelle entnommen werden konnten, wurden durch eine Sensitivitätsanalyse gewählt. Eine exakte Auflistung der verwendeten Eingabegrößen findet sich in Tabelle~\ref{tab:inputs}.
+Allgemeine Informationen über Bienen wurden \textcite{tautz2013bee} entnommen. Dort ließen sich Daten über den Aufbau eines Bienenstocks, die Verhaltensweisen der Bienen in- und außerhalb eines Bienenstocks bzw. auch zu Bewegungen der Bienen zwischen verschiedenen Orten finden. Fakten über die einzelnen Rollen der Bienen innerhalb eines Stocks, das Verhalten bei der Nektarbeschaffung und die Funktion der Blüten bot \textcite{tautz2007phaenomen}. Angaben zu Auswirkungen von Krankheiten auf Bienen im allgemeinen und speziell zum ABPV lieferte \textcite{genersch2010honey}. Größen, die keiner verlässlichen Quelle entnommen werden konnten, wurden durch eine Sensitivitätsanalyse gewählt oder angenommen. Eine exakte Auflistung der verwendeten Eingabegrößen findet sich in Tabelle~\ref{tab:inputs}.
 
 \vspace*{1em}
 \begin{table}[h]
@@ -64,13 +64,35 @@ Die Anzahl der Blüten (8 pro Biene) wurde so gewählt, dass die Blüten zu jeder Z
 
 \subsection{Stellgröße und Simulationsszenarien}
 
-Das Platzieren der Bienenstöcke geschieht folgendermaßen: Die Bienenstöcke werden in Gruppen unterteilt, die mit größtmöglicher Entfernung zueinander platziert werden. Innerhalb der Gruppen werden die enthaltenen Stöcken direkt nebeneinander angeordnet. Bei gegebener Anzahl der Stöcke werden verschiedene Anzahlen von Gruppen und Gruppengrößen simuliert. In der nachfolgenden Abbildung~\ref{img:summary} wird die Anzahl der Gruppen durch \textbf{n} und die Bienenstöcke pro Gruppe durch \textbf{s} symbolisiert.
+\begin{figure}[t]
+\begin{minipage}[t]{0.49\linewidth}
+	\begin{center}
+		\subfloat[$n=4$ Gruppen mit $s=2$ Stöcken pro Gruppe]{\label{img:placements1} 
+    	\includegraphics[width=1\linewidth]{placement1}}
+	\end{center}
+\end{minipage}
+\hspace{0.0cm}
+\begin{minipage}[t]{0.49\linewidth}
+	\begin{center}
+		\subfloat[$n=2$ Gruppen mit $s=4$ Stöcken pro Gruppe]{\label{img:placements2} 
+    	\includegraphics[width=1\linewidth]{placement2}}
+	\end{center}
+\end{minipage}\\
+\caption{Beispielhafte Platzierungen mit verschiedenen Strategien (Anzahl Gruppen $n$ und Gruppengröße $s$). Die Gruppen werden möglichst gleichmäßig auf der Fläche verteilt, wohingegen die Stöcke innerhalb der Gruppen direkt benachbart sind.}
+    \label{img:placements} 
+\end{figure}
+
+Die Stellgröße der Simulation ist die Platzierung der Bienenstöcke auf der verfügbaren Anbaufläche. Da es theoretisch eine unendlich große Menge an Platzierungsmöglichkeiten gibt, werden die Szenarien auf ein paar grundlegende Platzierungsstrategien beschränkt.
+
+Eine Platzierungsstrategie $\mathcal P = (s, n)$ ist ein Tupel aus der Anzahl der Bienenstöcke pro Gruppe $s$ und der Anzahl der Gruppen $n$. Die Bienenstockgruppen werden gleichmäßig auf der Fläche platziert, wobei die Stöcke innerhalb der Gruppe direkt benachbart sind. Abbildung~\ref{img:placements} zeigt zwei Platzierungsstrategien für 8 Bienenstöcke.
+
+Bei gegebener Anzahl Bienenstöcke ($s \cdot n$) werden verschiedene Kombinationen von Gruppen ($n$) und Gruppengrößen ($s$) simuliert. In der nachfolgenden Abbildung~\ref{img:summary} wird die Anzahl der Gruppen durch \textbf{n} und die Bienenstöcke pro Gruppe durch \textbf{s} symbolisiert.
 
 \begin{figure}[t]
 	\begin{center}
-    	\includegraphics[width=1\linewidth]{summary}
-  \caption{Zeitdauer bis zum Absterben aller Bienen, wobei $n$ die Anzahl der Gruppen und $s$ die Bienenstöcke pro Gruppe bezeichnet.}
-  \label{img:summary} 
+    	\includegraphics[width=1\linewidth]{summary_nice}
+  \caption{Zeitdauer bis zum Absterben aller Bienen. Es werden verschiedene Platzierungsstrategien mit $n$ Gruppen und $s$ Bienenstöcken pro Gruppe verwendet. Jede Konfiguration wird 100 mal wiederholt.}
+  \label{img:results} 
 	\end{center}
 \end{figure}
 
