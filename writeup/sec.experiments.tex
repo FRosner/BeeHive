@@ -86,8 +86,6 @@ Die Stellgröße der Simulation ist die Platzierung der Bienenstöcke auf der verfü
 
 Eine Platzierungsstrategie $\mathcal P = (s, n)$ ist ein Tupel aus der Anzahl der Bienenstöcke pro Gruppe $s$ und der Anzahl der Gruppen $n$. Die Bienenstockgruppen werden gleichmäßig auf der Fläche platziert, wobei die Stöcke innerhalb der Gruppe direkt benachbart sind. Abbildung~\ref{img:placements} zeigt zwei Platzierungsstrategien für 8 Bienenstöcke.
 
-Bei gegebener Anzahl Bienenstöcke ($s \cdot n$) werden verschiedene Kombinationen von Gruppen ($n$) und Gruppengrößen ($s$) simuliert. In der nachfolgenden Abbildung~\ref{img:summary} wird die Anzahl der Gruppen durch \textbf{n} und die Bienenstöcke pro Gruppe durch \textbf{s} symbolisiert.
-
 \begin{figure}[t]
 	\begin{center}
     	\includegraphics[width=1\linewidth]{summary_nice}
@@ -96,4 +94,8 @@ Bei gegebener Anzahl Bienenstöcke ($s \cdot n$) werden verschiedene Kombinatione
 	\end{center}
 \end{figure}
 
-Bei einem Simulationslauf mit 100 Repetitionen pro Konfiguration lässt sich erkennen, dass die Platzierung mit einem Stock pro Gruppe eine höhere Lebensdauer besitzt als alle anderen. Das deutet darauf hin, dass die Platzierung der Stöcke mit größtmöglicher Entfernung zu einander geschehen sollte. Auffällig ist, dass bei der Wahl von $n=1$ und $s=10$ die Anzahl der Ausreißer äußerst groß ist. \textbf{mehr!}
+Abbildung~\ref{img:results} zeigt die Ergebnisse von 100 Simulationsläufen von unterschiedlichen Konfigurationen mit 10 Bienenstöcken. Es fällt auf, dass ein Zusammenhang zwischen der Strategie und der Ausbreitungsgeschwindkeit besteht. Je größer die Gruppen werden, desto schneller breitet sich die Krankheit aus. Die Simulationsdauer bis zum Tot aller Bienen in den zwei Extremfällen: eine große Gruppe ($n=1, s=10$), und ein Stock pro Gruppe ($n=10, s=1$) unterscheidet sich signifikant.
+
+\begin{itemize}
+\item auf Varianz eingehen
+\end{itemize}
