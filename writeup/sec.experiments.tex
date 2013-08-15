@@ -63,7 +63,7 @@ Zu Beginn der Simulation sind 0{,}1\,\% der Bienen erkrankt. Das entspricht unge
 
 Die Anzahl der Blüten (8 pro Biene) wurde so gewählt, dass die Blüten zu jeder Zeit über Nektar verfügen und es zu keinen "`Engpässen"' kommt. Nach Beginn der Simulation pegelt sich der verfügbare Nektar bei ungefähr 50\,\% der Gesamtkapazität aller Blüten ein. Eine Blüte regeneriert 1\,mg Nektar pro Tag (Annahme).
 
-\subsection{Stellgröße und Simulationsszenarien}
+\vspace*{-2em}
 
 \begin{figure}[t]
 \begin{minipage}[t]{0.49\linewidth}
@@ -83,6 +83,10 @@ Die Anzahl der Blüten (8 pro Biene) wurde so gewählt, dass die Blüten zu jeder Z
     \label{img:placements} 
 \end{figure}
 
+\newpage
+
+\subsection{Stellgröße und Simulationsszenarien}
+
 Die Stellgröße der Simulation ist die Platzierung der Bienenstöcke auf der verfügbaren Anbaufläche. Da es theoretisch eine unendlich große Menge an Platzierungsmöglichkeiten gibt, werden die Szenarien auf ein paar grundlegende Platzierungsstrategien beschränkt.
 
 Eine Platzierungsstrategie $\mathcal P = (s, n)$ ist ein Tupel aus der Anzahl der Bienenstöcke pro Gruppe $s$ und der Anzahl der Gruppen $n$. Die Bienenstockgruppen werden gleichmäßig auf der Fläche platziert, wobei die Stöcke innerhalb der Gruppe direkt benachbart sind. Abbildung~\ref{img:placements} zeigt zwei Platzierungsstrategien für 8 Bienenstöcke.
@@ -90,11 +94,11 @@ Eine Platzierungsstrategie $\mathcal P = (s, n)$ ist ein Tupel aus der Anzahl de
 \begin{figure}[t]
 	\begin{center}
     	\includegraphics[width=1\linewidth]{summary_nice}
-  \caption{Zeitdauer bis zum Absterben aller Bienen. Es werden verschiedene Platzierungsstrategien mit $n$ Gruppen und $s$ Bienenstöcken pro Gruppe verwendet. Jede Konfiguration wird 100 mal wiederholt.}
+  \caption{Zeitdauer bis zum Absterben aller Bienen. Es werden verschiedene Platzierungsstrategien mit $n$ Gruppen und $s$ Bienenstöcken pro Gruppe verwendet. Jede Konfiguration wird 100 mal wiederholt. Die eingezeichneten Konfidenzintervalle haben ein Konfidenzniveau von 95\,\%. In Strategien mit kürzerer Simulationszeit breitete sich die Krankheit schneller aus.}
   \label{img:results} 
 	\end{center}
 \end{figure}
 
-Abbildung~\ref{img:results} zeigt die Ergebnisse von 100 Simulationsläufen von unterschiedlichen Konfigurationen mit 10 Bienenstöcken. Es fällt auf, dass ein Zusammenhang zwischen der Strategie und der Ausbreitungsgeschwindkeit besteht. Je größer die Gruppen werden, desto schneller breitet sich die Krankheit aus. Die Simulationsdauer bis zum Tot aller Bienen in den zwei Extremfällen: eine große Gruppe ($n=1, s=10$), und ein Stock pro Gruppe ($n=10, s=1$) unterscheidet sich signifikant. Außerdem haben Konfigurationen mit größeren Gruppen eine höhere Spannweite. Hier scheint die Variabilität größer zu sein und der Zufall einen stärkeren Einfluss zu haben.
+Abbildung~\ref{img:results} zeigt die Ergebnisse von 100 Simulationsläufen von unterschiedlichen Konfigurationen mit 10 Bienenstöcken. Es fällt auf, dass ein Zusammenhang zwischen der Strategie und der Ausbreitungsgeschwindkeit besteht. Je größer die Gruppen werden, desto schneller breitet sich die Krankheit aus. Die Simulationsdauer bis zum Tot aller Bienen in den zwei Extremfällen: eine große Gruppe ($n=1, s=10$), und ein Stock pro Gruppe ($n=10, s=1$) unterscheidet sich signifikant ($\alpha = 0{,}05$). Außerdem haben Konfigurationen mit größeren Gruppen eine höhere Spannweite. Hier scheint die Variabilität größer zu sein und der Zufall einen stärkeren Einfluss zu haben.
 
 Im Sinne des Imkers ist es wohl, die Stöcke mit möglichst großem Abstand zueinander aufzustellen. So scheinen die Populationen robuster gegenüber Krankheitsfällen zu sein.
